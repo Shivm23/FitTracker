@@ -38,32 +38,39 @@ const lightColorScheme = ColorScheme(
 
 const darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
-  primary: Color(0xFF33E36A),
-  onPrimary: Color(0xFF003913),
-  primaryContainer: Color(0xFF00531F),
-  onPrimaryContainer: Color(0xFF69FF89),
-  secondary: Color(0xFFB8CCB5),
-  onSecondary: Color(0xFF243425),
-  secondaryContainer: Color(0xFF3A4B3A),
-  onSecondaryContainer: Color(0xFFD4E8D1),
-  tertiary: Color(0xFFA1CED6),
-  onTertiary: Color(0xFF00363D),
-  tertiaryContainer: Color(0xFF1F4D54),
-  onTertiaryContainer: Color(0xFFBDEAF3),
+  primary: Color(0xFFFFB5A0),
+  onPrimary: Color(
+      0xFF392E2B), // inverse on surface (choix logique vu que "onPrimary" n'était pas donné)
+  primaryContainer: Color(0xFF723523),
+  onPrimaryContainer: Color(0xFFF1DFDA), // on surface
+
+  secondary: Color(0xFFE7BDB2),
+  onSecondary: Color(0xFF392E2B), // inverse on surface
+  secondaryContainer: Color(0xFF5D4037),
+  onSecondaryContainer: Color(0xFFF1DFDA), // on surface
+
+  tertiary: Color(0xFFD8C58D),
+  onTertiary: Color(0xFF392E2B), // inverse on surface
+  tertiaryContainer: Color(0xFF534619),
+  onTertiaryContainer: Color(0xFFF1DFDA), // on surface
+
   error: Color(0xFFFFB4AB),
   errorContainer: Color(0xFF93000A),
-  onError: Color(0xFF690005),
-  onErrorContainer: Color(0xFFFFDAD6),
-  surface: Color(0xFF1A1C19),
-  onSurface: Color(0xFFE2E3DD),
-  surfaceContainerHighest: Color(0xFF424940),
-  onSurfaceVariant: Color(0xFFC1C9BE),
-  outline: Color(0xFF8B9389),
-  onInverseSurface: Color(0xFF1A1C19),
-  inverseSurface: Color(0xFFE2E3DD),
-  inversePrimary: Color(0xFF006E2B),
+  onError: Color(0xFFFFFFFF), // Valeur par défaut si non précisé
+  onErrorContainer: Color(0xFFF1DFDA), // on surface
+
+  surface: Color(0xFF1A110F),
+  onSurface: Color(0xFFF1DFDA),
+  surfaceContainerHighest: Color(0xFF3D322F),
+  onSurfaceVariant: Color(0xFFD8C2BC), // on surface var
+
+  outline: Color(0xFFA08C87),
+  onInverseSurface: Color(0xFF392E2B),
+  inverseSurface: Color(0xFFF1DFDA),
+  inversePrimary: Color(0xFF8F4C38),
+
   shadow: Color(0xFF000000),
-  surfaceTint: Color(0xFF33E36A),
-  outlineVariant: Color(0xFF424940),
+  surfaceTint: Color(0xFFFFB5A0), // Souvent la couleur "primary"
+  outlineVariant: Color(0xFF53433F),
   scrim: Color(0xFF000000),
 );
