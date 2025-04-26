@@ -43,14 +43,17 @@ class EditMealBloc extends Bloc<EditMealEvent, EditMealState> {
     }
 
     final newMealNutriments = MealNutrimentsEntity(
-        energyKcal100: multiplyIfNotNull(kcalText.toDoubleOrNull()),
-        carbohydrates100: multiplyIfNotNull(carbsText.toDoubleOrNull()),
-        fat100: multiplyIfNotNull(fatText.toDoubleOrNull()),
-        proteins100: multiplyIfNotNull(proteinText.toDoubleOrNull()),
-        sugars100: multiplyIfNotNull(oldMealEntity.nutriments.sugars100),
-        saturatedFat100:
-            multiplyIfNotNull(oldMealEntity.nutriments.saturatedFat100),
-        fiber100: multiplyIfNotNull(oldMealEntity.nutriments.fiber100));
+        energyKcalPerQuantity: multiplyIfNotNull(kcalText.toDoubleOrNull()),
+        carbohydratesPerQuantity: multiplyIfNotNull(carbsText.toDoubleOrNull()),
+        fatPerQuantity: multiplyIfNotNull(fatText.toDoubleOrNull()),
+        proteinsPerQuantity: multiplyIfNotNull(proteinText.toDoubleOrNull()),
+        sugarsPerQuantity:
+            multiplyIfNotNull(oldMealEntity.nutriments.sugarsPerQuantity),
+        saturatedFatPerQuantity:
+            multiplyIfNotNull(oldMealEntity.nutriments.saturatedFatPerQuantity),
+        fiberPerQuantity:
+            multiplyIfNotNull(oldMealEntity.nutriments.fiberPerQuantity),
+        mealOrRecipe: oldMealEntity.nutriments.mealOrRecipe);
 
     return MealEntity(
         code: oldMealEntity.code,

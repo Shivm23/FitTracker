@@ -7,51 +7,56 @@ import 'package:opennutritracker/features/add_meal/data/dto/fdc/fdc_food_nutrime
 import 'package:opennutritracker/features/add_meal/data/dto/off/off_product_nutriments_dto.dart';
 
 class MealNutrimentsEntity extends Equatable {
-  final double? energyKcal100;
+  final double? energyKcalPerQuantity;
 
-  final double? carbohydrates100;
-  final double? fat100;
-  final double? proteins100;
-  final double? sugars100;
-  final double? saturatedFat100;
-  final double? fiber100;
+  final double? carbohydratesPerQuantity;
+  final double? fatPerQuantity;
+  final double? proteinsPerQuantity;
+  final double? sugarsPerQuantity;
+  final double? saturatedFatPerQuantity;
+  final double? fiberPerQuantity;
+  final String? mealOrRecipe;
 
-  double? get energyPerUnit => _getValuePerUnit(energyKcal100);
+  double? get energyPerUnit => _getValuePerUnit(energyKcalPerQuantity);
 
-  double? get carbohydratesPerUnit => _getValuePerUnit(carbohydrates100);
+  double? get carbohydratesPerUnit =>
+      _getValuePerUnit(carbohydratesPerQuantity);
 
-  double? get fatPerUnit => _getValuePerUnit(fat100);
+  double? get fatPerUnit => _getValuePerUnit(fatPerQuantity);
 
-  double? get proteinsPerUnit => _getValuePerUnit(proteins100);
+  double? get proteinsPerUnit => _getValuePerUnit(proteinsPerQuantity);
 
   const MealNutrimentsEntity(
-      {required this.energyKcal100,
-      required this.carbohydrates100,
-      required this.fat100,
-      required this.proteins100,
-      required this.sugars100,
-      required this.saturatedFat100,
-      required this.fiber100});
+      {required this.energyKcalPerQuantity,
+      required this.carbohydratesPerQuantity,
+      required this.fatPerQuantity,
+      required this.proteinsPerQuantity,
+      required this.sugarsPerQuantity,
+      required this.saturatedFatPerQuantity,
+      required this.fiberPerQuantity,
+      required this.mealOrRecipe});
 
   factory MealNutrimentsEntity.empty() => const MealNutrimentsEntity(
-      energyKcal100: null,
-      carbohydrates100: null,
-      fat100: null,
-      proteins100: null,
-      sugars100: null,
-      saturatedFat100: null,
-      fiber100: null);
+      energyKcalPerQuantity: null,
+      carbohydratesPerQuantity: null,
+      fatPerQuantity: null,
+      proteinsPerQuantity: null,
+      sugarsPerQuantity: null,
+      saturatedFatPerQuantity: null,
+      fiberPerQuantity: null,
+      mealOrRecipe: "meal");
 
   factory MealNutrimentsEntity.fromMealNutrimentsDBO(
       MealNutrimentsDBO nutriments) {
     return MealNutrimentsEntity(
-        energyKcal100: nutriments.energyKcal100,
-        carbohydrates100: nutriments.carbohydrates100,
-        fat100: nutriments.fat100,
-        proteins100: nutriments.proteins100,
-        sugars100: nutriments.sugars100,
-        saturatedFat100: nutriments.saturatedFat100,
-        fiber100: nutriments.fiber100);
+        energyKcalPerQuantity: nutriments.energyKcalPerQuantity,
+        carbohydratesPerQuantity: nutriments.carbohydratesPerQuantity,
+        fatPerQuantity: nutriments.fatPerQuantity,
+        proteinsPerQuantity: nutriments.proteinsPerQuantity,
+        sugarsPerQuantity: nutriments.sugarsPerQuantity,
+        saturatedFatPerQuantity: nutriments.saturatedFatPerQuantity,
+        fiberPerQuantity: nutriments.fiberPerQuantity,
+        mealOrRecipe: nutriments.mealOrRecipe);
   }
 
   factory MealNutrimentsEntity.fromOffNutriments(
@@ -60,16 +65,20 @@ class MealNutrimentsEntity extends Equatable {
     // 2. Extension function asDoubleOrNull does not work on a dynamic data
     // type, so cast to it Object?
     return MealNutrimentsEntity(
-        energyKcal100:
+        energyKcalPerQuantity:
             (offNutriments.energy_kcal_100g as Object?).asDoubleOrNull(),
-        carbohydrates100:
+        carbohydratesPerQuantity:
             (offNutriments.carbohydrates_100g as Object?).asDoubleOrNull(),
-        fat100: (offNutriments.fat_100g as Object?).asDoubleOrNull(),
-        proteins100: (offNutriments.proteins_100g as Object?).asDoubleOrNull(),
-        sugars100: (offNutriments.sugars_100g as Object?).asDoubleOrNull(),
-        saturatedFat100:
+        fatPerQuantity: (offNutriments.fat_100g as Object?).asDoubleOrNull(),
+        proteinsPerQuantity:
+            (offNutriments.proteins_100g as Object?).asDoubleOrNull(),
+        sugarsPerQuantity:
+            (offNutriments.sugars_100g as Object?).asDoubleOrNull(),
+        saturatedFatPerQuantity:
             (offNutriments.saturated_fat_100g as Object?).asDoubleOrNull(),
-        fiber100: (offNutriments.fiber_100g as Object?).asDoubleOrNull());
+        fiberPerQuantity:
+            (offNutriments.fiber_100g as Object?).asDoubleOrNull(),
+        mealOrRecipe: "meal");
   }
 
   factory MealNutrimentsEntity.fromFDCNutriments(
@@ -120,24 +129,31 @@ class MealNutrimentsEntity extends Equatable {
         ?.amount;
 
     return MealNutrimentsEntity(
-        energyKcal100: energyTotal,
-        carbohydrates100: carbsTotal,
-        fat100: fatTotal,
-        proteins100: proteinsTotal,
-        sugars100: sugarTotal,
-        saturatedFat100: saturatedFatTotal,
-        fiber100: fiberTotal);
+        energyKcalPerQuantity: energyTotal,
+        carbohydratesPerQuantity: carbsTotal,
+        fatPerQuantity: fatTotal,
+        proteinsPerQuantity: proteinsTotal,
+        sugarsPerQuantity: sugarTotal,
+        saturatedFatPerQuantity: saturatedFatTotal,
+        fiberPerQuantity: fiberTotal,
+        mealOrRecipe: "meal");
   }
 
-  static double? _getValuePerUnit(double? valuePer100) {
-    if (valuePer100 != null) {
-      return valuePer100 / 100;
+  double? _getValuePerUnit(double? valuePerPerQuantity) {
+    if (mealOrRecipe == "recipe" && valuePerPerQuantity != null) {
+      return valuePerPerQuantity;
+    } else if (valuePerPerQuantity != null) {
+      return valuePerPerQuantity / 100;
     } else {
       return null;
     }
   }
 
   @override
-  List<Object?> get props =>
-      [energyKcal100, carbohydrates100, fat100, proteins100];
+  List<Object?> get props => [
+        energyKcalPerQuantity,
+        carbohydratesPerQuantity,
+        fatPerQuantity,
+        proteinsPerQuantity
+      ];
 }

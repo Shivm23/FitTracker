@@ -182,6 +182,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "mealFatLabel": MessageLookupByLibrary.simpleMessage("yağ başına"),
         "mealKcalLabel": MessageLookupByLibrary.simpleMessage("kcal başına"),
         "mealNameLabel": MessageLookupByLibrary.simpleMessage("Yemek adı"),
+        "mealPortionLabel":
+            MessageLookupByLibrary.simpleMessage("Porsiyon sayısı"),
         "mealProteinLabel":
             MessageLookupByLibrary.simpleMessage("protein başına 100 g/ml"),
         "mealSizeLabel":
@@ -194,6 +196,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Üründe gerekli kcal veya makro besin bilgileri eksik"),
         "noActivityRecentlyAddedLabel": MessageLookupByLibrary.simpleMessage(
             "Son zamanlarda eklenen aktivite yok"),
+        "noFoodAddedLabel":
+            MessageLookupByLibrary.simpleMessage("Hiçbir gıda eklenmedi"),
         "noMealsRecentlyAddedLabel": MessageLookupByLibrary.simpleMessage(
             "Son zamanlarda eklenen yemek yok"),
         "noResultsFound":
@@ -595,6 +599,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Gizlilik politikasını okudum ve kabul ediyorum."),
         "recentlyAddedLabel":
             MessageLookupByLibrary.simpleMessage("Son Eklenenler"),
+        "recipeLabel": MessageLookupByLibrary.simpleMessage("Tarif"),
         "reportErrorDialogText": MessageLookupByLibrary.simpleMessage(
             "Geliştiriciye bir hata bildirmek istiyor musunuz?"),
         "retryLabel": MessageLookupByLibrary.simpleMessage("Tekrar Dene"),

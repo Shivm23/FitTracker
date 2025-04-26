@@ -95,6 +95,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Do you want create a custom meal item?"),
         "createCustomDialogTitle":
             MessageLookupByLibrary.simpleMessage("Create custom meal item?"),
+        "createRecipeLabel":
+            MessageLookupByLibrary.simpleMessage("Create a meal"),
         "dailyKcalAdjustmentLabel":
             MessageLookupByLibrary.simpleMessage("Daily Kcal adjustment:"),
         "dataCollectionLabel": MessageLookupByLibrary.simpleMessage(
@@ -135,6 +137,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Error while opening email app"),
         "errorProductNotFound":
             MessageLookupByLibrary.simpleMessage("Product not found"),
+        "errorRecipeLabel":
+            MessageLookupByLibrary.simpleMessage("No recipe found"),
+        "exampleOfActivityLabel":
+            MessageLookupByLibrary.simpleMessage("e.g. biking"),
         "exportAction": MessageLookupByLibrary.simpleMessage("Export"),
         "exportImportDescription": MessageLookupByLibrary.simpleMessage(
             "You can export the app data to a zip file and import it later. This is useful if you want to backup your data or transfer it to another device.\n\nThe app does not use any cloud service to store your data."),
@@ -183,6 +189,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "mealFatLabel": MessageLookupByLibrary.simpleMessage("fat per"),
         "mealKcalLabel": MessageLookupByLibrary.simpleMessage("kcal per"),
         "mealNameLabel": MessageLookupByLibrary.simpleMessage("Meal name"),
+        "mealPortionLabel":
+            MessageLookupByLibrary.simpleMessage("Number of portions"),
         "mealProteinLabel":
             MessageLookupByLibrary.simpleMessage("protein per 100 g/ml"),
         "mealSizeLabel":
@@ -195,6 +203,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Product missing required kcal or macronutrients information"),
         "noActivityRecentlyAddedLabel":
             MessageLookupByLibrary.simpleMessage("No activity recently added"),
+        "noFoodAddedLabel":
+            MessageLookupByLibrary.simpleMessage("No food added"),
         "noMealsRecentlyAddedLabel":
             MessageLookupByLibrary.simpleMessage("No meals recently added"),
         "noResultsFound":
@@ -591,6 +601,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Very Active"),
         "per100gmlLabel": MessageLookupByLibrary.simpleMessage("Per 100g/ml"),
         "perServingLabel": MessageLookupByLibrary.simpleMessage("Per Serving"),
+        "portionEatLabel":
+            MessageLookupByLibrary.simpleMessage("Portion eaten"),
         "privacyPolicyLabel":
             MessageLookupByLibrary.simpleMessage("Privacy policy"),
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profile"),
@@ -599,6 +611,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "readLabel": MessageLookupByLibrary.simpleMessage(
             "I have read and accept the privacy policy."),
         "recentlyAddedLabel": MessageLookupByLibrary.simpleMessage("Recently"),
+        "recipeLabel": MessageLookupByLibrary.simpleMessage("Recipe"),
         "reportErrorDialogText": MessageLookupByLibrary.simpleMessage(
             "Do you want to report an error to the developer?"),
         "retryLabel": MessageLookupByLibrary.simpleMessage("Retry"),

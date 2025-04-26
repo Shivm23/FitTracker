@@ -96,6 +96,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Möchten Sie einen benutzerdefinierte Mahlzeit erstellen?"),
         "createCustomDialogTitle": MessageLookupByLibrary.simpleMessage(
             "Benutzerdefinierte Mahlzeit erstellen?"),
+        "createRecipeLabel":
+            MessageLookupByLibrary.simpleMessage("Mahlzeit erstellen"),
         "dailyKcalAdjustmentLabel":
             MessageLookupByLibrary.simpleMessage("Tägliche kcal-Anpassung:"),
         "dataCollectionLabel": MessageLookupByLibrary.simpleMessage(
@@ -137,6 +139,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Fehler beim Öffnen der E-Mail-Anwendung"),
         "errorProductNotFound":
             MessageLookupByLibrary.simpleMessage("Produkt nicht gefunden"),
+        "errorRecipeLabel":
+            MessageLookupByLibrary.simpleMessage("Kein Rezept gefunden"),
+        "exampleOfActivityLabel":
+            MessageLookupByLibrary.simpleMessage("z. B.: Fahrrad"),
         "exportAction": MessageLookupByLibrary.simpleMessage("Exportieren"),
         "exportImportDescription": MessageLookupByLibrary.simpleMessage(
             "Sie können die App-Daten in eine Zip-Datei exportieren und später importieren. Dies ist nützlich, wenn Sie Ihre Daten sichern oder auf ein anderes Gerät übertragen möchten.\n\nDie App nutzt keinen Cloud-Dienst, um Ihre Daten zu speichern."),
@@ -188,6 +194,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "mealKcalLabel":
             MessageLookupByLibrary.simpleMessage("kcal pro 100 g/ml"),
         "mealNameLabel": MessageLookupByLibrary.simpleMessage("Mahlzeitenname"),
+        "mealPortionLabel":
+            MessageLookupByLibrary.simpleMessage("Anzahl der Portionen"),
         "mealProteinLabel":
             MessageLookupByLibrary.simpleMessage("Protein pro 100 g/ml"),
         "mealSizeLabel":
@@ -201,6 +209,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Produkt fehlen die erforderlichen Angaben zu Kalorien oder Makronährstoffen"),
         "noActivityRecentlyAddedLabel": MessageLookupByLibrary.simpleMessage(
             "Keine kürzlich hinzugefügten Aktivitäten"),
+        "noFoodAddedLabel": MessageLookupByLibrary.simpleMessage(
+            "Kein Lebensmittel hinzugefügt"),
         "noMealsRecentlyAddedLabel": MessageLookupByLibrary.simpleMessage(
             "Keine kürzlich hinzugefügten Mahlzeiten"),
         "noResultsFound":
@@ -604,6 +614,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sehr aktiv"),
         "per100gmlLabel": MessageLookupByLibrary.simpleMessage("Pro 100 g/ml"),
         "perServingLabel": MessageLookupByLibrary.simpleMessage("Pro Portion"),
+        "portionEatLabel":
+            MessageLookupByLibrary.simpleMessage("Verzehrte Portion"),
         "privacyPolicyLabel":
             MessageLookupByLibrary.simpleMessage("Datenschutzrichtlinie"),
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profil"),
@@ -612,6 +624,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "readLabel": MessageLookupByLibrary.simpleMessage(
             "Ich habe die Datenschutzbestimmungen gelesen und akzeptiere sie."),
         "recentlyAddedLabel": MessageLookupByLibrary.simpleMessage("Kürzlich"),
+        "recipeLabel": MessageLookupByLibrary.simpleMessage("Rezept"),
         "reportErrorDialogText": MessageLookupByLibrary.simpleMessage(
             "Möchten Sie einen Fehler an den Entwickler melden?"),
         "retryLabel": MessageLookupByLibrary.simpleMessage("Erneut versuchen"),

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
-import 'package:opennutritracker/core/utils/navigation_options.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
 import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/meal_detail/presentation/bloc/meal_detail_bloc.dart';
 import 'package:opennutritracker/generated/l10n.dart';
+import 'package:opennutritracker/features/create_meal/presentation/bloc/create_meal_bloc.dart';
 
 class MealDetailBottomSheet extends StatelessWidget {
   final MealEntity product;
@@ -82,27 +82,38 @@ class MealDetailBottomSheet extends StatelessWidget {
                           ),
                           const SizedBox(width: 16.0),
                           Expanded(
-                              child: DropdownButtonFormField(
-                                  isExpanded: true,
-                                  value: selectedUnit,
-                                  decoration: InputDecoration(
-                                      border: const OutlineInputBorder(),
-                                      labelText: S.of(context).unitLabel),
-                                  items: <DropdownMenuItem<String>>[
-                                    if (product.hasServingValues)
-                                      _getServingDropdownItem(context),
-                                    if (product.isSolid ||
-                                        !product.isLiquid && !product.isSolid)
-                                      ..._getSolidUnitDropdownItems(context),
-                                    if (product.isLiquid ||
-                                        !product.isLiquid && !product.isSolid)
-                                      ..._getLiquidUnitDropdownItems(context),
-                                    ..._getOtherDropdownItems(context)
-                                  ],
-                                  onChanged: (value) {
-                                    onQuantityOrUnitChanged(
-                                        quantityTextController.text, value);
-                                  }))
+                            child: DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              value: (product.mealOrRecipe != null &&
+                                      product.mealOrRecipe == "recipe")
+                                  ? UnitDropdownItem.serving.toString()
+                                  : selectedUnit,
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(),
+                                labelText: S.of(context).unitLabel,
+                              ),
+                              items: (product.mealOrRecipe != null &&
+                                      product.mealOrRecipe == "recipe")
+                                  ? [_getServingDropdownItem(context)]
+                                  : <DropdownMenuItem<String>>[
+                                      if (product.hasServingValues)
+                                        _getServingDropdownItem(context),
+                                      if (product.isSolid ||
+                                          (!product.isLiquid &&
+                                              !product.isSolid))
+                                        ..._getSolidUnitDropdownItems(context),
+                                      if (product.isLiquid ||
+                                          (!product.isLiquid &&
+                                              !product.isSolid))
+                                        ..._getLiquidUnitDropdownItems(context),
+                                      ..._getOtherDropdownItems(context),
+                                    ],
+                              onChanged: (value) {
+                                onQuantityOrUnitChanged(
+                                    quantityTextController.text, value);
+                              },
+                            ),
+                          )
                         ],
                       ),
                       SizedBox(
@@ -145,10 +156,10 @@ class MealDetailBottomSheet extends StatelessWidget {
 
   bool _hasRequiredProductInfoMissing() {
     final productNutriments = product.nutriments;
-    if (productNutriments.energyKcal100 == null ||
-        productNutriments.carbohydrates100 == null ||
-        productNutriments.fat100 == null ||
-        productNutriments.proteins100 == null) {
+    if (productNutriments.energyKcalPerQuantity == null ||
+        productNutriments.carbohydratesPerQuantity == null ||
+        productNutriments.fatPerQuantity == null ||
+        productNutriments.proteinsPerQuantity == null) {
       return true;
     } else {
       return false;
@@ -156,26 +167,39 @@ class MealDetailBottomSheet extends StatelessWidget {
   }
 
   void onAddButtonPressed(BuildContext context) {
-    mealDetailBloc.addIntake(
-        context,
-        mealDetailBloc.state.selectedUnit,
-        mealDetailBloc.state.totalQuantityConverted,
-        intakeTypeEntity,
-        product,
-        day);
+    late final CreateMealBloc createMealBloc = locator<CreateMealBloc>();
 
-    // Refresh Home Page
-    locator<HomeBloc>().add(const LoadItemsEvent());
+    if (createMealBloc.state.isOnCreateMealScreen) {
+      createMealBloc.addIntake(
+          mealDetailBloc.state.selectedUnit,
+          mealDetailBloc.state.totalQuantityConverted,
+          intakeTypeEntity,
+          product,
+          day);
+    } else {
+      mealDetailBloc.addIntake(
+          context,
+          mealDetailBloc.state.selectedUnit,
+          mealDetailBloc.state.totalQuantityConverted,
+          intakeTypeEntity,
+          product,
+          day);
 
-    // Refresh Diary Page
-    locator<DiaryBloc>().add(const LoadDiaryYearEvent());
-    locator<CalendarDayBloc>().add(RefreshCalendarDayEvent());
+      // ici
+
+      // Refresh Home Page
+      locator<HomeBloc>().add(const LoadItemsEvent());
+
+      // Refresh Diary Page
+      locator<DiaryBloc>().add(const LoadDiaryYearEvent());
+      locator<CalendarDayBloc>().add(RefreshCalendarDayEvent());
+    }
 
     // Show snackbar and return to dashboard
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(S.of(context).infoAddedIntakeLabel)));
-    Navigator.of(context)
-        .popUntil(ModalRoute.withName(NavigationOptions.mainRoute));
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 
   DropdownMenuItem<String> _getServingDropdownItem(BuildContext context) {

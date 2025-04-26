@@ -55,4 +55,11 @@ class IntakeRepository {
     final result = await _intakeDataSource.getIntakeById(intakeId);
     return result == null ? null : IntakeEntity.fromIntakeDBO(result);
   }
+
+  Future<List<IntakeEntity>> getIntakeRecipe() async {
+    final intakeList = await _intakeDataSource.getIntakeRecipe();
+    return intakeList
+        .map((intakeDBO) => IntakeEntity.fromIntakeDBO(intakeDBO))
+        .toList();
+  }
 }

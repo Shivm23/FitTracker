@@ -18,7 +18,7 @@
     "searchResultsLabel": "Résultats de recherche",
     "searchDefaultLabel": "Veuillez entrer un mot de recherche",
     "allItemsLabel": "Tous",
-    "recentlyAddedLabel": "Récemment",
+    "recentlyAddedLabel": "Récents",
     "noMealsRecentlyAddedLabel": "Aucun repas ajouté récemment",
     "noActivityRecentlyAddedLabel": "Aucune activité ajoutée récemment",
     "dialogOKLabel": "OK",
@@ -187,6 +187,13 @@
     "genderLabel": "Genre",
     "genderMaleLabel": "♂ homme",
     "genderFemaleLabel": "♀ femme",
-    "nothingAddedLabel": "Aucun élément ajouté"
+    "nothingAddedLabel": "Aucun élément ajouté",
+    "exampleOfActivityLabel": "ex: vélo",
+    "recipeLabel": "Recettes",
+    "createRecipeLabel": "Créer un repas",
+    "errorRecipeLabel": "Aucune recette trouvée",
+    "mealPortionLabel": "Nombre de portion",
+    "portionEatLabel": "Portion mangé",
+    "noFoodAddedLabel": "Aucun aliment ajouté"
   }
   

@@ -8,39 +8,43 @@ part 'meal_nutriments_dbo.g.dart';
 @JsonSerializable()
 class MealNutrimentsDBO extends HiveObject {
   @HiveField(0)
-  final double? energyKcal100;
+  final double? energyKcalPerQuantity;
   @HiveField(1)
-  final double? carbohydrates100;
+  final double? carbohydratesPerQuantity;
   @HiveField(2)
-  final double? fat100;
+  final double? fatPerQuantity;
   @HiveField(3)
-  final double? proteins100;
+  final double? proteinsPerQuantity;
   @HiveField(4)
-  final double? sugars100;
+  final double? sugarsPerQuantity;
   @HiveField(5)
-  final double? saturatedFat100;
+  final double? saturatedFatPerQuantity;
   @HiveField(6)
-  final double? fiber100;
+  final double? fiberPerQuantity;
+  @HiveField(7)
+  final String? mealOrRecipe;
 
   MealNutrimentsDBO(
-      {required this.energyKcal100,
-      required this.carbohydrates100,
-      required this.fat100,
-      required this.proteins100,
-      required this.sugars100,
-      required this.saturatedFat100,
-      required this.fiber100});
+      {required this.energyKcalPerQuantity,
+      required this.carbohydratesPerQuantity,
+      required this.fatPerQuantity,
+      required this.proteinsPerQuantity,
+      required this.sugarsPerQuantity,
+      required this.saturatedFatPerQuantity,
+      required this.fiberPerQuantity,
+      required this.mealOrRecipe});
 
   factory MealNutrimentsDBO.fromProductNutrimentsEntity(
       MealNutrimentsEntity nutriments) {
     return MealNutrimentsDBO(
-        energyKcal100: nutriments.energyKcal100,
-        carbohydrates100: nutriments.carbohydrates100,
-        fat100: nutriments.fat100,
-        proteins100: nutriments.proteins100,
-        sugars100: nutriments.sugars100,
-        saturatedFat100: nutriments.saturatedFat100,
-        fiber100: nutriments.fiber100);
+        energyKcalPerQuantity: nutriments.energyKcalPerQuantity,
+        carbohydratesPerQuantity: nutriments.carbohydratesPerQuantity,
+        fatPerQuantity: nutriments.fatPerQuantity,
+        proteinsPerQuantity: nutriments.proteinsPerQuantity,
+        sugarsPerQuantity: nutriments.sugarsPerQuantity,
+        saturatedFatPerQuantity: nutriments.saturatedFatPerQuantity,
+        fiberPerQuantity: nutriments.fiberPerQuantity,
+        mealOrRecipe: nutriments.mealOrRecipe);
   }
 
   factory MealNutrimentsDBO.fromJson(Map<String, dynamic> json) =>

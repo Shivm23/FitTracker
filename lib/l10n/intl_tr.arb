@@ -409,4 +409,12 @@
   "paSkiingGeneralDesc": "genel",
   "paSnowShovingModerate": "kar küreme",
   "paSnowShovingModerateDesc": "elle, orta derecede çaba"
+  "paSnowShovingModerateDesc": "elle, ılımlı çaba",
+  "exampleOfActivityLabel": "örn: bisiklet",
+  "recipeLabel": "Tarif",
+  "createRecipeLabel": "Öğün oluştur",
+  "errorRecipeLabel": "Hiç tarif bulunamadı",
+  "mealPortionLabel": "Porsiyon sayısı",
+  "portionEatLabel": "Yenilen porsiyon",
+  "noFoodAddedLabel": "Hiçbir gıda eklenmedi"
 }

@@ -5,6 +5,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/presentation/widgets/meal_value_unit_text.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
+import 'dart:io';
 
 class IntakeCard extends StatelessWidget {
   final IntakeEntity intake;
@@ -46,26 +47,42 @@ class IntakeCard extends StatelessWidget {
               child: Stack(
                 children: [
                   intake.meal.mainImageUrl != null
-                      ? CachedNetworkImage(
-                          cacheManager: locator<CacheManager>(),
-                          imageUrl: intake.meal.mainImageUrl ?? "",
-                          imageBuilder: (context, imageProvider) => Container(
-                            decoration: BoxDecoration(
+                      ? intake.meal.mealOrRecipe == "recipe"
+                          ? Container(
+                              decoration: BoxDecoration(
                                 image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            )),
-                          ),
-                        )
+                                  image: FileImage(
+                                      File(intake.meal.mainImageUrl!)),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          : CachedNetworkImage(
+                              cacheManager: locator<CacheManager>(),
+                              imageUrl: intake.meal.mainImageUrl!,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            )
                       : Center(
-                          child: Icon(Icons.restaurant_outlined,
-                              color: Theme.of(context).colorScheme.secondary)),
+                          child: Icon(
+                            Icons.restaurant_outlined,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
                   Container(
                     // Add color shade
                     decoration: BoxDecoration(
                       color: Theme.of(context)
                           .colorScheme
-                          .secondaryContainer.withValues(alpha: 0.5),
+                          .secondaryContainer
+                          .withValues(alpha: 0.5),
                     ),
                   ),
                   Container(
@@ -74,7 +91,8 @@ class IntakeCard extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Theme.of(context)
                             .colorScheme
-                            .tertiaryContainer.withValues(alpha: 0.8),
+                            .tertiaryContainer
+                            .withValues(alpha: 0.8),
                         borderRadius: BorderRadius.circular(20)),
                     child: Text(
                       '${intake.totalKcal.toInt()} kcal',
@@ -114,8 +132,8 @@ class IntakeCard extends StatelessWidget {
                                 ?.copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .onSecondaryContainer.withValues(
-                                            alpha: 0.7)),
+                                        .onSecondaryContainer
+                                        .withValues(alpha: 0.7)),
                           ),
                         ],
                       ))

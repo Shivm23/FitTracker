@@ -401,5 +401,12 @@
   "paSkiingGeneral": "Skifahren",
   "paSkiingGeneralDesc": "allgemein",
   "paSnowShovingModerate": "Schnee schaufeln",
-  "paSnowShovingModerateDesc": "manuell, mäßige Anstrengung"
+  "paSnowShovingModerateDesc": "manuell, mäßige Anstrengung",
+  "exampleOfActivityLabel": "z. B.: Fahrrad",
+  "recipeLabel": "Rezept",
+  "createRecipeLabel": "Mahlzeit erstellen",
+  "errorRecipeLabel": "Kein Rezept gefunden",
+  "mealPortionLabel": "Anzahl der Portionen",
+  "portionEatLabel": "Verzehrte Portion",
+  "noFoodAddedLabel": "Kein Lebensmittel hinzugefügt"
 }

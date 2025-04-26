@@ -26,8 +26,9 @@ class MealDetailNutrimentsTable extends StatelessWidget {
             ?.copyWith(fontWeight: FontWeight.bold) ??
         const TextStyle();
 
-    final headerText = usesImperialUnits && servingQuantity != null
-        ? "${S.of(context).perServingLabel} (${servingQuantity!.roundToPrecision(1)}${servingUnit ?? 'g/ml'})"
+    final headerText = (usesImperialUnits && servingQuantity != null) ||
+            product.mealOrRecipe == "recipe"
+        ? "${S.of(context).perServingLabel} (${servingQuantity!.roundToPrecision(1)} ${servingUnit ?? 'g/ml'})"
         : S.of(context).per100gmlLabel;
 
     return Column(
@@ -47,31 +48,31 @@ class MealDetailNutrimentsTable extends StatelessWidget {
             _getNutrimentsTableRow("", headerText, textStyleBold),
             _getNutrimentsTableRow(
                 S.of(context).energyLabel,
-                "${_adjustValueForServing(product.nutriments.energyKcal100?.toDouble() ?? 0).toInt()} ${S.of(context).kcalLabel}",
+                "${_adjustValueForServing(product.nutriments.energyKcalPerQuantity?.toDouble() ?? 0).toInt()} ${S.of(context).kcalLabel}",
                 textStyleNormal),
             _getNutrimentsTableRow(
                 S.of(context).fatLabel,
-                "${_adjustValueForServing(product.nutriments.fat100 ?? 0).roundToPrecision(2)}g",
+                "${_adjustValueForServing(product.nutriments.fatPerQuantity ?? 0).roundToPrecision(2)}g",
                 textStyleNormal),
             _getNutrimentsTableRow(
                 '   ${S.of(context).saturatedFatLabel}',
-                "${_adjustValueForServing(product.nutriments.saturatedFat100 ?? 0).roundToPrecision(2)}g",
+                "${_adjustValueForServing(product.nutriments.saturatedFatPerQuantity ?? 0).roundToPrecision(2)}g",
                 textStyleNormal),
             _getNutrimentsTableRow(
                 S.of(context).carbohydrateLabel,
-                "${_adjustValueForServing(product.nutriments.carbohydrates100 ?? 0).roundToPrecision(2)}g",
+                "${_adjustValueForServing(product.nutriments.carbohydratesPerQuantity ?? 0).roundToPrecision(2)}g",
                 textStyleNormal),
             _getNutrimentsTableRow(
                 '    ${S.of(context).sugarLabel}',
-                "${_adjustValueForServing(product.nutriments.sugars100 ?? 0).roundToPrecision(2)}g",
+                "${_adjustValueForServing(product.nutriments.sugarsPerQuantity ?? 0).roundToPrecision(2)}g",
                 textStyleNormal),
             _getNutrimentsTableRow(
                 S.of(context).fiberLabel,
-                "${_adjustValueForServing(product.nutriments.fiber100 ?? 0).roundToPrecision(2)}g",
+                "${_adjustValueForServing(product.nutriments.fiberPerQuantity ?? 0).roundToPrecision(2)}g",
                 textStyleNormal),
             _getNutrimentsTableRow(
                 S.of(context).proteinLabel,
-                "${_adjustValueForServing(product.nutriments.proteins100 ?? 0).roundToPrecision(2)}g",
+                "${_adjustValueForServing(product.nutriments.proteinsPerQuantity ?? 0).roundToPrecision(2)}g",
                 textStyleNormal)
           ],
         )

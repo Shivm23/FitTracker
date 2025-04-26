@@ -8,6 +8,7 @@ import 'package:opennutritracker/core/utils/navigation_options.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
 import 'package:opennutritracker/features/meal_detail/meal_detail_screen.dart';
+import 'dart:io';
 
 class MealItemCard extends StatelessWidget {
   final DateTime day;
@@ -35,24 +36,38 @@ class MealItemCard extends StatelessWidget {
           height: 100,
           child: Center(
               child: ListTile(
-            leading: mealEntity.thumbnailImageUrl != null
+            leading: mealEntity.mealOrRecipe == "recipe" &&
+                    mealEntity.thumbnailImageUrl != null
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: CachedNetworkImage(
-                      cacheManager: locator<CacheManager>(),
-                      fit: BoxFit.cover,
+                    child: Image.file(
+                      File(mealEntity.thumbnailImageUrl!),
                       width: 60,
                       height: 60,
-                      imageUrl: mealEntity.thumbnailImageUrl ?? "",
-                    ))
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                        width: 60,
-                        height: 60,
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        child: const Icon(Icons.restaurant_outlined)),
-                  ),
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : mealEntity.thumbnailImageUrl != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: CachedNetworkImage(
+                          cacheManager: locator<CacheManager>(),
+                          fit: BoxFit.cover,
+                          width: 60,
+                          height: 60,
+                          imageUrl: mealEntity.thumbnailImageUrl!,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Container(
+                          width: 60,
+                          height: 60,
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
+                          child: const Icon(Icons.restaurant_outlined),
+                        ),
+                      ),
             title: AutoSizeText.rich(
                 TextSpan(
                     text: mealEntity.name ?? "?",
