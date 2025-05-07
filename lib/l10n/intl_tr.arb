@@ -9,6 +9,8 @@
   "createCustomDialogContent": "Özel bir yemek öğesi oluşturmak istiyor musunuz?",
   "settingsLabel": "Ayarlar",
   "homeLabel": "Ana Sayfa",
+  "deltaWeightLabel": "Kilo Farkı",
+  "deltaWeightBody": "Ağırlık farkı, ortalama ağırlık ile bu gün için girilen mevcut ağırlık arasındaki farktır.\nMevcut gün için herhangi bir ağırlık kaydedilmemişse, son geçerli ağırlık kullanılacaktır.",
   "diaryLabel": "Günlük",
   "profileLabel": "Profil",
   "searchLabel": "Ara",
@@ -408,8 +410,7 @@
   "paSkiingGeneral": "kayak",
   "paSkiingGeneralDesc": "genel",
   "paSnowShovingModerate": "kar küreme",
-  "paSnowShovingModerateDesc": "elle, orta derecede çaba"
-  "paSnowShovingModerateDesc": "elle, ılımlı çaba",
+  "paSnowShovingModerateDesc": "elle, orta derecede çaba",
   "exampleOfActivityLabel": "örn: bisiklet",
   "recipeLabel": "Tarif",
   "createRecipeLabel": "Öğün oluştur",

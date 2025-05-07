@@ -4,12 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/domain/entity/tracked_day_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
+import 'package:opennutritracker/core/domain/entity/user_weight_entity.dart';
 import 'package:opennutritracker/core/domain/usecase/add_tracked_day_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/delete_intake_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/delete_user_activity_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_intake_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_tracked_day_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_user_activity_usecase.dart';
+import 'package:opennutritracker/core/domain/usecase/get_weight_usecase.dart';
 import 'package:opennutritracker/core/utils/calc/macro_calc.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
@@ -25,6 +27,7 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
   final DeleteUserActivityUsecase _deleteUserActivityUsecase;
   final GetTrackedDayUsecase _getTrackedDayUsecase;
   final AddTrackedDayUsecase _addTrackedDayUsecase;
+  final GetWeightUsecase _getUserWeightUsecase;
 
   DateTime? _currentDay;
 
@@ -34,7 +37,8 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
       this._deleteIntakeUsecase,
       this._deleteUserActivityUsecase,
       this._getTrackedDayUsecase,
-      this._addTrackedDayUsecase)
+      this._addTrackedDayUsecase,
+      this._getUserWeightUsecase)
       : super(CalendarDayInitial()) {
     on<LoadCalendarDayEvent>((event, emit) async {
       emit(CalendarDayLoading());
@@ -64,13 +68,17 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
 
     final trackedDayEntity = await _getTrackedDayUsecase.getTrackedDay(day);
 
+    final userWeightEntity =
+        await _getUserWeightUsecase.getUserWeightByDate(day);
+
     emit(CalendarDayLoaded(
         trackedDayEntity,
         userActivities,
         breakfastIntakeList,
         lunchIntakeList,
         dinnerIntakeList,
-        snackIntakeList));
+        snackIntakeList,
+        userWeightEntity));
   }
 
   Future<void> deleteIntakeItem(

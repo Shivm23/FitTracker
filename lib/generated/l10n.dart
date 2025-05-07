@@ -90,6 +90,27 @@ class S {
     );
   }
 
+  /// `Average Weight`
+  String get averageWeightLabel {
+    return Intl.message(
+      'Average Weight',
+      name: 'averageWeightLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Average user weight over the last seven days. The current day is not counted.`
+  String get averageWeightBody {
+    return Intl.message(
+      'Average user weight over the last seven days. The current day is not counted.',
+      name: 'averageWeightBody',
+      desc:
+          'Explains that the average weight is calculated from the 7 days preceding the currently selected date, which is not included in the average.',
+      args: [],
+    );
+  }
+
   /// `[Beta]`
   String get betaVersionName {
     return Intl.message(
@@ -145,6 +166,26 @@ class S {
     return Intl.message(
       'Home',
       name: 'homeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weight Delta`
+  String get deltaWeightLabel {
+    return Intl.message(
+      'Weight Delta',
+      name: 'deltaWeightLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The weight delta is the difference between the average weight and the current weight entered for this day.\nIf no weight is recorded for the current day, the last valid weight will be used.`
+  String get deltaWeightBody {
+    return Intl.message(
+      'The weight delta is the difference between the average weight and the current weight entered for this day.\nIf no weight is recorded for the current day, the last valid weight will be used.',
+      name: 'deltaWeightBody',
       desc: '',
       args: [],
     );

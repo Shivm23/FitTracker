@@ -95,6 +95,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Özel bir yemek öğesi oluşturmak istiyor musunuz?"),
         "createCustomDialogTitle":
             MessageLookupByLibrary.simpleMessage("Özel yemek öğesi oluştur?"),
+        "createRecipeLabel":
+            MessageLookupByLibrary.simpleMessage("Öğün oluştur"),
         "dailyKcalAdjustmentLabel":
             MessageLookupByLibrary.simpleMessage("Günlük Kcal ayarı:"),
         "dataCollectionLabel": MessageLookupByLibrary.simpleMessage(
@@ -107,6 +109,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Girdiler silinsin mi?"),
         "deleteTimeDialogTitle":
             MessageLookupByLibrary.simpleMessage("Öğeyi Sil?"),
+        "deltaWeightBody": MessageLookupByLibrary.simpleMessage(
+            "Ağırlık farkı, ortalama ağırlık ile bu gün için girilen mevcut ağırlık arasındaki farktır.\nMevcut gün için herhangi bir ağırlık kaydedilmemişse, son geçerli ağırlık kullanılacaktır."),
+        "deltaWeightLabel": MessageLookupByLibrary.simpleMessage("Kilo Farkı"),
         "dialogCancelLabel": MessageLookupByLibrary.simpleMessage("İPTAL"),
         "dialogCopyLabel":
             MessageLookupByLibrary.simpleMessage("BUGÜNE KOPYALA"),
@@ -134,6 +139,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "E-posta uygulaması açılırken hata oluştu"),
         "errorProductNotFound":
             MessageLookupByLibrary.simpleMessage("Ürün bulunamadı"),
+        "errorRecipeLabel":
+            MessageLookupByLibrary.simpleMessage("Hiç tarif bulunamadı"),
+        "exampleOfActivityLabel":
+            MessageLookupByLibrary.simpleMessage("örn: bisiklet"),
         "exportAction": MessageLookupByLibrary.simpleMessage("Dışa Aktar"),
         "exportImportDescription": MessageLookupByLibrary.simpleMessage(
             "Uygulama verilerini bir zip dosyasına dışa aktarabilir ve daha sonra içe aktarabilirsiniz. Bu, verilerinizi yedeklemek veya başka bir cihaza aktarmak istiyorsanız kullanışlıdır.\n\nUygulama, verilerinizi saklamak için herhangi bir bulut hizmeti kullanmaz."),
@@ -590,6 +599,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("100g/ml başına"),
         "perServingLabel":
             MessageLookupByLibrary.simpleMessage("Porsiyon Başına"),
+        "portionEatLabel":
+            MessageLookupByLibrary.simpleMessage("Yenilen porsiyon"),
         "privacyPolicyLabel":
             MessageLookupByLibrary.simpleMessage("Gizlilik politikası"),
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profil"),

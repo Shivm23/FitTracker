@@ -21,6 +21,7 @@ class CalendarDayLoaded extends CalendarDayState {
   final List<IntakeEntity> lunchIntakeList;
   final List<IntakeEntity> dinnerIntakeList;
   final List<IntakeEntity> snackIntakeList;
+  final UserWeightEntity? userWeightEntity;
 
   const CalendarDayLoaded(
       this.trackedDayEntity,
@@ -28,7 +29,8 @@ class CalendarDayLoaded extends CalendarDayState {
       this.breakfastIntakeList,
       this.lunchIntakeList,
       this.dinnerIntakeList,
-      this.snackIntakeList);
+      this.snackIntakeList,
+      this.userWeightEntity);
 
   @override
   List<Object?> get props => [trackedDayEntity];

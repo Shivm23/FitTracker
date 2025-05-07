@@ -32,14 +32,16 @@ class ActivityVerticalList extends StatelessWidget {
               const SizedBox(width: 4.0),
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
               ),
             ],
           ),
         ),
         SizedBox(
-          height: 160,
+          height: 120,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount:
