@@ -79,12 +79,13 @@ class _EditMealScreenState extends State<EditMealScreen> {
     _servingQuantityTextController.text =
         _mealEntity.servingQuantity.toStringOrEmpty();
     _kcalTextController.text =
-        _mealEntity.nutriments.energyKcal100.toStringOrEmpty();
+        _mealEntity.nutriments.energyKcalPerQuantity.toStringOrEmpty();
     _carbsTextController.text =
-        _mealEntity.nutriments.carbohydrates100.toStringOrEmpty();
-    _fatTextController.text = _mealEntity.nutriments.fat100.toStringOrEmpty();
+        _mealEntity.nutriments.carbohydratesPerQuantity.toStringOrEmpty();
+    _fatTextController.text =
+        _mealEntity.nutriments.fatPerQuantity.toStringOrEmpty();
     _proteinTextController.text =
-        _mealEntity.nutriments.proteins100.toStringOrEmpty();
+        _mealEntity.nutriments.proteinsPerQuantity.toStringOrEmpty();
     selectedUnit = _switchButtonUnit(_mealEntity.mealUnit);
 
     // Convert meal size to imperial units if necessary

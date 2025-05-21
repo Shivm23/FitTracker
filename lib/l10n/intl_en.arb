@@ -411,5 +411,12 @@
   "paSkiingGeneral": "skiing",
   "paSkiingGeneralDesc": "general",
   "paSnowShovingModerate": "snow shoveling",
-  "paSnowShovingModerateDesc": "by hand, moderate effort"
+  "paSnowShovingModerateDesc": "by hand, moderate effort",
+  "exampleOfActivityLabel": "e.g. biking",
+  "recipeLabel": "Recipe",
+  "createRecipeLabel": "Create a meal",
+  "errorRecipeLabel": "No recipe found",
+  "mealPortionLabel": "Number of portions",
+  "portionEatLabel": "Portion eaten",
+  "noFoodAddedLabel": "No food added"
 }

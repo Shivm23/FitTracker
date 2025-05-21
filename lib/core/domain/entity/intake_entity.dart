@@ -43,3 +43,23 @@ class IntakeEntity extends Equatable {
   @override
   List<Object?> get props => [id, unit, amount, type, dateTime];
 }
+
+extension IntakeEntityCopy on IntakeEntity {
+  IntakeEntity copyWith({
+    String? id,
+    String? unit,
+    double? amount,
+    IntakeTypeEntity? type,
+    MealEntity? meal,
+    DateTime? dateTime,
+  }) {
+    return IntakeEntity(
+      id: id ?? this.id,
+      unit: unit ?? this.unit,
+      amount: amount ?? this.amount,
+      type: type ?? this.type,
+      meal: meal ?? this.meal,
+      dateTime: dateTime ?? this.dateTime,
+    );
+  }
+}

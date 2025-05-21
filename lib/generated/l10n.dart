@@ -4150,6 +4150,76 @@ class S {
       args: [],
     );
   }
+
+  /// `e.g. biking`
+  String get exampleOfActivityLabel {
+    return Intl.message(
+      'e.g. biking',
+      name: 'exampleOfActivityLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recipe`
+  String get recipeLabel {
+    return Intl.message(
+      'Recipe',
+      name: 'recipeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create a meal`
+  String get createRecipeLabel {
+    return Intl.message(
+      'Create a meal',
+      name: 'createRecipeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No recipe found`
+  String get errorRecipeLabel {
+    return Intl.message(
+      'No recipe found',
+      name: 'errorRecipeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of portions`
+  String get mealPortionLabel {
+    return Intl.message(
+      'Number of portions',
+      name: 'mealPortionLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Portion eaten`
+  String get portionEatLabel {
+    return Intl.message(
+      'Portion eaten',
+      name: 'portionEatLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No food added`
+  String get noFoodAddedLabel {
+    return Intl.message(
+      'No food added',
+      name: 'noFoodAddedLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -4159,6 +4229,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'fr'),
       Locale.fromSubtags(languageCode: 'tr'),
     ];
   }

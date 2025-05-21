@@ -17,34 +17,37 @@ class MealNutrimentsDBOAdapter extends TypeAdapter<MealNutrimentsDBO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MealNutrimentsDBO(
-      energyKcal100: fields[0] as double?,
-      carbohydrates100: fields[1] as double?,
-      fat100: fields[2] as double?,
-      proteins100: fields[3] as double?,
-      sugars100: fields[4] as double?,
-      saturatedFat100: fields[5] as double?,
-      fiber100: fields[6] as double?,
+      energyKcalPerQuantity: fields[0] as double?,
+      carbohydratesPerQuantity: fields[1] as double?,
+      fatPerQuantity: fields[2] as double?,
+      proteinsPerQuantity: fields[3] as double?,
+      sugarsPerQuantity: fields[4] as double?,
+      saturatedFatPerQuantity: fields[5] as double?,
+      fiberPerQuantity: fields[6] as double?,
+      mealOrRecipe: fields[7] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, MealNutrimentsDBO obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
-      ..write(obj.energyKcal100)
+      ..write(obj.energyKcalPerQuantity)
       ..writeByte(1)
-      ..write(obj.carbohydrates100)
+      ..write(obj.carbohydratesPerQuantity)
       ..writeByte(2)
-      ..write(obj.fat100)
+      ..write(obj.fatPerQuantity)
       ..writeByte(3)
-      ..write(obj.proteins100)
+      ..write(obj.proteinsPerQuantity)
       ..writeByte(4)
-      ..write(obj.sugars100)
+      ..write(obj.sugarsPerQuantity)
       ..writeByte(5)
-      ..write(obj.saturatedFat100)
+      ..write(obj.saturatedFatPerQuantity)
       ..writeByte(6)
-      ..write(obj.fiber100);
+      ..write(obj.fiberPerQuantity)
+      ..writeByte(7)
+      ..write(obj.mealOrRecipe);
   }
 
   @override
@@ -64,22 +67,27 @@ class MealNutrimentsDBOAdapter extends TypeAdapter<MealNutrimentsDBO> {
 
 MealNutrimentsDBO _$MealNutrimentsDBOFromJson(Map<String, dynamic> json) =>
     MealNutrimentsDBO(
-      energyKcal100: (json['energyKcal100'] as num?)?.toDouble(),
-      carbohydrates100: (json['carbohydrates100'] as num?)?.toDouble(),
-      fat100: (json['fat100'] as num?)?.toDouble(),
-      proteins100: (json['proteins100'] as num?)?.toDouble(),
-      sugars100: (json['sugars100'] as num?)?.toDouble(),
-      saturatedFat100: (json['saturatedFat100'] as num?)?.toDouble(),
-      fiber100: (json['fiber100'] as num?)?.toDouble(),
+      energyKcalPerQuantity:
+          (json['energyKcalPerQuantity'] as num?)?.toDouble(),
+      carbohydratesPerQuantity:
+          (json['carbohydratesPerQuantity'] as num?)?.toDouble(),
+      fatPerQuantity: (json['fatPerQuantity'] as num?)?.toDouble(),
+      proteinsPerQuantity: (json['proteinsPerQuantity'] as num?)?.toDouble(),
+      sugarsPerQuantity: (json['sugarsPerQuantity'] as num?)?.toDouble(),
+      saturatedFatPerQuantity:
+          (json['saturatedFatPerQuantity'] as num?)?.toDouble(),
+      fiberPerQuantity: (json['fiberPerQuantity'] as num?)?.toDouble(),
+      mealOrRecipe: json['mealOrRecipe'] as String?,
     );
 
 Map<String, dynamic> _$MealNutrimentsDBOToJson(MealNutrimentsDBO instance) =>
     <String, dynamic>{
-      'energyKcal100': instance.energyKcal100,
-      'carbohydrates100': instance.carbohydrates100,
-      'fat100': instance.fat100,
-      'proteins100': instance.proteins100,
-      'sugars100': instance.sugars100,
-      'saturatedFat100': instance.saturatedFat100,
-      'fiber100': instance.fiber100,
+      'energyKcalPerQuantity': instance.energyKcalPerQuantity,
+      'carbohydratesPerQuantity': instance.carbohydratesPerQuantity,
+      'fatPerQuantity': instance.fatPerQuantity,
+      'proteinsPerQuantity': instance.proteinsPerQuantity,
+      'sugarsPerQuantity': instance.sugarsPerQuantity,
+      'saturatedFatPerQuantity': instance.saturatedFatPerQuantity,
+      'fiberPerQuantity': instance.fiberPerQuantity,
+      'mealOrRecipe': instance.mealOrRecipe,
     };

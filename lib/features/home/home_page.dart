@@ -130,12 +130,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           totalFatsGoal: totalFatsGoal,
           totalProteinsGoal: totalProteinsGoal,
         ),
-        ActivityVerticalList(
-          day: DateTime.now(),
-          title: S.of(context).activityLabel,
-          userActivityList: userActivities,
-          onItemLongPressedCallback: onActivityItemLongPressed,
-        ),
         IntakeVerticalList(
           day: DateTime.now(),
           title: S.of(context).breakfastLabel,
@@ -179,6 +173,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           onItemDragCallback: onIntakeItemDrag,
           onItemTappedCallback: onIntakeItemTapped,
           usesImperialUnits: usesImperialUnits,
+        ),
+        ActivityVerticalList(
+          day: DateTime.now(),
+          title: S.of(context).activityLabel,
+          userActivityList: userActivities,
+          onItemLongPressedCallback: onActivityItemLongPressed,
         ),
         const SizedBox(height: 48.0)
       ]),

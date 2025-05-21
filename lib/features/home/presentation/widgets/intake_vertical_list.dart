@@ -219,7 +219,8 @@ class _IntakeVerticalListState extends State<IntakeVerticalList> {
 
   void _onPlaceholderCardTapped(BuildContext context) {
     Navigator.pushNamed(context, NavigationOptions.addMealRoute,
-        arguments: AddMealScreenArguments(widget.addMealType, widget.day));
+        arguments:
+            AddMealScreenArguments(widget.addMealType, widget.day, "meal"));
   }
 
   void _onItemDropped(IntakeEntity entity) {
