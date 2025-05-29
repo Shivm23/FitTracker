@@ -56,6 +56,11 @@ See [Data Protection](https://www.iubenda.com/privacy-policy/53501884)
 ## Contribution
 Contributions to OpenNutriTracker are welcome! If you find any issues or have suggestions for new features, please open an issue or submit a pull request. Make sure to follow the project's code style and guidelines.
 
+Thanks to all the contributors:
+<a href="https://github.com/simonoppowa/OpenNutriTracker/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=simonoppowa/OpenNutriTracker" />
+</a>
+
 ## Getting Started
 See the [Getting Started](GettingStarted.md) file for more information.
 
