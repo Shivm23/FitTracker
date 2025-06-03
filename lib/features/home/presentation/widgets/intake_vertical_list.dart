@@ -68,6 +68,21 @@ class _IntakeVerticalListState extends State<IntakeVerticalList> {
         .fold(0, (previousValue, element) => previousValue + element.totalKcal);
   }
 
+  double get totalCarbsGram {
+    return widget.intakeList
+        .fold(0, (previousValue, element) => previousValue + element.totalCarbsGram);
+  }
+
+  double get totalFatsGram {
+    return widget.intakeList
+        .fold(0, (previousValue, element) => previousValue + element.totalFatsGram);
+  }
+
+  double get totalProteinsGram {
+    return widget.intakeList
+        .fold(0, (previousValue, element) => previousValue + element.totalProteinsGram);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -90,12 +105,14 @@ class _IntakeVerticalListState extends State<IntakeVerticalList> {
               const Spacer(),
               if (totalKcal > 0) ...[
                 Text(
-                  '${totalKcal.toInt()} ${S.of(context).kcalLabel}',
+                  '${totalKcal.toInt()} ${S.of(context).kcalLabel}\n'
+                  '${totalCarbsGram.toInt()} ${S.of(context).carbsLabelShort}  ${totalFatsGram.toInt()} ${S.of(context).fatLabelShort}  ${totalProteinsGram.toInt()} ${S.of(context).proteinLabelShort}',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: Theme.of(context)
                           .colorScheme
                           .onSurface
                           .withValues(alpha: 0.7)),
+                  textAlign: TextAlign.center,
                 ),
                 PopupMenuButton<VerticalListPopupMenuSelections>(
                     onSelected:
