@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/core/presentation/widgets/meal_value_unit_text.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'dart:io';
@@ -47,7 +48,7 @@ class IntakeCard extends StatelessWidget {
               child: Stack(
                 children: [
                   intake.meal.mainImageUrl != null
-                      ? intake.meal.mealOrRecipe == "recipe"
+                      ? intake.meal.mealOrRecipe == MealOrRecipeEntity.recipe
                           ? Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(

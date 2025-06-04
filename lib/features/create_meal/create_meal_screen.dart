@@ -4,6 +4,7 @@ import 'package:opennutritracker/core/utils/navigation_options.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_screen.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/create_meal/presentation/bloc/create_meal_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -304,7 +305,7 @@ class _MealCreationScreenState extends State<MealCreationScreen> {
       arguments: AddMealScreenArguments(
         itemType,
         day,
-        "recipe",
+        MealOrRecipeEntity.recipe,
       ),
     );
   }

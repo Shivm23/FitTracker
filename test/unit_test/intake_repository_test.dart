@@ -5,6 +5,7 @@ import 'package:opennutritracker/core/data/dbo/intake_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/intake_type_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/meal_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/meal_nutriments_dbo.dart';
+import 'package:opennutritracker/core/data/dbo/meal_or_recipe_dbo.dart';
 import 'package:opennutritracker/core/data/repository/intake_repository.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
@@ -23,6 +24,7 @@ void main() {
       Hive.registerAdapter(MealDBOAdapter());
       Hive.registerAdapter(MealSourceDBOAdapter());
       Hive.registerAdapter(MealNutrimentsDBOAdapter());
+      Hive.registerAdapter(MealOrRecipeDBOAdapter());
     });
 
     tearDown(() {

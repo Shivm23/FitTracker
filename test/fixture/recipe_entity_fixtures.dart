@@ -2,6 +2,7 @@ import 'package:opennutritracker/core/domain/entity/recipe_entity.dart';
 import 'package:opennutritracker/core/domain/entity/intake_for_recipe_entity.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_nutriments_entity.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 
 class RecipeEntityFixtures {
   static final meal = MealEntity(
@@ -24,7 +25,7 @@ class RecipeEntityFixtures {
       sugarsPerQuantity: 5,
       saturatedFatPerQuantity: 2,
       fiberPerQuantity: 4,
-      mealOrRecipe: "recipe",
+      mealOrRecipe: MealOrRecipeEntity.recipe,
     ),
     source: MealSourceEntity.custom,
   );

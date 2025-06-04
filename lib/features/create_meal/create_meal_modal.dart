@@ -8,6 +8,7 @@ import 'package:opennutritracker/generated/l10n.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/create_meal/presentation/bloc/create_meal_bloc.dart';
 import 'package:opennutritracker/features/meal_detail/presentation/bloc/meal_detail_bloc.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
 import 'package:opennutritracker/core/utils/id_generator.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_nutriments_entity.dart';
@@ -146,7 +147,7 @@ class _CalendarMealTypeSelectorState extends State<CalendarMealTypeSelector> {
         sugarsPerQuantity: null,
         saturatedFatPerQuantity: null,
         fiberPerQuantity: null,
-        mealOrRecipe: "recipe");
+        mealOrRecipe: MealOrRecipeEntity.recipe);
 
     final meal = MealEntity(
       code: IdGenerator.getUniqueID(),

@@ -9,6 +9,7 @@ import 'package:opennutritracker/core/presentation/widgets/image_full_screen.dar
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/navigation_options.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/features/create_meal/create_meal_screen.dart';
 import 'package:opennutritracker/features/edit_meal/presentation/edit_meal_screen.dart';
 import 'package:opennutritracker/features/meal_detail/presentation/bloc/meal_detail_bloc.dart';
@@ -177,7 +178,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                               : const SizedBox()));
             }),
             actions: [
-              if (meal.mealOrRecipe == "recipe")
+              if (meal.mealOrRecipe == MealOrRecipeEntity.recipe)
                 IconButton(
                   onPressed: () async {
                     final recipe = await locator<GetRecipeUsecase>()
@@ -234,7 +235,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                     );
                   },
                   child: meal.mainImageUrl != null
-                      ? meal.mealOrRecipe == "recipe"
+                      ? meal.mealOrRecipe == MealOrRecipeEntity.recipe
                           ? Hero(
                               tag: ImageFullScreen.fullScreenHeroTag,
                               child: Container(

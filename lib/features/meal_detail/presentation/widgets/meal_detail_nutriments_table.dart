@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opennutritracker/core/utils/extensions.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
 class MealDetailNutrimentsTable extends StatelessWidget {
@@ -27,7 +28,7 @@ class MealDetailNutrimentsTable extends StatelessWidget {
         const TextStyle();
 
     final headerText = (usesImperialUnits && servingQuantity != null) ||
-            product.mealOrRecipe == "recipe"
+            product.mealOrRecipe == MealOrRecipeEntity.recipe
         ? "${S.of(context).perServingLabel} (${servingQuantity!.roundToPrecision(1)} ${servingUnit ?? 'g/ml'})"
         : S.of(context).per100gmlLabel;
 

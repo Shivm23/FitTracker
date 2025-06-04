@@ -9,6 +9,7 @@ import 'package:opennutritracker/features/add_meal/data/dto/fdc/fdc_food_dto.dar
 import 'package:opennutritracker/features/add_meal/data/dto/fdc_sp/sp_fdc_food_dto.dart';
 import 'package:opennutritracker/features/add_meal/data/dto/off/off_product_dto.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_nutriments_entity.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 
 class MealEntity extends Equatable {
   static const liquidUnits = {'ml', 'l', 'dl', 'cl', 'fl oz', 'fl.oz'};
@@ -145,7 +146,7 @@ class MealEntity extends Equatable {
         source: MealSourceEntity.fdc);
   }
 
-  String? get mealOrRecipe {
+  MealOrRecipeEntity get mealOrRecipe {
     return nutriments.mealOrRecipe;
   }
 
