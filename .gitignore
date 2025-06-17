@@ -55,3 +55,6 @@ result
 
 # FVM Version Cache
 .fvm/
+
+intake_test.hive
+intake_test.lock

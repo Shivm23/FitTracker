@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
 import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
@@ -84,16 +85,14 @@ class MealDetailBottomSheet extends StatelessWidget {
                           Expanded(
                             child: DropdownButtonFormField<String>(
                               isExpanded: true,
-                              value: (product.mealOrRecipe != null &&
-                                      product.mealOrRecipe == "recipe")
+                              value: (product.mealOrRecipe == MealOrRecipeEntity.recipe)
                                   ? UnitDropdownItem.serving.toString()
                                   : selectedUnit,
                               decoration: InputDecoration(
                                 border: const OutlineInputBorder(),
                                 labelText: S.of(context).unitLabel,
                               ),
-                              items: (product.mealOrRecipe != null &&
-                                      product.mealOrRecipe == "recipe")
+                              items: (product.mealOrRecipe == MealOrRecipeEntity.recipe)
                                   ? [_getServingDropdownItem(context)]
                                   : <DropdownMenuItem<String>>[
                                       if (product.hasServingValues)

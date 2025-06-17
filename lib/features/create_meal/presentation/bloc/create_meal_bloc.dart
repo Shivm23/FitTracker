@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opennutritracker/core/domain/entity/intake_for_recipe_entity.dart';
 import 'package:opennutritracker/core/domain/usecase/get_recipe_usecase.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
 import 'package:opennutritracker/core/utils/id_generator.dart';
 
@@ -50,7 +51,7 @@ class CreateMealBloc extends Bloc<CreateMealEvent, CreateMealState> {
     final quantity = double.tryParse(amountText.replaceAll(',', '.'));
     if (quantity == null) return;
 
-    if (meal.mealOrRecipe == "recipe") {
+    if (meal.mealOrRecipe == MealOrRecipeEntity.recipe) {
       final recipe = await _recipeUsecase.getRecipeById(meal.code!);
       if (recipe == null) return;
 

@@ -9,6 +9,7 @@ import 'package:opennutritracker/core/data/dbo/intake_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/recipe_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/intake_recipe_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/intake_type_dbo.dart';
+import 'package:opennutritracker/core/data/dbo/meal_or_recipe_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/physical_activity_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/meal_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/meal_nutriments_dbo.dart';
@@ -40,6 +41,8 @@ class HiveDBProvider extends ChangeNotifier {
     Hive.registerAdapter(IntakeDBOAdapter());
     Hive.registerAdapter(MealDBOAdapter());
     Hive.registerAdapter(IntakeForRecipeDBOAdapter());
+
+    Hive.registerAdapter(MealOrRecipeDBOAdapter());
 
     Hive.registerAdapter(MealNutrimentsDBOAdapter());
     Hive.registerAdapter(MealSourceDBOAdapter());

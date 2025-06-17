@@ -24,7 +24,8 @@ class MealNutrimentsDBOAdapter extends TypeAdapter<MealNutrimentsDBO> {
       sugarsPerQuantity: fields[4] as double?,
       saturatedFatPerQuantity: fields[5] as double?,
       fiberPerQuantity: fields[6] as double?,
-      mealOrRecipe: fields[7] as String?,
+      mealOrRecipe:
+          (fields[7] as MealOrRecipeDBO?) ?? MealOrRecipeDBO.meal,
     );
   }
 
@@ -77,7 +78,7 @@ MealNutrimentsDBO _$MealNutrimentsDBOFromJson(Map<String, dynamic> json) =>
       saturatedFatPerQuantity:
           (json['saturatedFatPerQuantity'] as num?)?.toDouble(),
       fiberPerQuantity: (json['fiberPerQuantity'] as num?)?.toDouble(),
-      mealOrRecipe: json['mealOrRecipe'] as String?,
+      mealOrRecipe: $enumDecode(_$MealOrRecipeDBOEnumMap, json['mealOrRecipe']),
     );
 
 Map<String, dynamic> _$MealNutrimentsDBOToJson(MealNutrimentsDBO instance) =>
@@ -89,5 +90,10 @@ Map<String, dynamic> _$MealNutrimentsDBOToJson(MealNutrimentsDBO instance) =>
       'sugarsPerQuantity': instance.sugarsPerQuantity,
       'saturatedFatPerQuantity': instance.saturatedFatPerQuantity,
       'fiberPerQuantity': instance.fiberPerQuantity,
-      'mealOrRecipe': instance.mealOrRecipe,
+      'mealOrRecipe': _$MealOrRecipeDBOEnumMap[instance.mealOrRecipe]!,
     };
+
+const _$MealOrRecipeDBOEnumMap = {
+  MealOrRecipeDBO.meal: 'meal',
+  MealOrRecipeDBO.recipe: 'recipe',
+};

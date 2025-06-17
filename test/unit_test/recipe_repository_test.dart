@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:opennutritracker/core/data/data_source/recipe_data_source.dart';
 import 'package:opennutritracker/core/data/dbo/meal_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/meal_nutriments_dbo.dart';
+import 'package:opennutritracker/core/data/dbo/meal_or_recipe_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/recipe_dbo.dart';
 import 'package:opennutritracker/core/data/repository/recipe_repository.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
@@ -31,6 +32,7 @@ void main() {
       Hive.registerAdapter(MealNutrimentsDBOAdapter());
       Hive.registerAdapter(MealSourceDBOAdapter());
       Hive.registerAdapter(IntakeForRecipeDBOAdapter());
+      Hive.registerAdapter(MealOrRecipeDBOAdapter());
 
       box = await Hive.openBox<RecipesDBO>('recipes_test');
 

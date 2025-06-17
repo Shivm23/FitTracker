@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:opennutritracker/core/data/dbo/meal_nutriments_dbo.dart';
+import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/core/utils/extensions.dart';
 import 'package:opennutritracker/features/add_meal/data/dto/fdc/fdc_const.dart';
 import 'package:opennutritracker/features/add_meal/data/dto/fdc/fdc_food_nutriment_dto.dart';
@@ -15,7 +16,7 @@ class MealNutrimentsEntity extends Equatable {
   final double? sugarsPerQuantity;
   final double? saturatedFatPerQuantity;
   final double? fiberPerQuantity;
-  final String? mealOrRecipe;
+  final MealOrRecipeEntity mealOrRecipe;
 
   double? get energyPerUnit => _getValuePerUnit(energyKcalPerQuantity);
 
@@ -44,7 +45,7 @@ class MealNutrimentsEntity extends Equatable {
       sugarsPerQuantity: null,
       saturatedFatPerQuantity: null,
       fiberPerQuantity: null,
-      mealOrRecipe: "meal");
+      mealOrRecipe: MealOrRecipeEntity.meal);
 
   factory MealNutrimentsEntity.fromMealNutrimentsDBO(
       MealNutrimentsDBO nutriments) {
@@ -56,7 +57,8 @@ class MealNutrimentsEntity extends Equatable {
         sugarsPerQuantity: nutriments.sugarsPerQuantity,
         saturatedFatPerQuantity: nutriments.saturatedFatPerQuantity,
         fiberPerQuantity: nutriments.fiberPerQuantity,
-        mealOrRecipe: nutriments.mealOrRecipe);
+        mealOrRecipe:
+            MealOrRecipeEntity.fromMealOrRecipeDBO(nutriments.mealOrRecipe));
   }
 
   factory MealNutrimentsEntity.fromOffNutriments(
@@ -78,7 +80,7 @@ class MealNutrimentsEntity extends Equatable {
             (offNutriments.saturated_fat_100g as Object?).asDoubleOrNull(),
         fiberPerQuantity:
             (offNutriments.fiber_100g as Object?).asDoubleOrNull(),
-        mealOrRecipe: "meal");
+        mealOrRecipe: MealOrRecipeEntity.meal);
   }
 
   factory MealNutrimentsEntity.fromFDCNutriments(
@@ -136,11 +138,11 @@ class MealNutrimentsEntity extends Equatable {
         sugarsPerQuantity: sugarTotal,
         saturatedFatPerQuantity: saturatedFatTotal,
         fiberPerQuantity: fiberTotal,
-        mealOrRecipe: "meal");
+        mealOrRecipe: MealOrRecipeEntity.meal);
   }
 
   double? _getValuePerUnit(double? valuePerPerQuantity) {
-    if (mealOrRecipe == "recipe" && valuePerPerQuantity != null) {
+    if (mealOrRecipe == MealOrRecipeEntity.recipe && valuePerPerQuantity != null) {
       return valuePerPerQuantity;
     } else if (valuePerPerQuantity != null) {
       return valuePerPerQuantity / 100;

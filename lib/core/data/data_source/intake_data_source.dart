@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:opennutritracker/core/data/dbo/intake_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/intake_type_dbo.dart';
+import 'package:opennutritracker/core/data/dbo/meal_or_recipe_dbo.dart';
 
 class IntakeDataSource {
   final log = Logger('IntakeDataSource');
@@ -54,7 +55,7 @@ class IntakeDataSource {
 
   Future<List<IntakeDBO>> getIntakeRecipe() async {
     return _intakeBox.values
-        .where((intake) => intake.meal.nutriments.mealOrRecipe == "recipe")
+        .where((intake) => intake.meal.nutriments.mealOrRecipe == MealOrRecipeDBO.recipe)
         .toList();
   }
 
