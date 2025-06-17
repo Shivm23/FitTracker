@@ -16,6 +16,7 @@ import 'package:opennutritracker/core/data/dbo/intake_recipe_dbo.dart';
 
 import '../fixture/recipe_entity_fixtures.dart';
 
+
 void main() {
   group('Recipe add/replace logic', () {
     late Box<RecipesDBO> box;
@@ -85,6 +86,52 @@ void main() {
       final allRecipes = box.values.toList();
       expect(allRecipes.length, 1);
       expect(allRecipes.first.recipe.code, 'new_recipe_id');
+    });
+  });
+
+  group('Recipe deletion removes image', () {
+    late Box<RecipesDBO> box;
+    late Directory tempDir;
+
+    setUp(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      tempDir = await Directory.systemTemp.createTemp('hive_test_del_');
+      Hive.init(tempDir.path);
+
+      box = await Hive.openBox<RecipesDBO>('recipes_test');
+      final dataSource = RecipesDataSource(box);
+      final repo = RecipeRepository(dataSource);
+      locator.registerSingleton<AddRecipeUsecase>(AddRecipeUsecase(repo));
+      locator.registerSingleton<DeleteRecipeUsecase>(DeleteRecipeUsecase(repo));
+    });
+
+    tearDown(() async {
+      await box.close();
+      await Hive.deleteFromDisk();
+      locator.reset();
+      await tempDir.delete(recursive: true);
+    });
+
+    test('delete removes recipe and local image', () async {
+      final imagePath = '${tempDir.path}/img.png';
+      final imageFile = File(imagePath);
+      await imageFile.writeAsString('test');
+
+      final recipe = RecipeEntityFixtures.basicRecipe.copyWith(
+        meal: RecipeEntityFixtures.basicRecipe.meal.copyWith(
+          code: 'to_delete',
+          url: imagePath,
+          thumbnailImageUrl: imagePath,
+          mainImageUrl: imagePath,
+        ),
+      );
+      await locator<AddRecipeUsecase>().addRecipe(recipe);
+      expect(box.values.length, 1);
+      expect(await imageFile.exists(), true);
+
+      await locator<DeleteRecipeUsecase>().deleteRecipe('to_delete');
+      expect(box.values.isEmpty, true);
+      expect(await imageFile.exists(), false);
     });
   });
 }
