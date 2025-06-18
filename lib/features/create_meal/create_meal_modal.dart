@@ -59,10 +59,7 @@ class _CalendarMealTypeSelectorState extends State<CalendarMealTypeSelector> {
     portionsEatenController = TextEditingController();
 
     mealPortionCountController.addListener(_validateInputs);
-    portionsEatenController.addListener(() {
-      _validatePortions();
-      _validateInputs();
-    });
+    portionsEatenController.addListener(_onPortionsEatenChanged);
   }
 
   @override
@@ -77,11 +74,18 @@ class _CalendarMealTypeSelectorState extends State<CalendarMealTypeSelector> {
     final eaten = int.tryParse(portionsEatenController.text) ?? 0;
 
     if (eaten > total && total > 0) {
-      portionsEatenController.text = total.toString();
-      portionsEatenController.selection = TextSelection.fromPosition(
-        TextPosition(offset: portionsEatenController.text.length),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        portionsEatenController.text = total.toString();
+        portionsEatenController.selection = TextSelection.fromPosition(
+          TextPosition(offset: portionsEatenController.text.length),
+        );
+      });
     }
+  }
+
+  void _onPortionsEatenChanged() {
+    _validatePortions();
+    _validateInputs();
   }
 
   bool _areInputsValid() {
@@ -140,14 +144,15 @@ class _CalendarMealTypeSelectorState extends State<CalendarMealTypeSelector> {
     final macros = locator<CreateMealBloc>().computeMacros();
 
     final nutriment = MealNutrimentsEntity(
-        energyKcalPerQuantity: macros['totalKcal']! / mealPortionCountInt,
-        carbohydratesPerQuantity: macros['totalCarbs']! / mealPortionCountInt,
-        fatPerQuantity: macros['totalFats']! / mealPortionCountInt,
-        proteinsPerQuantity: macros['totalProteins']! / mealPortionCountInt,
-        sugarsPerQuantity: null,
-        saturatedFatPerQuantity: null,
-        fiberPerQuantity: null,
-        mealOrRecipe: MealOrRecipeEntity.recipe);
+      energyKcalPerQuantity: macros['totalKcal']! / mealPortionCountInt,
+      carbohydratesPerQuantity: macros['totalCarbs']! / mealPortionCountInt,
+      fatPerQuantity: macros['totalFats']! / mealPortionCountInt,
+      proteinsPerQuantity: macros['totalProteins']! / mealPortionCountInt,
+      sugarsPerQuantity: null,
+      saturatedFatPerQuantity: null,
+      fiberPerQuantity: null,
+      mealOrRecipe: MealOrRecipeEntity.recipe,
+    );
 
     final meal = MealEntity(
       code: IdGenerator.getUniqueID(),
@@ -181,9 +186,9 @@ class _CalendarMealTypeSelectorState extends State<CalendarMealTypeSelector> {
 
     // Add the recipe to the DB to keep tracking of the mealEntity composing the recipe
     final recipe = RecipeEntity(
-        meal: meal,
-        ingredients:
-            locator<CreateMealBloc>().getListOfIntakeForRecipeEntity());
+      meal: meal,
+      ingredients: locator<CreateMealBloc>().getListOfIntakeForRecipeEntity(),
+    );
     locator<AddRecipeUsecase>().addRecipe(recipe);
 
     // Clean the list of intake
@@ -192,21 +197,22 @@ class _CalendarMealTypeSelectorState extends State<CalendarMealTypeSelector> {
     locator<HomeBloc>().add(const LoadItemsEvent());
     locator<DiaryBloc>().add(const LoadDiaryYearEvent());
     locator<CalendarDayBloc>().add(RefreshCalendarDayEvent());
-    locator<RecipeSearchBloc>()
-        .add(const LoadRecipeSearchEvent(searchString: ""));
-
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      NavigationOptions.mainRoute,
-      (route) => false,
+    locator<RecipeSearchBloc>().add(
+      const LoadRecipeSearchEvent(searchString: ""),
     );
+
+    Navigator.of(
+      context,
+    ).pushNamedAndRemoveUntil(NavigationOptions.mainRoute, (route) => false);
   }
 
   @override
   Widget build(BuildContext context) {
     final currentMeal = _mealTypes[_currentMealIndex];
 
-    return Padding(
-      padding: MediaQuery.of(context).viewInsets,
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
