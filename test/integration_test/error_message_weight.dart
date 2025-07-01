@@ -10,7 +10,7 @@ void main() {
   app.main();
 
   group('Onboarding Policy Test', () {
-    testWidgets('Should not allow to proceed with weight as 0',
+    testWidgets('Message error weight',
         (WidgetTester tester) async {
       // Wait for the app to settle after initial startup
       await tester.pumpAndSettle();
@@ -129,19 +129,12 @@ void main() {
       expect(weightInput, findsOneWidget, reason: 'Weight input text field should be visible');
 
       // Ensure the keyboard is shown and enter the text
-      await tester.enterText(weightInput, '0');
+      await tester.enterText(weightInput, ' ');
       await tester.pumpAndSettle();
 
-    ///// next
-      await tester.tap(nextButton);
-      await tester.pumpAndSettle();
-
-      // Add a delay to see the result of trying to proceed without accepting
-      await Future.delayed(const Duration(seconds: 1)); 
-
-      // Verify we are still on the first page
-      expect(find.text('Height'), findsOneWidget, 
-          reason: 'We should stay on the page because Weight as 0 is not a valid input');
+      // verify the error message
+      expect(find.text('Enter correct weight'), findsOneWidget, 
+          reason: 'the message >Enter correct Weight< should be visible');
 
 
 
