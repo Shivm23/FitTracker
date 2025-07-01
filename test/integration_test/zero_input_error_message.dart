@@ -129,7 +129,7 @@ void main() {
       expect(weightInput, findsOneWidget, reason: 'Weight input text field should be visible');
 
       // Ensure the keyboard is shown and enter the text
-      await tester.enterText(weightInput, ' ');
+      await tester.enterText(weightInput, '0');
       await tester.pumpAndSettle();
 
       // verify the error message

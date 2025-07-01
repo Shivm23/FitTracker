@@ -270,6 +270,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Doğru boy girin"),
         "onboardingWrongWeightLabel":
             MessageLookupByLibrary.simpleMessage("Doğru kilo girin"),
+        "onboardingWrongWeightLabelZero":
+            MessageLookupByLibrary.simpleMessage("Ağırlık 0 olamaz"),
         "onboardingYourGoalLabel":
             MessageLookupByLibrary.simpleMessage("Kalori hedefiniz:"),
         "onboardingYourMacrosGoalLabel":
