@@ -85,8 +85,11 @@ dev_dependencies:
   hive_generator: ^2.0.1
   envied_generator: ^1.0.0
   mockito: ^5.4.5
+  intl_utils: ^2.8.4
 
 flutter:
+
+  generate: true
 
   uses-material-design: true
 

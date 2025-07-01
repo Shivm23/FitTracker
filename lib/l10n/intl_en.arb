@@ -41,6 +41,7 @@
   "onboardingWeightQuestionSubtitle": "Whats your current weight?",
   "onboardingWrongHeightLabel": "Enter correct height",
   "onboardingWrongWeightLabel": "Enter correct weight",
+  "onboardingWrongWeightLabelZero": "Weight can not be 0",
   "onboardingWeightExampleHintKg": "e.g. 60",
   "onboardingWeightExampleHintLbs": "e.g. 132",
   "onboardingHeightExampleHintCm": "e.g. 170",

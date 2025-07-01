@@ -470,6 +470,16 @@ class S {
     );
   }
 
+  /// `Weight can not be 0`
+  String get onboardingWrongWeightLabelZero {
+    return Intl.message(
+      'Weight can not be 0',
+      name: 'onboardingWrongWeightLabelZero',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `e.g. 60`
   String get onboardingWeightExampleHintKg {
     return Intl.message(
