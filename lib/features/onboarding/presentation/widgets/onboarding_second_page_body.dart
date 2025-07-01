@@ -185,6 +185,9 @@ class _OnboardingSecondPageBodyState extends State<OnboardingSecondPageBody> {
     if (value == null) return S.of(context).onboardingWrongWeightLabel;
     // if the user input is empty, return the error message: Enter correct weight
     // if the user input dont start with a number, return the error message: Enter correct weight
+    if (value == '0') {
+      return S.of(context).onboardingWrongWeightLabel;
+    }
     if (value.isEmpty || !RegExp(r'^[0-9]').hasMatch(value)) {
       return S.of(context).onboardingWrongWeightLabel;
     } else {
