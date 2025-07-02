@@ -55,6 +55,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("GPL-3.0 license"),
         "appTitle": MessageLookupByLibrary.simpleMessage("OpenNutriTracker"),
         "appVersionName": m0,
+        "averageWeightBody": MessageLookupByLibrary.simpleMessage(
+            "Average user weight over the last seven days. The current day is not counted."),
+        "averageWeightLabel":
+            MessageLookupByLibrary.simpleMessage("Average Weight"),
         "baseQuantityLabel":
             MessageLookupByLibrary.simpleMessage("Base quantity (g/ml)"),
         "betaVersionName": MessageLookupByLibrary.simpleMessage("[Beta]"),
@@ -110,6 +114,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Delete Items?"),
         "deleteTimeDialogTitle":
             MessageLookupByLibrary.simpleMessage("Delete Item?"),
+        "deltaWeightBody": MessageLookupByLibrary.simpleMessage(
+            "The weight delta is the difference between the average weight and the current weight entered for this day.\nIf no weight is recorded for the current day, the last valid weight will be used."),
+        "deltaWeightLabel":
+            MessageLookupByLibrary.simpleMessage("Weight Delta"),
         "dialogCancelLabel": MessageLookupByLibrary.simpleMessage("CANCEL"),
         "dialogCopyLabel":
             MessageLookupByLibrary.simpleMessage("Copy to today"),

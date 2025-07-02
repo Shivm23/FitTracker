@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:opennutritracker/core/data/data_source/user_activity_dbo.dart';
+import 'package:opennutritracker/core/data/data_source/user_weight_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/app_theme_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/config_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/intake_dbo.dart';
@@ -26,6 +27,7 @@ class HiveDBProvider extends ChangeNotifier {
   static const userBoxName = 'UserBox';
   static const trackedDayBoxName = 'TrackedDayBox';
   static const recipeBoxName = "RecipeBox";
+  static const userWeightBoxName = 'UserWeightBox';
 
   late Box<ConfigDBO> configBox;
   late Box<IntakeDBO> intakeBox;
@@ -33,6 +35,8 @@ class HiveDBProvider extends ChangeNotifier {
   late Box<UserDBO> userBox;
   late Box<TrackedDayDBO> trackedDayBox;
   late Box<RecipesDBO> recipeBox;
+
+  late Box<UserWeightDbo> userWeightBox;
 
   Future<void> initHiveDB(Uint8List encryptionKey) async {
     final encryptionCypher = HiveAesCipher(encryptionKey);
@@ -57,6 +61,7 @@ class HiveDBProvider extends ChangeNotifier {
     Hive.registerAdapter(PhysicalActivityDBOAdapter());
     Hive.registerAdapter(PhysicalActivityTypeDBOAdapter());
     Hive.registerAdapter(AppThemeDBOAdapter());
+    Hive.registerAdapter(UserWeightDboAdapter());
 
     configBox =
         await Hive.openBox(configBoxName, encryptionCipher: encryptionCypher);
@@ -70,6 +75,10 @@ class HiveDBProvider extends ChangeNotifier {
         await Hive.openBox(userBoxName, encryptionCipher: encryptionCypher);
     trackedDayBox = await Hive.openBox(trackedDayBoxName,
         encryptionCipher: encryptionCypher);
+    userWeightBox = await Hive.openBox(
+      userWeightBoxName,
+      encryptionCipher: encryptionCypher,
+    );
   }
 
   static generateNewHiveEncryptionKey() => Hive.generateSecureKey();

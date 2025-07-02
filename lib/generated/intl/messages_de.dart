@@ -111,6 +111,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Einträge löschen?"),
         "deleteTimeDialogTitle":
             MessageLookupByLibrary.simpleMessage("Eintrag löschen?"),
+        "deltaWeightBody": MessageLookupByLibrary.simpleMessage(
+            "Die Gewichtsdifferenz ist die Differenz zwischen dem Durchschnittsgewicht und dem für diesen Tag eingegebenen aktuellen Gewicht.\nWenn für den aktuellen Tag kein Gewicht erfasst ist, wird das letzte gültige Gewicht verwendet."),
+        "deltaWeightLabel":
+            MessageLookupByLibrary.simpleMessage("Gewichtsdifferenz"),
         "dialogCancelLabel": MessageLookupByLibrary.simpleMessage("ABBRECHEN"),
         "dialogCopyLabel":
             MessageLookupByLibrary.simpleMessage("Nach heute kopieren"),
