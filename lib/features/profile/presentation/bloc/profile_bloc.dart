@@ -86,7 +86,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  /// Returns the user's weight in kg or lbs based on the user's config
+  /// Retorna o peso do usuário em kg ou lbs conforme a configuração
   String getDisplayWeight(UserEntity user, bool usesImperialUnits) {
     if (usesImperialUnits) {
       return UnitCalc.kgToLbs(user.weightKG).toStringAsFixed(0);

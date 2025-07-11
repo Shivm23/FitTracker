@@ -134,7 +134,6 @@ class _OnboardingSecondPageBodyState extends State<OnboardingSecondPageBody> {
               isSelected: _isUnitSelected,
               onPressed: (int index) {
                 setState(() {
-                  // Toggle height unit
                   for (int i = 0; i < _isUnitSelected.length; i++) {
                     _isUnitSelected[i] = i == index;
                   }
