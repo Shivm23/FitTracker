@@ -41,6 +41,7 @@
   "onboardingWeightQuestionSubtitle": "Mevcut kilonuz nedir?",
   "onboardingWrongHeightLabel": "Doğru boy girin",
   "onboardingWrongWeightLabel": "Doğru kilo girin",
+  "onboardingWrongWeightLabelZero": "Ağırlık 0 olamaz",
   "onboardingWeightExampleHintKg": "ör. 60",
   "onboardingWeightExampleHintLbs": "ör. 132",
   "onboardingHeightExampleHintCm": "ör. 170",

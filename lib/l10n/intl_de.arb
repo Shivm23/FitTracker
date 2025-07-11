@@ -41,6 +41,7 @@
   "onboardingWeightQuestionSubtitle": "Wie viel wiegen Sie derzeit?",
   "onboardingWrongHeightLabel": "Geben Sie eine korrekte Größe ein",
   "onboardingWrongWeightLabel": "Geben Sie ein korrekte Gewicht ein",
+  "onboardingWrongWeightLabelZero": "Gewicht mag niet 0 zijn",
   "onboardingWeightExampleHintKg": "z. B. 60",
   "onboardingHeightExampleHintCm": "z. B. 170",
   "onboardingActivityQuestionSubtitle": "Wie aktiv sind Sie? (Ohne Trainingseinheiten)",
