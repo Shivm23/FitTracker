@@ -41,7 +41,7 @@ class ActivityVerticalList extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 120,
+          height: 160,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount:
