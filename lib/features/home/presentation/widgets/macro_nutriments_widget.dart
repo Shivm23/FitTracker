@@ -25,20 +25,26 @@ class MacroNutrientsView extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _MacronutrientItem(
-          intake: totalCarbsIntake,
-          goal: totalCarbsGoal,
-          label: S.of(context).carbsLabel,
+        Expanded(
+          child: _MacronutrientItem(
+            intake: totalCarbsIntake,
+            goal: totalCarbsGoal,
+            label: S.of(context).carbsLabel,
+          ),
         ),
-        _MacronutrientItem(
-          intake: totalFatsIntake,
-          goal: totalFatsGoal,
-          label: S.of(context).fatLabel,
+        Expanded(
+          child: _MacronutrientItem(
+            intake: totalFatsIntake,
+            goal: totalFatsGoal,
+            label: S.of(context).fatLabel,
+          ),
         ),
-        _MacronutrientItem(
-          intake: totalProteinsIntake,
-          goal: totalProteinsGoal,
-          label: S.of(context).proteinLabel,
+        Expanded(
+          child: _MacronutrientItem(
+            intake: totalProteinsIntake,
+            goal: totalProteinsGoal,
+            label: S.of(context).proteinLabel,
+          ),
         ),
       ],
     );
@@ -73,6 +79,7 @@ class _MacronutrientItem extends StatelessWidget {
     final onSurfaceColor = theme.colorScheme.onSurface;
 
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         CircularPercentIndicator(
           radius: 15.0,
@@ -83,25 +90,36 @@ class _MacronutrientItem extends StatelessWidget {
           backgroundColor: primaryColor.withAlpha(50),
           circularStrokeCap: CircularStrokeCap.round,
         ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            children: [
-              Text(
-                '${intake.toInt()}/${goal.toInt()} g',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: onSurfaceColor,
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '${intake.toInt()}/${goal.toInt()} g',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: onSurfaceColor,
+                    ),
+                  ),
                 ),
-              ),
-              Text(
-                label,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: onSurfaceColor,
-                ),
-              )
-            ],
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    label,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: onSurfaceColor,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
-        )
+        ),
       ],
     );
   }
