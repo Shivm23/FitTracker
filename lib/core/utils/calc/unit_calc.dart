@@ -21,12 +21,10 @@ class UnitCalc {
     return (feet * 30.48).roundToDouble();
   }
 
-  /// Converts feet to inches and rounds the result
   static double kgToLbs(double kg) {
     return (kg * 2.20462).roundToDouble();
   }
 
-  /// Converts pounds to kilograms and rounds the result
   static double lbsToKg(double lbs) {
     return (lbs / 2.20462).roundToDouble();
   }
@@ -62,7 +60,8 @@ class UnitCalc {
     switch (unit) {
       case 'oz':
         return ozToG(imperialValue);
-      case 'fl oz' || 'fl.oz':
+      case 'fl oz':
+      case 'fl.oz':
         return flOzToMl(imperialValue);
       default:
         return imperialValue;
