@@ -22,31 +22,33 @@ class MacroNutrientsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Expanded(
-          child: _MacronutrientItem(
-            intake: totalCarbsIntake,
-            goal: totalCarbsGoal,
-            label: S.of(context).carbsLabel,
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            child: _MacronutrientItem(
+              intake: totalCarbsIntake,
+              goal: totalCarbsGoal,
+              label: S.of(context).carbsLabel,
+            ),
           ),
-        ),
-        Expanded(
-          child: _MacronutrientItem(
-            intake: totalFatsIntake,
-            goal: totalFatsGoal,
-            label: S.of(context).fatLabel,
+          Expanded(
+            child: _MacronutrientItem(
+              intake: totalFatsIntake,
+              goal: totalFatsGoal,
+              label: S.of(context).fatLabel,
+            ),
           ),
-        ),
-        Expanded(
-          child: _MacronutrientItem(
-            intake: totalProteinsIntake,
-            goal: totalProteinsGoal,
-            label: S.of(context).proteinLabel,
+          Expanded(
+            child: _MacronutrientItem(
+              intake: totalProteinsIntake,
+              goal: totalProteinsGoal,
+              label: S.of(context).proteinLabel,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -78,7 +80,9 @@ class _MacronutrientItem extends StatelessWidget {
     final primaryColor = theme.colorScheme.primary;
     final onSurfaceColor = theme.colorScheme.onSurface;
 
-    return Row(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         CircularPercentIndicator(
@@ -90,33 +94,24 @@ class _MacronutrientItem extends StatelessWidget {
           backgroundColor: primaryColor.withAlpha(50),
           circularStrokeCap: CircularStrokeCap.round,
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '${intake.toInt()}/${goal.toInt()} g',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: onSurfaceColor,
-                    ),
-                  ),
-                ),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    label,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: onSurfaceColor,
-                    ),
-                  ),
-                )
-              ],
+        const SizedBox(height: 8.0),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.center,
+          child: Text(
+            '${intake.toInt()}/${goal.toInt()} g',
+            style: theme.textTheme.titleSmall?.copyWith(
+              color: onSurfaceColor,
+            ),
+          ),
+        ),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: onSurfaceColor,
             ),
           ),
         ),

@@ -70,7 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "ex : céréales, lait, café..."),
         "breakfastLabel":
             MessageLookupByLibrary.simpleMessage("Petit-déjeuner"),
-        "burnedLabel": MessageLookupByLibrary.simpleMessage("brûlé"),
+        "burnedLabel": MessageLookupByLibrary.simpleMessage("Brûlées"),
         "buttonNextLabel": MessageLookupByLibrary.simpleMessage("SUIVANT"),
         "buttonResetLabel":
             MessageLookupByLibrary.simpleMessage("Réinitialiser"),
@@ -702,7 +702,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "ex : pomme, glace, chocolat..."),
         "snackLabel": MessageLookupByLibrary.simpleMessage("Collation"),
         "sugarLabel": MessageLookupByLibrary.simpleMessage("sucre"),
-        "suppliedLabel": MessageLookupByLibrary.simpleMessage("apporté"),
+        "suppliedLabel": MessageLookupByLibrary.simpleMessage("Ingérées"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Unité"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Poids"),
         "yearsLabel": m3
