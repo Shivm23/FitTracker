@@ -2,9 +2,8 @@ class FDCConst {
   static const _pageSize = "20";
 
   // URL
-  static const fdcWebsiteUrl = "https://fdc.nal.usda.gov/fdc-app.html#";
-  static const _fdcFoodDetailPath = "/food-details/";
-  static const _fdcFoodDetailNutrientsPath = "/nutrients";
+  static const fdcWebsiteUrl = "https://ciqual.anses.fr/#";
+  static const _fdcFoodDetailPath = "/aliments/";
   static const _fdcBaseUrl = "api.nal.usda.gov";
   static const _fdcFoodSearchPath = "/fdc/v1/foods/search";
 
@@ -156,10 +155,7 @@ class FDCConst {
     if (code == null) {
       return _fdcBaseUrl;
     } else {
-      return fdcWebsiteUrl +
-          _fdcFoodDetailPath +
-          code +
-          _fdcFoodDetailNutrientsPath;
+      return fdcWebsiteUrl + _fdcFoodDetailPath + code;
     }
   }
 

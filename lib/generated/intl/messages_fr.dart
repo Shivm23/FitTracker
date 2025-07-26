@@ -42,7 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "additionalInfoLabelCustom":
             MessageLookupByLibrary.simpleMessage("Aliment personnalisé"),
         "additionalInfoLabelFDC": MessageLookupByLibrary.simpleMessage(
-            "Plus d\'informations sur\nFoodData Central"),
+            "Plus d\'informations sur\nciqual.anses.fr"),
         "additionalInfoLabelOFF": MessageLookupByLibrary.simpleMessage(
             "Plus d\'informations sur\nOpenFoodFacts"),
         "additionalInfoLabelUnknown":

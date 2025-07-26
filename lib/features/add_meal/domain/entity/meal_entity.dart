@@ -135,6 +135,8 @@ class MealEntity extends Equatable {
         name: foodItem.getLocaleDescription(
             SupportedLanguage.fromCode(Platform.localeName)),
         brands: null,
+        thumbnailImageUrl: foodItem.pictureUrl,
+        mainImageUrl: foodItem.pictureUrl,
         url: FDCConst.getFoodDetailUrlString(fdcId),
         mealQuantity: null,
         mealUnit: FDCConst.fdcDefaultUnit,

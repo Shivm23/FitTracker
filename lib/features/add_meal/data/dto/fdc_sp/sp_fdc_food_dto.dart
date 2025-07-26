@@ -25,6 +25,9 @@ class SpFdcFoodDTO {
   @JsonKey(name: SPConst.fdcPortionsName)
   final List<SpFdcPortionDTO> portions;
 
+  @JsonKey(name: SPConst.fdcFoodPictureUrl)
+  final String? pictureUrl;
+
   String? getLocaleDescription(SupportedLanguage supportedLanguage) {
     switch (supportedLanguage) {
       case SupportedLanguage.en:
@@ -63,6 +66,7 @@ class SpFdcFoodDTO {
       required this.descriptionEn,
       required this.descriptionDe,
       required this.descriptionFr,
+      required this.pictureUrl,
       required this.nutrients,
       required this.portions});
 

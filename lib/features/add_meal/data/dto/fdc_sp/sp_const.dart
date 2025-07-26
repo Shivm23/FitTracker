@@ -13,9 +13,10 @@ class SPConst {
   static const fdcFoodDescriptionEn = 'description_en';
   static const fdcFoodDescriptionDe = 'description_de';
   static const fdcFoodDescriptionFr = 'description_fr';
+  static const fdcFoodPictureUrl = 'picture_url';
 
   static const fdcPortionsMeasureUnitId = 'measure_unit_id';
-  static const fdcPortionsAmount = 'measure_unit_id';
+  static const fdcPortionsAmount = 'amount';
   static const fdcPortionsGramWeight = 'gram_weight';
 
   static const fdcNutrientId = 'nutrient_id';
