@@ -59,3 +59,6 @@ result
 
 intake_test.hive
 intake_test.lock
+
+supabase/functions/coach-set-new-objective/service-account.json
+ios/Runner/GoogleService-Info.plist

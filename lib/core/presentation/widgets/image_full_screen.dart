@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
+import 'package:opennutritracker/core/utils/path_helper.dart';
 import 'package:opennutritracker/features/meal_detail/presentation/widgets/meal_placeholder.dart';
 
 class ImageFullScreen extends StatefulWidget {
@@ -51,13 +52,22 @@ class _ImageFullScreenState extends State<ImageFullScreen> {
                   placeholder: (context, string) => const MealPlaceholder(),
                   errorWidget: (context, url, error) => const MealPlaceholder(),
                 )
-              : Image.file(
-                  File(imageUrl),
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const MealPlaceholder(),
+              : FutureBuilder<String>(
+                  future: PathHelper.localImagePath(imageUrl),
+                  builder: (context, snapshot) {
+                    final path = snapshot.data;
+                    if (path == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return Image.file(
+                      File(path),
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const MealPlaceholder(),
+                    );
+                  },
                 ),
         ),
       ),

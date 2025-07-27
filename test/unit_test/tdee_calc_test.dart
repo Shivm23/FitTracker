@@ -3,6 +3,7 @@ import 'package:opennutritracker/core/domain/entity/user_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_gender_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_pal_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_weight_goal_entity.dart';
+import 'package:opennutritracker/core/domain/entity/user_role_entity.dart';
 import 'package:opennutritracker/core/utils/calc/tdee_calc.dart';
 
 import '../fixture/user_entity_fixtures.dart';
@@ -11,13 +12,15 @@ void main() {
   test('IOM TDEE calculation for a male user', () {
     // Mock a male user
     UserEntity user = UserEntity(
+        name: 'John',
         birthday: DateTime(DateTime.now().year - 25, DateTime.now().month,
             DateTime.now().day - 1),
         heightCM: 180.0,
         weightKG: 80.0,
         gender: UserGenderEntity.male,
         goal: UserWeightGoalEntity.maintainWeight,
-        pal: UserPALEntity.sedentary);
+        pal: UserPALEntity.sedentary,
+        role: UserRoleEntity.student);
 
 
     // Call the TDEE calculation method

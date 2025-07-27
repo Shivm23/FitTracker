@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_weight_entity.dart';
-import 'package:opennutritracker/core/domain/usecase/add_config_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/add_tracked_day_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/delete_intake_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/delete_user_activity_usecase.dart';
@@ -28,7 +27,6 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetConfigUsecase _getConfigUsecase;
-  final AddConfigUsecase _addConfigUsecase;
   final GetIntakeUsecase _getIntakeUsecase;
   final DeleteIntakeUsecase _deleteIntakeUsecase;
   final UpdateIntakeUsecase _updateIntakeUsecase;
@@ -44,7 +42,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc(
       this._getConfigUsecase,
-      this._addConfigUsecase,
       this._getIntakeUsecase,
       this._deleteIntakeUsecase,
       this._updateIntakeUsecase,
@@ -62,7 +59,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       currentDay = DateTime.now();
       final configData = await _getConfigUsecase.getConfig();
       final usesImperialUnits = configData.usesImperialUnits;
-      final showDisclaimerDialog = !configData.hasAcceptedDisclaimer;
 
       final breakfastIntakeList =
           await _getIntakeUsecase.getTodayBreakfastIntake();
@@ -112,12 +108,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           userActivities.map((activity) => activity.burnedKcal).toList().sum;
 
       final totalKcalGoal = await _getKcalGoalUsecase.getKcalGoal();
-      final totalCarbsGoal =
-          await _getMacroGoalUsecase.getCarbsGoal(totalKcalGoal);
-      final totalFatsGoal =
-          await _getMacroGoalUsecase.getFatsGoal(totalKcalGoal);
-      final totalProteinsGoal =
-          await _getMacroGoalUsecase.getProteinsGoal(totalKcalGoal);
+      final totalCarbsGoal = await _getMacroGoalUsecase.getCarbsGoal();
+      final totalFatsGoal = await _getMacroGoalUsecase.getFatsGoal();
+      final totalProteinsGoal = await _getMacroGoalUsecase.getProteinsGoal();
 
       final totalKcalLeft =
           CalorieGoalCalc.getDailyKcalLeft(totalKcalGoal, totalKcalIntake);
@@ -125,16 +118,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final userWeight = await _getWeightUsecase.getTodayUserWeight();
 
       emit(HomeLoadedState(
-          showDisclaimerDialog: showDisclaimerDialog,
           totalKcalDaily: totalKcalGoal,
           totalKcalLeft: totalKcalLeft,
           totalKcalSupplied: totalKcalIntake,
           totalKcalBurned: totalKcalActivities,
           totalCarbsIntake: totalCarbsIntake,
           totalFatsIntake: totalFatsIntake,
-          totalCarbsGoal: totalCarbsGoal,
-          totalFatsGoal: totalFatsGoal,
-          totalProteinsGoal: totalProteinsGoal,
+          totalCarbsGoal: totalCarbsGoal ?? 250.0,
+          totalFatsGoal: totalFatsGoal ?? 60.0,
+          totalProteinsGoal: totalProteinsGoal ?? 120.0,
           totalProteinsIntake: totalProteinsIntake,
           breakfastIntakeList: breakfastIntakeList,
           lunchIntakeList: lunchIntakeList,
@@ -157,10 +149,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   double getTotalProteins(List<IntakeEntity> intakeList) =>
       intakeList.map((intake) => intake.totalProteinsGram).toList().sum;
-
-  void saveConfigData(bool acceptedDisclaimer) async {
-    _addConfigUsecase.setConfigDisclaimer(acceptedDisclaimer);
-  }
 
   Future<void> updateIntakeItem(
       String intakeId, Map<String, dynamic> fields) async {

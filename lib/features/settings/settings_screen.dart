@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opennutritracker/core/domain/entity/app_theme_entity.dart';
 import 'package:opennutritracker/core/presentation/widgets/app_banner_version.dart';
-import 'package:opennutritracker/core/presentation/widgets/disclaimer_dialog.dart';
 import 'package:opennutritracker/core/utils/app_const.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/theme_mode_provider.dart';
 import 'package:opennutritracker/core/utils/url_const.dart';
-import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
 import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:opennutritracker/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:opennutritracker/features/settings/presentation/widgets/export_import_dialog.dart';
+import 'package:opennutritracker/features/settings/presentation/widgets/export_import_supabase_dialog.dart';
+import 'package:opennutritracker/features/settings/presentation/widgets/calculations_dialog.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:opennutritracker/features/settings/presentation/widgets/calculations_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -32,7 +31,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late ProfileBloc _profileBloc;
   late HomeBloc _homeBloc;
   late DiaryBloc _diaryBloc;
-  late CalendarDayBloc _calendarDayBloc;
 
   @override
   void initState() {
@@ -40,7 +38,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _profileBloc = locator<ProfileBloc>();
     _homeBloc = locator<HomeBloc>();
     _diaryBloc = locator<DiaryBloc>();
-    _calendarDayBloc = locator<CalendarDayBloc>();
     super.initState();
   }
 
@@ -83,9 +80,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: () => _showExportImportDialog(context),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.description_outlined),
-                  title: Text(S.of(context).settingsDisclaimerLabel),
-                  onTap: () => _showDisclaimerDialog(context),
+                  leading: const Icon(Icons.cloud_sync_outlined),
+                  title: Text(S.of(context).exportImportSupabaseLabel),
+                  onTap: () => _showExportImportSupabaseDialog(context),
                 ),
                 ListTile(
                   leading: const Icon(Icons.bug_report_outlined),
@@ -171,13 +168,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _showCalculationsDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => CalculationsDialog(
-        settingsBloc: _settingsBloc,
-        profileBloc: _profileBloc,
-        homeBloc: _homeBloc,
-        diaryBloc: _diaryBloc,
-        calendarDayBloc: _calendarDayBloc,
-      ),
+      builder: (context) => CalculationsDialog(),
     );
   }
 
@@ -185,6 +176,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => ExportImportDialog(),
+    );
+  }
+
+  void _showExportImportSupabaseDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => ExportImportSupabaseDialog(),
     );
   }
 
@@ -257,14 +255,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Text(S.of(context).dialogOKLabel)),
             ],
           );
-        });
-  }
-
-  void _showDisclaimerDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const DisclaimerDialog();
         });
   }
 

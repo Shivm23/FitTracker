@@ -36,4 +36,12 @@ class UserWeightRepository {
     }
     return UserWeightEntity.fromUserWeightDbo(lastUserWeight);
   }
+
+  Future<List<UserWeightDbo>> getAllUserWeightDBOs() async {
+    return await _userWeightDataSource.getAllUserWeights();
+  }
+
+  Future<void> addAllUserWeightDBOs(List<UserWeightDbo> userWeights) async {
+    await _userWeightDataSource.addAllUserWeights(userWeights);
+  }
 }

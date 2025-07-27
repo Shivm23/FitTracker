@@ -36,6 +36,16 @@ class RecipeRepository {
     return list.map((r) => r.toEntity()).toList();
   }
 
+  /// Récupérer toutes les recettes au format DBO
+  Future<List<RecipesDBO>> getAllRecipeDBOs() async {
+    return await _dataSource.getAllRecipes();
+  }
+
+  /// Ajouter plusieurs recettes en DBO
+  Future<void> addAllRecipeDBOs(List<RecipesDBO> recipes) async {
+    await _dataSource.addAllRecipes(recipes);
+  }
+
   /// Rechercher des recettes par texte
   Future<List<RecipeEntity>> searchRecipes(String query) async {
     final results = await _dataSource.searchRecipes(query);

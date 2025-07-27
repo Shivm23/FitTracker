@@ -1,10 +1,10 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:opennutritracker/core/data/data_source/user_weight_dbo.dart';
+import 'package:opennutritracker/core/utils/hive_db_provider.dart';
 
 class UserWeightDataSource {
-  final Box<UserWeightDbo> _userWeightBox;
+  final HiveDBProvider _hive;
 
-  UserWeightDataSource(this._userWeightBox);
+  UserWeightDataSource(this._hive);
 
   String _normaliseDateToKey(DateTime date) {
     /* Normalizes the given date to midnight for use as a unique daily key*/
@@ -13,25 +13,36 @@ class UserWeightDataSource {
 
   Future<void> addUserWeight(UserWeightDbo userWeightDbo) async {
     /* Use the date at midnight as the key to ensure one entry per day */
-    await _userWeightBox.put(
+    await _hive.userWeightBox.put(
         _normaliseDateToKey(userWeightDbo.date), userWeightDbo);
   }
 
   Future<void> deleteUserWeightByDate(DateTime dateTime) async {
-    await _userWeightBox.delete(_normaliseDateToKey(dateTime));
+    await _hive.userWeightBox.delete(_normaliseDateToKey(dateTime));
   }
 
   Future<UserWeightDbo?> getUserWeightByDate(DateTime dateTime) async {
-    return _userWeightBox.get(_normaliseDateToKey(dateTime));
+    return _hive.userWeightBox.get(_normaliseDateToKey(dateTime));
   }
 
   Future<UserWeightDbo?> getLastSavedUserWeight(DateTime date) async {
-    for (int i = _userWeightBox.length - 1; i >= 0; i--) {
-      final dbo = _userWeightBox.getAt(i);
+    for (int i = _hive.userWeightBox.length - 1; i >= 0; i--) {
+      final dbo = _hive.userWeightBox.getAt(i);
       if (dbo != null && !dbo.date.isAfter(date)) {
         return dbo;
       }
     }
     return null;
+  }
+
+  Future<List<UserWeightDbo>> getAllUserWeights() async {
+    return _hive.userWeightBox.values.toList();
+  }
+
+  Future<void> addAllUserWeights(List<UserWeightDbo> userWeightDbos) async {
+    final Map<String, UserWeightDbo> mapped = {
+      for (var dbo in userWeightDbos) _normaliseDateToKey(dbo.date): dbo
+    };
+    await _hive.userWeightBox.putAll(mapped);
   }
 }

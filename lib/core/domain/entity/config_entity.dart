@@ -9,17 +9,19 @@ class ConfigEntity extends Equatable {
   final AppThemeEntity appTheme;
   final bool usesImperialUnits;
   final double? userKcalAdjustment;
-  final double? userCarbGoalPct;
-  final double? userProteinGoalPct;
-  final double? userFatGoalPct;
+  final double? userCarbGoal;
+  final double? userProteinGoal;
+  final double? userFatGoal;
+  final DateTime? lastDataUpdate;
 
   const ConfigEntity(this.hasAcceptedDisclaimer, this.hasAcceptedPolicy,
       this.hasAcceptedSendAnonymousData, this.appTheme,
       {this.usesImperialUnits = false,
       this.userKcalAdjustment,
-      this.userCarbGoalPct,
-      this.userProteinGoalPct,
-      this.userFatGoalPct});
+      this.userCarbGoal,
+      this.userProteinGoal,
+      this.userFatGoal,
+      this.lastDataUpdate});
 
   factory ConfigEntity.fromConfigDBO(ConfigDBO dbo) => ConfigEntity(
         dbo.hasAcceptedDisclaimer,
@@ -28,9 +30,10 @@ class ConfigEntity extends Equatable {
         AppThemeEntity.fromAppThemeDBO(dbo.selectedAppTheme),
         usesImperialUnits: dbo.usesImperialUnits ?? false,
         userKcalAdjustment: dbo.userKcalAdjustment,
-        userCarbGoalPct: dbo.userCarbGoalPct,
-        userProteinGoalPct: dbo.userProteinGoalPct,
-        userFatGoalPct: dbo.userFatGoalPct,
+        userCarbGoal: dbo.userCarbGoal,
+        userProteinGoal: dbo.userProteinGoal,
+        userFatGoal: dbo.userFatGoal,
+        lastDataUpdate: dbo.lastDataUpdate,
       );
 
   @override
@@ -40,8 +43,9 @@ class ConfigEntity extends Equatable {
         hasAcceptedSendAnonymousData,
         usesImperialUnits,
         userKcalAdjustment,
-        userCarbGoalPct,
-        userProteinGoalPct,
-        userFatGoalPct,
+        userCarbGoal,
+        userProteinGoal,
+        userFatGoal,
+        lastDataUpdate,
       ];
 }

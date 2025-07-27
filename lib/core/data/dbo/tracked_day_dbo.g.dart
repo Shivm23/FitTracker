@@ -26,13 +26,14 @@ class TrackedDayDBOAdapter extends TypeAdapter<TrackedDayDBO> {
       fatTracked: fields[6] as double?,
       proteinGoal: fields[7] as double?,
       proteinTracked: fields[8] as double?,
+      updatedAt: fields[9] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, TrackedDayDBO obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.day)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class TrackedDayDBOAdapter extends TypeAdapter<TrackedDayDBO> {
       ..writeByte(7)
       ..write(obj.proteinGoal)
       ..writeByte(8)
-      ..write(obj.proteinTracked);
+      ..write(obj.proteinTracked)
+      ..writeByte(9)
+      ..write(obj.updatedAt);
   }
 
   @override
@@ -79,6 +82,7 @@ TrackedDayDBO _$TrackedDayDBOFromJson(Map<String, dynamic> json) =>
       fatTracked: (json['fatTracked'] as num?)?.toDouble(),
       proteinGoal: (json['proteinGoal'] as num?)?.toDouble(),
       proteinTracked: (json['proteinTracked'] as num?)?.toDouble(),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$TrackedDayDBOToJson(TrackedDayDBO instance) =>
@@ -92,4 +96,5 @@ Map<String, dynamic> _$TrackedDayDBOToJson(TrackedDayDBO instance) =>
       'fatTracked': instance.fatTracked,
       'proteinGoal': instance.proteinGoal,
       'proteinTracked': instance.proteinTracked,
+      'updated_at': instance.updatedAt.toIso8601String(),
     };

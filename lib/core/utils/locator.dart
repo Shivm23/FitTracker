@@ -1,5 +1,6 @@
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get_it/get_it.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:opennutritracker/core/data/data_source/config_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/intake_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/recipe_data_source.dart';
@@ -38,10 +39,12 @@ import 'package:opennutritracker/core/domain/usecase/get_user_activity_usecase.d
 import 'package:opennutritracker/core/domain/usecase/get_user_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_weight_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/update_intake_usecase.dart';
+import 'package:opennutritracker/core/data/data_source/macro_goal_data_source.dart';
+import 'package:opennutritracker/core/data/repository/macro_goal_repository.dart';
+import 'package:opennutritracker/core/domain/usecase/add_macro_goal_usecase.dart';
 import 'package:opennutritracker/core/utils/env.dart';
 import 'package:opennutritracker/core/utils/hive_db_provider.dart';
 import 'package:opennutritracker/core/utils/ont_image_cache_manager.dart';
-import 'package:opennutritracker/core/utils/secure_app_storage_provider.dart';
 import 'package:opennutritracker/features/activity_detail/presentation/bloc/activity_detail_bloc.dart';
 import 'package:opennutritracker/features/add_activity/presentation/bloc/activities_bloc.dart';
 import 'package:opennutritracker/features/add_activity/presentation/bloc/recent_activities_bloc.dart';
@@ -62,171 +65,281 @@ import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dar
 import 'package:opennutritracker/features/edit_meal/presentation/bloc/edit_meal_bloc.dart';
 import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/meal_detail/presentation/bloc/meal_detail_bloc.dart';
-import 'package:opennutritracker/features/onboarding/presentation/bloc/onboarding_bloc.dart';
 import 'package:opennutritracker/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:opennutritracker/features/scanner/domain/usecase/search_product_by_barcode_usecase.dart';
 import 'package:opennutritracker/features/scanner/presentation/scanner_bloc.dart';
 import 'package:opennutritracker/features/settings/domain/usecase/export_data_usecase.dart';
 import 'package:opennutritracker/features/settings/domain/usecase/import_data_usecase.dart';
+import 'package:opennutritracker/features/settings/domain/usecase/export_data_supabase_usecase.dart';
+import 'package:opennutritracker/features/settings/domain/usecase/import_data_supabase_usecase.dart';
 import 'package:opennutritracker/features/settings/presentation/bloc/export_import_bloc.dart';
 import 'package:opennutritracker/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final locator = GetIt.instance;
+const _userScope = 'user_scope';
 
 Future<void> initLocator() async {
-  // Init secure storage and Hive database;
-  final secureAppStorageProvider = SecureAppStorageProvider();
-  final hiveDBProvider = HiveDBProvider();
-  await hiveDBProvider
-      .initHiveDB(await secureAppStorageProvider.getHiveEncryptionKey());
-
   // Backend
+  locator.registerLazySingleton<Connectivity>(() => Connectivity());
   await Supabase.initialize(
-      url: Env.supabaseProjectUrl, anonKey: Env.supabaseProjectAnonKey);
+    url: Env.supabaseProjectUrl,
+    anonKey: Env.supabaseProjectAnonKey,
+  );
+
   locator.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
+  // Init secure storage and Hive database;
+  final hiveDBProvider = HiveDBProvider();
+  await hiveDBProvider.initForUser(
+    Supabase.instance.client.auth.currentUser?.id,
+  );
+
+  locator.registerSingleton<HiveDBProvider>(hiveDBProvider);
+
   // Cache manager
-  locator
-      .registerLazySingleton<CacheManager>(() => OntImageCacheManager.instance);
+  locator.registerLazySingleton<CacheManager>(
+    () => OntImageCacheManager.instance,
+  );
 
-  // BLoCs
-  locator.registerLazySingleton<OnboardingBloc>(
-      () => OnboardingBloc(locator(), locator()));
-  locator.registerLazySingleton<HomeBloc>(() => HomeBloc(
-      locator(),
-      locator(),
-      locator(),
-      locator(),
-      locator(),
-      locator(),
-      locator(),
-      locator(),
-      locator(),
-      locator(),
-      locator(),
-      locator()));
+  await registerUserScope(hiveDBProvider);
+}
 
-  locator.registerLazySingleton(() => DiaryBloc(locator(), locator()));
-  locator.registerLazySingleton(() => CalendarDayBloc(locator(), locator(),
-      locator(), locator(), locator(), locator(), locator()));
-  locator.registerLazySingleton<ProfileBloc>(
-      () => ProfileBloc(locator(), locator(), locator(), locator(), locator()));
-  locator.registerLazySingleton(() =>
-      SettingsBloc(locator(), locator(), locator(), locator(), locator()));
-  locator.registerFactory(() => ExportImportBloc(locator(), locator()));
-  locator
-      .registerLazySingleton<CreateMealBloc>(() => CreateMealBloc(locator()));
+Future<void> registerUserScope(HiveDBProvider hive) async {
+// --- si un user-scope est déjà présent, on le détruit ---
+  if (locator.currentScopeName == _userScope) {
+    await locator.popScope(); // ferme les anciens singletons + dispose()
+  }
 
-  locator.registerFactory<ActivitiesBloc>(() => ActivitiesBloc(locator()));
-  locator.registerFactory<RecentActivitiesBloc>(
-      () => RecentActivitiesBloc(locator()));
-  locator.registerFactory<ActivityDetailBloc>(() => ActivityDetailBloc(
-      locator(), locator(), locator(), locator(), locator()));
-  locator.registerFactory<MealDetailBloc>(
-      () => MealDetailBloc(locator(), locator(), locator(), locator()));
-  locator.registerFactory<ScannerBloc>(() => ScannerBloc(locator(), locator()));
-  locator.registerFactory<EditMealBloc>(() => EditMealBloc(locator()));
-  locator.registerFactory<AddMealBloc>(() => AddMealBloc(locator()));
-  locator
-      .registerFactory<ProductsBloc>(() => ProductsBloc(locator(), locator()));
-  locator.registerFactory<FoodBloc>(() => FoodBloc(locator(), locator()));
-  locator.registerFactory(() => RecentMealBloc(locator(), locator()));
-  locator
-      .registerFactory(() => RecipeSearchBloc(locator(), locator(), locator()));
-  locator.registerLazySingleton(() => WeightBloc());
-
-  // UseCases
-  locator.registerLazySingleton<GetConfigUsecase>(
-      () => GetConfigUsecase(locator()));
-  locator.registerLazySingleton<AddConfigUsecase>(
-      () => AddConfigUsecase(locator()));
-  locator
-      .registerLazySingleton<GetUserUsecase>(() => GetUserUsecase(locator()));
-  locator
-      .registerLazySingleton<AddUserUsecase>(() => AddUserUsecase(locator()));
-  locator.registerLazySingleton<SearchProductsUseCase>(
-      () => SearchProductsUseCase(locator()));
-  locator.registerLazySingleton<SearchProductByBarcodeUseCase>(
-      () => SearchProductByBarcodeUseCase(locator()));
-  locator.registerLazySingleton<GetIntakeUsecase>(
-      () => GetIntakeUsecase(locator()));
-  locator.registerLazySingleton<AddIntakeUsecase>(
-      () => AddIntakeUsecase(locator()));
-  locator.registerLazySingleton<DeleteIntakeUsecase>(
-      () => DeleteIntakeUsecase(locator()));
-  locator.registerLazySingleton<DeleteRecipeUsecase>(
-      () => DeleteRecipeUsecase(locator()));
-  locator.registerLazySingleton<UpdateIntakeUsecase>(
-      () => UpdateIntakeUsecase(locator()));
-  locator.registerLazySingleton<AddRecipeUsecase>(
-      () => AddRecipeUsecase(locator()));
-  locator.registerLazySingleton<GetRecipeUsecase>(
-      () => GetRecipeUsecase(locator()));
-  locator.registerLazySingleton<GetUserActivityUsecase>(
-      () => GetUserActivityUsecase(locator()));
-  locator.registerLazySingleton<AddUserActivityUsecase>(
-      () => AddUserActivityUsecase(locator()));
-  locator.registerLazySingleton<DeleteUserActivityUsecase>(
-      () => DeleteUserActivityUsecase(locator()));
-  locator.registerLazySingleton<GetPhysicalActivityUsecase>(
-      () => GetPhysicalActivityUsecase(locator()));
-  locator.registerLazySingleton<GetTrackedDayUsecase>(
-      () => GetTrackedDayUsecase(locator()));
-  locator.registerLazySingleton<AddTrackedDayUsecase>(
-      () => AddTrackedDayUsecase(locator()));
-  locator.registerLazySingleton(
-      () => GetKcalGoalUsecase(locator(), locator(), locator()));
-  locator.registerLazySingleton(() => GetMacroGoalUsecase(locator()));
-  locator.registerLazySingleton(
-      () => ExportDataUsecase(locator(), locator(), locator()));
-  locator.registerLazySingleton(
-      () => ImportDataUsecase(locator(), locator(), locator()));
-  locator.registerLazySingleton<AddWeightUsecase>(
-      () => AddWeightUsecase(locator()));
-  locator.registerLazySingleton<GetWeightUsecase>(() => GetWeightUsecase());
-  locator.registerLazySingleton<DeleteUserWeightUsecase>(
-      () => DeleteUserWeightUsecase(locator()));
-
-  // Repositories
-  locator.registerLazySingleton(() => ConfigRepository(locator()));
-  locator
-      .registerLazySingleton<UserRepository>(() => UserRepository(locator()));
-  locator.registerLazySingleton<IntakeRepository>(
-      () => IntakeRepository(locator()));
-  locator.registerLazySingleton<RecipeRepository>(
-      () => RecipeRepository(locator()));
-  locator.registerLazySingleton<ProductsRepository>(
-      () => ProductsRepository(locator(), locator(), locator()));
-  locator.registerLazySingleton<UserActivityRepository>(
-      () => UserActivityRepository(locator()));
-  locator.registerLazySingleton<PhysicalActivityRepository>(
-      () => PhysicalActivityRepository(locator()));
-  locator.registerLazySingleton<TrackedDayRepository>(
-      () => TrackedDayRepository(locator()));
-  locator.registerLazySingleton<UserWeightRepository>(
-      () => UserWeightRepository(locator()));
+// --- nouveau scope isolé pour l’utilisateur courant ---
+  locator.pushNewScope(
+    scopeName: _userScope, // nom pour le retrouver la prochaine fois
+  );
 
   // DataSources
-  locator
-      .registerLazySingleton(() => ConfigDataSource(hiveDBProvider.configBox));
-  locator.registerLazySingleton<UserDataSource>(
-      () => UserDataSource(hiveDBProvider.userBox));
-  locator.registerLazySingleton<IntakeDataSource>(
-      () => IntakeDataSource(hiveDBProvider.intakeBox));
-  locator.registerLazySingleton<RecipesDataSource>(
-      () => RecipesDataSource(hiveDBProvider.recipeBox));
-  locator.registerLazySingleton<UserActivityDataSource>(
-      () => UserActivityDataSource(hiveDBProvider.userActivityBox));
-  locator.registerLazySingleton<PhysicalActivityDataSource>(
-      () => PhysicalActivityDataSource());
+  final configDS = ConfigDataSource(hive);
+  locator.registerLazySingleton(() => configDS);
+  hive.startUpdateWatchers(configDS);
+  locator.registerLazySingleton<UserDataSource>(() => UserDataSource(
+      hive, Supabase.instance.client.auth.currentUser?.id ?? 'default_user'));
+  locator.registerLazySingleton(() => IntakeDataSource(hive));
+  locator.registerLazySingleton(() => RecipesDataSource(hive));
+  locator.registerLazySingleton(() => UserActivityDataSource(hive));
+  locator.registerLazySingleton(() => PhysicalActivityDataSource());
+  locator.registerLazySingleton(() => TrackedDayDataSource(hive));
+  locator.registerLazySingleton(() => UserWeightDataSource(hive));
+  locator.registerLazySingleton(() => MacroGoalDataSource(hive));
   locator.registerLazySingleton<OFFDataSource>(() => OFFDataSource());
   locator.registerLazySingleton<FDCDataSource>(() => FDCDataSource());
   locator.registerLazySingleton<SpFdcDataSource>(() => SpFdcDataSource());
+
+  // Repositories
+  locator.registerLazySingleton(() => ConfigRepository(locator()));
+  locator.registerLazySingleton<UserRepository>(
+    () => UserRepository(locator()),
+  );
+  locator.registerLazySingleton(() => IntakeRepository(locator()));
+  locator.registerLazySingleton(() => RecipeRepository(locator()));
   locator.registerLazySingleton(
-      () => TrackedDayDataSource(hiveDBProvider.trackedDayBox));
+    () => ProductsRepository(locator(), locator(), locator()),
+  );
+  locator.registerLazySingleton(() => UserActivityRepository(locator()));
+  locator.registerLazySingleton(() => PhysicalActivityRepository(locator()));
+  locator.registerLazySingleton(() => TrackedDayRepository(locator()));
+  locator.registerLazySingleton(() => UserWeightRepository(locator()));
+  locator.registerLazySingleton(() => MacroGoalRepository(locator()));
+
+  // UseCases
+  locator.registerLazySingleton<GetConfigUsecase>(
+    () => GetConfigUsecase(locator()),
+  );
+  locator.registerLazySingleton<AddConfigUsecase>(
+    () => AddConfigUsecase(locator()),
+  );
+  locator.registerLazySingleton<GetUserUsecase>(
+    () => GetUserUsecase(locator()),
+  );
+  locator.registerLazySingleton<AddUserUsecase>(
+    () => AddUserUsecase(locator()),
+  );
+  locator.registerLazySingleton<SearchProductsUseCase>(
+    () => SearchProductsUseCase(locator()),
+  );
+  locator.registerLazySingleton<SearchProductByBarcodeUseCase>(
+    () => SearchProductByBarcodeUseCase(locator()),
+  );
+  locator.registerLazySingleton<GetIntakeUsecase>(
+    () => GetIntakeUsecase(locator()),
+  );
+  locator.registerLazySingleton<AddIntakeUsecase>(
+    () => AddIntakeUsecase(locator()),
+  );
+  locator.registerLazySingleton<DeleteIntakeUsecase>(
+    () => DeleteIntakeUsecase(locator()),
+  );
+  locator.registerLazySingleton<DeleteRecipeUsecase>(
+    () => DeleteRecipeUsecase(locator()),
+  );
+  locator.registerLazySingleton<UpdateIntakeUsecase>(
+    () => UpdateIntakeUsecase(locator()),
+  );
+  locator.registerLazySingleton<AddRecipeUsecase>(
+    () => AddRecipeUsecase(locator()),
+  );
+  locator.registerLazySingleton<GetRecipeUsecase>(
+    () => GetRecipeUsecase(locator()),
+  );
+  locator.registerLazySingleton<GetUserActivityUsecase>(
+    () => GetUserActivityUsecase(locator()),
+  );
+  locator.registerLazySingleton<AddUserActivityUsecase>(
+    () => AddUserActivityUsecase(locator()),
+  );
+  locator.registerLazySingleton<DeleteUserActivityUsecase>(
+    () => DeleteUserActivityUsecase(locator()),
+  );
+  locator.registerLazySingleton<GetPhysicalActivityUsecase>(
+    () => GetPhysicalActivityUsecase(locator()),
+  );
+  locator.registerLazySingleton<GetTrackedDayUsecase>(
+    () => GetTrackedDayUsecase(locator()),
+  );
+  locator.registerLazySingleton<AddTrackedDayUsecase>(
+    () => AddTrackedDayUsecase(locator()),
+  );
   locator.registerLazySingleton(
-      () => UserWeightDataSource(hiveDBProvider.userWeightBox));
+    () => GetKcalGoalUsecase(),
+  );
+  locator.registerLazySingleton(() => GetMacroGoalUsecase());
+  locator.registerLazySingleton(
+    () => ExportDataUsecase(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerLazySingleton(
+    () => ImportDataUsecase(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerLazySingleton(
+    () => ExportDataSupabaseUsecase(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerLazySingleton(
+    () => ImportDataSupabaseUsecase(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+
+  locator.registerLazySingleton<AddWeightUsecase>(
+    () => AddWeightUsecase(locator()),
+  );
+  locator.registerLazySingleton<AddMacroGoalUsecase>(
+    () => AddMacroGoalUsecase(),
+  );
+  locator.registerLazySingleton<GetWeightUsecase>(() => GetWeightUsecase());
+  locator.registerLazySingleton<DeleteUserWeightUsecase>(
+    () => DeleteUserWeightUsecase(locator()),
+  );
+
+  // BLoCs
+  locator.registerLazySingleton<HomeBloc>(
+    () => HomeBloc(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerLazySingleton(() => DiaryBloc(locator(), locator()));
+  locator.registerLazySingleton(
+    () => CalendarDayBloc(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerLazySingleton<ProfileBloc>(
+    () => ProfileBloc(locator(), locator(), locator(), locator(), locator()),
+  );
+  locator.registerLazySingleton(
+    () => SettingsBloc(locator(), locator(), locator(), locator(), locator()),
+  );
+  locator.registerFactory(
+    () => ExportImportBloc(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerLazySingleton<CreateMealBloc>(
+    () => CreateMealBloc(locator()),
+  );
+
+  locator.registerFactory<ActivitiesBloc>(() => ActivitiesBloc(locator()));
+  locator.registerFactory<RecentActivitiesBloc>(
+    () => RecentActivitiesBloc(locator()),
+  );
+  locator.registerFactory<ActivityDetailBloc>(
+    () => ActivityDetailBloc(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory<MealDetailBloc>(
+    () => MealDetailBloc(locator(), locator(), locator(), locator()),
+  );
+  locator.registerFactory<ScannerBloc>(() => ScannerBloc(locator(), locator()));
+  locator.registerFactory<EditMealBloc>(() => EditMealBloc(locator()));
+  locator.registerFactory<AddMealBloc>(() => AddMealBloc(locator()));
+  locator.registerFactory<ProductsBloc>(
+    () => ProductsBloc(locator(), locator()),
+  );
+  locator.registerFactory<FoodBloc>(() => FoodBloc(locator(), locator()));
+  locator.registerFactory(() => RecentMealBloc(locator(), locator()));
+  locator.registerFactory(
+    () => RecipeSearchBloc(locator(), locator(), locator()),
+  );
+  locator.registerLazySingleton(() => WeightBloc());
 
   await _initializeConfig(locator());
 }

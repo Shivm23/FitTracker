@@ -2,6 +2,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:opennutritracker/core/data/dbo/meal_nutriments_dbo.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
+import 'package:path/path.dart' as p;
 
 part 'meal_dbo.g.dart';
 
@@ -61,9 +62,17 @@ class MealDBO extends HiveObject {
       code: mealEntity.code,
       name: mealEntity.name,
       brands: mealEntity.brands,
-      thumbnailImageUrl: mealEntity.thumbnailImageUrl,
-      mainImageUrl: mealEntity.mainImageUrl,
-      url: mealEntity.url,
+      thumbnailImageUrl: mealEntity.thumbnailImageUrl != null &&
+              !mealEntity.thumbnailImageUrl!.startsWith('http')
+          ? p.basename(mealEntity.thumbnailImageUrl!)
+          : mealEntity.thumbnailImageUrl,
+      mainImageUrl: mealEntity.mainImageUrl != null &&
+              !mealEntity.mainImageUrl!.startsWith('http')
+          ? p.basename(mealEntity.mainImageUrl!)
+          : mealEntity.mainImageUrl,
+      url: mealEntity.url != null && !mealEntity.url!.startsWith('http')
+          ? p.basename(mealEntity.url!)
+          : mealEntity.url,
       mealQuantity: mealEntity.mealQuantity,
       mealUnit: mealEntity.mealUnit,
       servingQuantity: mealEntity.servingQuantity,

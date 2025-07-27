@@ -10,7 +10,6 @@ import 'package:opennutritracker/core/presentation/widgets/activity_vertial_list
 import 'package:opennutritracker/core/presentation/widgets/weight_vertical_list.dart';
 import 'package:opennutritracker/core/presentation/widgets/edit_dialog.dart';
 import 'package:opennutritracker/core/presentation/widgets/delete_dialog.dart';
-import 'package:opennutritracker/core/presentation/widgets/disclaimer_dialog.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
 import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
@@ -57,7 +56,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         } else if (state is HomeLoadedState) {
           return _getLoadedContent(
               context,
-              state.showDisclaimerDialog,
               state.totalKcalDaily,
               state.totalKcalLeft,
               state.totalKcalSupplied,
@@ -99,7 +97,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   Widget _getLoadedContent(
       BuildContext context,
-      bool showDisclaimerDialog,
       double totalKcalDaily,
       double totalKcalLeft,
       double totalKcalSupplied,
@@ -117,9 +114,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       List<UserActivityEntity> userActivities,
       UserWeightEntity? userWeight,
       bool usesImperialUnits) {
-    if (showDisclaimerDialog) {
-      _showDisclaimerDialog(context);
-    }
+
 
     return Stack(children: [
       ListView(children: [
@@ -306,21 +301,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
     setState(() {
       _isDragging = false;
-    });
-  }
-
-  /// Show disclaimer dialog after build method
-  void _showDisclaimerDialog(BuildContext context) async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final dialogConfirmed = await showDialog<bool>(
-          context: context,
-          builder: (context) {
-            return const DisclaimerDialog();
-          });
-      if (dialogConfirmed != null) {
-        _homeBloc.saveConfigData(dialogConfirmed);
-        _homeBloc.add(const LoadItemsEvent());
-      }
     });
   }
 

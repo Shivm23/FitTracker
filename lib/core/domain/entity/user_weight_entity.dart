@@ -5,15 +5,22 @@ class UserWeightEntity {
   final String id;
   final double weight;
   final DateTime date;
+  final DateTime updatedAt;
 
-  const UserWeightEntity(
-      {required this.id, required this.weight, required this.date});
+  UserWeightEntity({
+    required this.id,
+    required this.weight,
+    required this.date,
+    DateTime? updatedAt,
+  }) : updatedAt = updatedAt ?? DateTime.now().toUtc();
 
   factory UserWeightEntity.fromUserWeightDbo(UserWeightDbo userWeightDbo) {
     return UserWeightEntity(
-        id: userWeightDbo.id,
-        weight: userWeightDbo.weight,
-        date: userWeightDbo.date);
+      id: userWeightDbo.id,
+      weight: userWeightDbo.weight,
+      date: userWeightDbo.date,
+      updatedAt: userWeightDbo.updatedAt,
+    );
   }
 
   static getIconData() => Icons.monitor_weight_outlined;

@@ -18,8 +18,8 @@ import 'package:opennutritracker/features/meal_detail/presentation/widgets/meal_
 import 'package:opennutritracker/features/meal_detail/presentation/widgets/meal_detail_nutriments_table.dart';
 import 'package:opennutritracker/features/meal_detail/presentation/widgets/meal_info_button.dart';
 import 'package:opennutritracker/features/meal_detail/presentation/widgets/meal_placeholder.dart';
+import 'package:opennutritracker/core/utils/path_helper.dart';
 import 'package:opennutritracker/features/meal_detail/presentation/widgets/meal_title_expanded.dart';
-import 'package:opennutritracker/features/meal_detail/presentation/widgets/off_disclaimer.dart';
 import 'package:opennutritracker/core/domain/usecase/get_recipe_usecase.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 import 'dart:io';
@@ -238,16 +238,26 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                       ? meal.mealOrRecipe == MealOrRecipeEntity.recipe
                           ? Hero(
                               tag: ImageFullScreen.fullScreenHeroTag,
-                              child: Container(
-                                width: 250,
-                                height: 250,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: DecorationImage(
-                                    image: FileImage(File(meal.mainImageUrl!)),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                              child: FutureBuilder<String>(
+                                future: PathHelper.localImagePath(
+                                    meal.mainImageUrl!),
+                                builder: (context, snapshot) {
+                                  final path = snapshot.data;
+                                  if (path == null) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return Container(
+                                    width: 250,
+                                    height: 250,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                        image: FileImage(File(path)),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             )
                           : Hero(
@@ -320,14 +330,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                     servingUnit: meal.servingUnit),
                 const SizedBox(height: 32.0),
                 MealInfoButton(url: meal.url, source: meal.source),
-                meal.source == MealSourceEntity.off
-                    ? const Column(
-                        children: [
-                          SizedBox(height: 32),
-                          OffDisclaimer(),
-                        ],
-                      )
-                    : const SizedBox(),
+                const SizedBox(),
                 const SizedBox(height: 200.0) // height added to scroll
               ],
             ),

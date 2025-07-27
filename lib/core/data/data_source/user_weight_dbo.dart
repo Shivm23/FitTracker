@@ -14,12 +14,18 @@ class UserWeightDbo extends HiveObject {
   @HiveField(2)
   final DateTime date;
 
-  UserWeightDbo(this.id, this.weight, this.date);
+  @HiveField(3)
+  final DateTime updatedAt;
+
+  UserWeightDbo(this.id, this.weight, this.date, this.updatedAt);
 
   factory UserWeightDbo.fromUserWeightEntity(
       UserWeightEntity userWeightEntity) {
     return UserWeightDbo(
-        userWeightEntity.id, userWeightEntity.weight, userWeightEntity.date);
+        userWeightEntity.id,
+        userWeightEntity.weight,
+        userWeightEntity.date,
+        userWeightEntity.updatedAt);
   }
 
   factory UserWeightDbo.fromJson(Map<String, dynamic> json) =>

@@ -9,25 +9,30 @@ class IntakeEntity extends Equatable {
   final double amount;
   final IntakeTypeEntity type;
   final DateTime dateTime;
+  final DateTime updatedAt;
 
   final MealEntity meal;
 
-  const IntakeEntity(
-      {required this.id,
-      required this.unit,
-      required this.amount,
-      required this.type,
-      required this.meal,
-      required this.dateTime});
+  IntakeEntity({
+    required this.id,
+    required this.unit,
+    required this.amount,
+    required this.type,
+    required this.meal,
+    required this.dateTime,
+    DateTime? updatedAt,
+  }) : updatedAt = updatedAt ?? DateTime.now().toUtc();
 
   factory IntakeEntity.fromIntakeDBO(IntakeDBO intakeDBO) {
     return IntakeEntity(
-        id: intakeDBO.id,
-        unit: intakeDBO.unit,
-        amount: intakeDBO.amount,
-        type: IntakeTypeEntity.fromIntakeTypeDBO(intakeDBO.type),
-        meal: MealEntity.fromMealDBO(intakeDBO.meal),
-        dateTime: intakeDBO.dateTime);
+      id: intakeDBO.id,
+      unit: intakeDBO.unit,
+      amount: intakeDBO.amount,
+      type: IntakeTypeEntity.fromIntakeTypeDBO(intakeDBO.type),
+      meal: MealEntity.fromMealDBO(intakeDBO.meal),
+      dateTime: intakeDBO.dateTime,
+      updatedAt: intakeDBO.updatedAt,
+    );
   }
 
   double get totalKcal => amount * (meal.nutriments.energyPerUnit ?? 0);
@@ -41,7 +46,7 @@ class IntakeEntity extends Equatable {
       amount * (meal.nutriments.proteinsPerUnit ?? 0);
 
   @override
-  List<Object?> get props => [id, unit, amount, type, dateTime];
+  List<Object?> get props => [id, unit, amount, type, dateTime, updatedAt];
 }
 
 extension IntakeEntityCopy on IntakeEntity {
@@ -52,6 +57,7 @@ extension IntakeEntityCopy on IntakeEntity {
     IntakeTypeEntity? type,
     MealEntity? meal,
     DateTime? dateTime,
+    DateTime? updatedAt,
   }) {
     return IntakeEntity(
       id: id ?? this.id,
@@ -60,6 +66,7 @@ extension IntakeEntityCopy on IntakeEntity {
       type: type ?? this.type,
       meal: meal ?? this.meal,
       dateTime: dateTime ?? this.dateTime,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:opennutritracker/core/data/repository/recipe_repository.dart';
 import 'dart:io';
+import 'package:opennutritracker/core/utils/path_helper.dart';
 
 class DeleteRecipeUsecase {
   final RecipeRepository _recipeRepository;
@@ -17,7 +18,7 @@ class DeleteRecipeUsecase {
       ];
       for (final path in paths) {
         if (path != null && !path.startsWith('http')) {
-          final file = File(path);
+          final file = File(await PathHelper.localImagePath(path));
           if (await file.exists()) {
             try {
               await file.delete();
