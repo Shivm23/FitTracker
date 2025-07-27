@@ -23,6 +23,7 @@ import 'package:opennutritracker/core/data/dbo/user_pal_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/user_weight_goal_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/user_role_dbo.dart';
 import 'package:opennutritracker/features/sync/tracked_day_change_isolate.dart';
+import 'package:opennutritracker/features/sync/user_weight_change_isolate.dart';
 import 'package:opennutritracker/core/utils/secure_app_storage_provider.dart';
 import 'package:opennutritracker/core/data/data_source/config_data_source.dart';
 import 'package:logging/logging.dart';
@@ -48,6 +49,7 @@ class HiveDBProvider extends ChangeNotifier {
   late Box<TrackedDayDBO> trackedDayBox;
   late Box<RecipesDBO> recipeBox;
   late TrackedDayChangeIsolate trackedDayWatcher;
+  late UserWeightChangeIsolate userWeightWatcher;
   late Box<UserWeightDbo> userWeightBox;
   late Box<MacroGoalDbo> macroGoalBox;
 
@@ -66,6 +68,7 @@ class HiveDBProvider extends ChangeNotifier {
         // trackedDayWatcher must be stopped before its box is closed
         _log.fine('🔒 Closing boxes for user=$_userId');
         await trackedDayWatcher.stop();
+        await userWeightWatcher.stop();
         await stopUpdateWatchers();
 
         // To prevent resource leaks, any new box added to this provider must also be added here.
@@ -132,6 +135,8 @@ class HiveDBProvider extends ChangeNotifier {
       trackedDayWatcher = TrackedDayChangeIsolate(trackedDayBox);
       await trackedDayWatcher.start();
       userWeightBox = await openBox(userWeightBoxName);
+      userWeightWatcher = UserWeightChangeIsolate(userWeightBox);
+      await userWeightWatcher.start();
       macroGoalBox = await openBox(macroGoalBoxName);
       _log.info('✅ Hive initialised for user=$_userId');
     } catch (e, s) {
@@ -203,6 +208,7 @@ class HiveDBProvider extends ChangeNotifier {
   @override
   void dispose() {
     trackedDayWatcher.stop();
+    userWeightWatcher.stop();
     stopUpdateWatchers();
     super.dispose();
   }

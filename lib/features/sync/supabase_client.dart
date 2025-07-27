@@ -42,3 +42,45 @@ class SupabaseTrackedDayService {
     }
   }
 }
+
+class SupabaseUserWeightService {
+  final SupabaseClient _client;
+  final _log = Logger('SupabaseUserWeightService');
+
+  SupabaseUserWeightService({SupabaseClient? client})
+      : _client = client ?? locator<SupabaseClient>();
+
+  /// Upserts a single user weight entry.
+  /// Logs any exception that occurs during the operation.
+  Future<void> upsertUserWeight(Map<String, dynamic> json) async {
+    try {
+      await _client.from('user_weight').upsert(json, onConflict: 'date');
+    } catch (e, stackTrace) {
+      _log.severe('Failed to upsert user weight: $e', e, stackTrace);
+    }
+  }
+
+  /// Upserts multiple user weight entries in bulk.
+  /// If the list is empty, the function exits early.
+  /// Logs any exception that occurs during the operation.
+  Future<void> upsertUserWeights(List<Map<String, dynamic>> weights) async {
+    if (weights.isEmpty) return;
+    try {
+      await _client.from('user_weight').upsert(weights, onConflict: 'date');
+    } catch (e, stackTrace) {
+      _log.severe('Failed to upsert user weights: $e', e, stackTrace);
+    }
+  }
+
+  /// Deletes a user weight entry based on the provided date.
+  /// Logs any exception that occurs during the operation.
+  Future<void> deleteUserWeight(DateTime date) async {
+    final iso = date.toIso8601String();
+    try {
+      await _client.from('user_weight').delete().eq('date', iso);
+    } catch (e, stackTrace) {
+      _log.severe('Failed to delete user weight: $e', e, stackTrace);
+    }
+  }
+}
+

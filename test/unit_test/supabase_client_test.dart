@@ -7,6 +7,7 @@ void main() {
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
   late final SupabaseTrackedDayService trackedDayService;
+  late final SupabaseUserWeightService weightService;
 
   setUpAll(() {
     mockHttpClient = MockSupabaseHttpClient();
@@ -19,6 +20,7 @@ void main() {
     );
 
     trackedDayService = SupabaseTrackedDayService(client: mockSupabase);
+    weightService = SupabaseUserWeightService(client: mockSupabase);
   });
 
   tearDown(() async {
@@ -119,5 +121,35 @@ void main() {
 
     final result = await mockSupabase.from('tracked_days').select();
     expect(result, isEmpty);
+  });
+
+  group('SupabaseUserWeightService', () {
+    test('upserting a single weight works', () async {
+      final date = DateTime.now();
+      await weightService.upsertUserWeight({
+        'id': '1',
+        'weight': 80,
+        'date': date.toIso8601String(),
+        'updatedAt': date.toIso8601String(),
+      });
+
+      final result = await mockSupabase.from('user_weight').select();
+      expect(result.length, 1);
+      expect(result.first['date'], date.toIso8601String());
+    });
+
+    test('deleting a user weight works', () async {
+      final date = DateTime.now();
+      await weightService.upsertUserWeight({
+        'id': '2',
+        'weight': 81,
+        'date': date.toIso8601String(),
+        'updatedAt': date.toIso8601String(),
+      });
+
+      await weightService.deleteUserWeight(date);
+      final result = await mockSupabase.from('user_weight').select();
+      expect(result, isEmpty);
+    });
   });
 }
