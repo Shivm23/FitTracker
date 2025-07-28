@@ -19,7 +19,7 @@ class UserWeightEntity {
       id: userWeightDbo.id,
       weight: userWeightDbo.weight,
       date: userWeightDbo.date,
-      updatedAt: userWeightDbo.updated_at,
+      updatedAt: userWeightDbo.updatedat,
     );
   }
 

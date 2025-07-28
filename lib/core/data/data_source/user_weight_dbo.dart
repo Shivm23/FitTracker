@@ -15,9 +15,9 @@ class UserWeightDbo extends HiveObject {
   final DateTime date;
 
   @HiveField(3)
-  final DateTime updated_at;
+  final DateTime updatedat;
 
-  UserWeightDbo(this.id, this.weight, this.date, this.updated_at);
+  UserWeightDbo(this.id, this.weight, this.date, this.updatedat);
 
   factory UserWeightDbo.fromUserWeightEntity(
       UserWeightEntity userWeightEntity) {

@@ -35,7 +35,7 @@ class UserWeightDboAdapter extends TypeAdapter<UserWeightDbo> {
       ..writeByte(2)
       ..write(obj.date)
       ..writeByte(3)
-      ..write(obj.updated_at);
+      ..write(obj.updatedat);
   }
 
   @override
@@ -58,7 +58,7 @@ UserWeightDbo _$UserWeightDboFromJson(Map<String, dynamic> json) =>
       json['id'] as String,
       (json['weight'] as num).toDouble(),
       DateTime.parse(json['date'] as String),
-      DateTime.parse(json['updated_at'] as String),
+      DateTime.parse(json['updatedat'] as String),
     );
 
 Map<String, dynamic> _$UserWeightDboToJson(UserWeightDbo instance) =>
@@ -66,5 +66,5 @@ Map<String, dynamic> _$UserWeightDboToJson(UserWeightDbo instance) =>
       'id': instance.id,
       'weight': instance.weight,
       'date': instance.date.toIso8601String(),
-      'updated_at': instance.updated_at.toIso8601String(),
+      'updatedat': instance.updatedat.toIso8601String(),
     };

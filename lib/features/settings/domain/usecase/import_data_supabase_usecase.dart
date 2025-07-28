@@ -313,7 +313,7 @@ class ImportDataSupabaseUsecase {
         final current = weightMap[key];
         if (current == null) {
           await _userWeightRepository.addAllUserWeightDBOs([dbo]);
-        } else if (dbo.updated_at.isAfter(current.updated_at)) {
+        } else if (dbo.updatedat.isAfter(current.updatedat)) {
           await _userWeightRepository.deleteUserWeightByDate(current.date);
           await _userWeightRepository.addAllUserWeightDBOs([dbo]);
         }
