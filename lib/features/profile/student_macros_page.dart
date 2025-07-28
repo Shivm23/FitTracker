@@ -23,7 +23,7 @@ class StudentMacrosPage extends StatefulWidget {
   State<StudentMacrosPage> createState() => _StudentMacrosPageState();
 }
 
-enum MacroType { calories, carbs, fat, protein }
+enum MacroType { calories, carbs, fat, protein, weight }
 
 enum TimeRange { week, month, threeMonths, sixMonths, year }
 
@@ -48,19 +48,39 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
         .format(now.subtract(const Duration(days: 365)));
     final endDate = DateFormat('yyyy-MM-dd').format(now);
 
-    final response = await supabase
+    // 1. Récupère les macros
+    final macroResponse = await supabase
         .from('tracked_days')
         .select(
-            'day, calorieGoal, caloriesTracked, carbsGoal, carbsTracked, fatGoal, fatTracked, proteinGoal, proteinTracked')
+          'day, calorieGoal, caloriesTracked, carbsGoal, carbsTracked, fatGoal, fatTracked, proteinGoal, proteinTracked',
+        )
         .eq('user_id', widget.studentId)
         .gte('day', startDate)
         .lte('day', endDate)
         .order('day');
 
-    return {
-      for (final Map<String, dynamic> item in response)
-        item['day'] as String: item
+    // 2. Récupère les poids
+    final weightResponse = await supabase
+        .from('user_weight')
+        .select('date, weight')
+        .eq('user_id', widget.studentId)
+        .gte('date', startDate)
+        .lte('date', endDate)
+        .order('date');
+
+    // 3. Combine les deux
+    final Map<String, Map<String, dynamic>> result = {
+      for (final Map<String, dynamic> item in macroResponse)
+        item['day'] as String: item,
     };
+
+    for (final Map<String, dynamic> item in weightResponse) {
+      final dateStr = item['date'] as String;
+      result.putIfAbsent(dateStr, () => {});
+      result[dateStr]!['weight'] = item['weight'];
+    }
+
+    return result;
   }
 
   @override
@@ -277,6 +297,12 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
                               value: MacroType.protein,
                               child: Text(S.of(context).proteinLabel),
                             ),
+                            DropdownMenuItem(
+                              value: MacroType.weight,
+                              child: Text(S
+                                  .of(context)
+                                  .weightLabel), // ou "Poids" si pas encore traduit
+                            ),
                           ],
                         ),
                         DropdownButton<TimeRange>(
@@ -405,10 +431,12 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
           case MacroType.protein:
             value = (data['proteinTracked'] as num?)?.toDouble();
             break;
+          case MacroType.weight:
+            value = (data['weight'] as num?)?.toDouble(); // ✅ poids
+            break;
         }
       }
 
-      // Ajoute la valeur (null s'il n'y a pas de données)
       points.add(_MacroPoint(day, value));
     }
 
