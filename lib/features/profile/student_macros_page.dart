@@ -130,7 +130,8 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
               ? 0
               : (caloriesTracked / calorieGoal).clamp(0.0, 1.0);
 
-          return Padding(
+          return SafeArea(
+              child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Card(
               elevation: 1,
@@ -339,34 +340,72 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 200,
-                      child: SfCartesianChart(
-                        primaryXAxis: DateTimeAxis(),
-                        series: <ScatterSeries<_MacroPoint, DateTime>>[
-                          ScatterSeries<_MacroPoint, DateTime>(
-                            dataSource: _getMacroPoints(_selectedMacro)
-                                .where((e) => e.value != null)
-                                .toList(),
-                            xValueMapper: (p, _) => p.date,
-                            yValueMapper: (p, _) => p.value,
-                            markerSettings: const MarkerSettings(
-                              isVisible: true,
-                              width: 8,
-                              height: 8,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildChart(),
                   ],
                 ),
               ),
             ),
-          );
+          ));
         },
       ),
     );
+  }
+
+  Widget buildChart() {
+    final axisConfig = _getAxisIntervalConfig(_selectedRange);
+
+    return SizedBox(
+      height: 200,
+      child: SfCartesianChart(
+        primaryXAxis: DateTimeAxis(
+          intervalType: axisConfig.type,
+          interval: axisConfig.interval.toDouble(),
+          dateFormat: axisConfig.type == DateTimeIntervalType.months
+              ? DateFormat('MMM')
+              : DateFormat('dd/MM'),
+        ),
+        series: <ScatterSeries<_MacroPoint, DateTime>>[
+          ScatterSeries<_MacroPoint, DateTime>(
+            dataSource: _getMacroPoints(_selectedMacro),
+            xValueMapper: (p, _) => p.date,
+            yValueMapper: (p, _) => p.value,
+            emptyPointSettings: const EmptyPointSettings(
+              mode: EmptyPointMode.gap,
+            ),
+            markerSettings: const MarkerSettings(
+              isVisible: true,
+              width: 8,
+              height: 8,
+            ),
+            dataLabelSettings: DataLabelSettings(
+              isVisible: true,
+              labelAlignment: ChartDataLabelAlignment.top,
+              builder: (dynamic data, _, __, ___, ____) {
+                final point = data as _MacroPoint;
+                final value = point.value?.toStringAsFixed(1) ?? '';
+                return Text(value, style: const TextStyle(fontSize: 10));
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  ({DateTimeIntervalType type, int interval}) _getAxisIntervalConfig(
+      TimeRange range) {
+    switch (range) {
+      case TimeRange.week:
+        return (type: DateTimeIntervalType.days, interval: 1);
+      case TimeRange.month:
+        return (type: DateTimeIntervalType.days, interval: 3);
+      case TimeRange.threeMonths:
+        return (type: DateTimeIntervalType.days, interval: 7);
+      case TimeRange.sixMonths:
+        return (type: DateTimeIntervalType.days, interval: 14);
+      case TimeRange.year:
+        return (type: DateTimeIntervalType.months, interval: 1);
+    }
   }
 
   void _goToPreviousDay() {
@@ -413,7 +452,9 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
     for (var day = start;
         !day.isAfter(now);
         day = day.add(const Duration(days: 1))) {
-      final key = DateFormat('yyyy-MM-dd').format(day);
+      final normalizedDay =
+          DateTime(day.year, day.month, day.day); // 👈 00:00:00
+      final key = DateFormat('yyyy-MM-dd').format(normalizedDay);
       final data = _allMacros[key];
 
       double? value;
@@ -432,12 +473,12 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
             value = (data['proteinTracked'] as num?)?.toDouble();
             break;
           case MacroType.weight:
-            value = (data['weight'] as num?)?.toDouble(); // ✅ poids
+            value = (data['weight'] as num?)?.toDouble();
             break;
         }
       }
 
-      points.add(_MacroPoint(day, value));
+      points.add(_MacroPoint(normalizedDay, value));
     }
 
     return points;
