@@ -103,8 +103,14 @@ class ImportDataSupabaseUsecase {
       final recipesFile = archive.findFile(recipesJsonFileName);
       final userFile = archive.findFile(userJsonFileName);
 
-      if ([userActivityFile, intakeFile, trackedDayFile, userWeightFile, recipesFile, userFile]
-          .any((f) => f == null)) {
+      if ([
+        userActivityFile,
+        intakeFile,
+        trackedDayFile,
+        userWeightFile,
+        recipesFile,
+        userFile
+      ].any((f) => f == null)) {
         throw Exception('Archive is missing required files');
       }
 
@@ -307,7 +313,7 @@ class ImportDataSupabaseUsecase {
         final current = weightMap[key];
         if (current == null) {
           await _userWeightRepository.addAllUserWeightDBOs([dbo]);
-        } else if (dbo.updatedAt.isAfter(current.updatedAt)) {
+        } else if (dbo.updatedat.isAfter(current.updatedat)) {
           await _userWeightRepository.deleteUserWeightByDate(current.date);
           await _userWeightRepository.addAllUserWeightDBOs([dbo]);
         }
