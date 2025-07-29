@@ -8,8 +8,6 @@ import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/sync/change_isolate.dart';
 import 'package:opennutritracker/features/sync/supabase_client.dart';
 
-/// Watches a [UserWeightDbo] box and synchronizes modified weights
-/// with Supabase as soon as a connection is available.
 /// Internal representation of a pending weight synchronization operation.
 class _UserWeightSyncOp {
   final DateTime date;
@@ -44,23 +42,7 @@ class UserWeightChangeIsolate extends ChangeIsolate<_UserWeightSyncOp> {
         _connectivity = connectivity ?? locator<Connectivity>(),
         super(
           box: box,
-          extractor: (event) {
-            if (event.deleted) {
-              try {
-                return _UserWeightSyncOp(
-                  DateTime.parse(event.key as String),
-                  isDeletion: true,
-                );
-              } catch (_) {
-                return null;
-              }
-            }
-            final value = event.value;
-            if (value is UserWeightDbo) {
-              return _UserWeightSyncOp(value.date);
-            }
-            return null;
-          },
+          extractor: _extractorWithLogging,
           onItemCollected: null,
         );
 
@@ -182,5 +164,30 @@ class UserWeightChangeIsolate extends ChangeIsolate<_UserWeightSyncOp> {
       _syncing = false;
     }
   }
-}
 
+  /// Extractor with logging for event processing
+  static _UserWeightSyncOp? _extractorWithLogging(BoxEvent event) {
+    final logger = Logger('UserWeightChangeIsolate');
+    if (event.deleted) {
+      try {
+        return _UserWeightSyncOp(
+          DateTime.parse(event.key as String),
+          isDeletion: true,
+        );
+      } catch (e, s) {
+        logger.warning(
+            'Failed to parse date from key "${event.key}" for deletion event.',
+            e,
+            s);
+        return null;
+      }
+    }
+
+    final value = event.value;
+    if (value is UserWeightDbo) {
+      return _UserWeightSyncOp(value.date);
+    }
+
+    return null;
+  }
+}
