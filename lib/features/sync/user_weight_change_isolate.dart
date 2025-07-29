@@ -149,12 +149,6 @@ class UserWeightChangeIsolate extends ChangeIsolate<_UserWeightSyncOp> {
         }
 
         if (entries.isNotEmpty) {
-          if (await _connectivity.checkConnectivity() ==
-              ConnectivityResult.none) {
-            _log.warning('Lost connectivity during sync, will retry later.');
-            break;
-          }
-
           _log.info('Upserting ${entries.length} user weights to Supabase.');
           await _service.upsertUserWeights(entries);
         }
@@ -164,13 +158,14 @@ class UserWeightChangeIsolate extends ChangeIsolate<_UserWeightSyncOp> {
       }
 
       for (final op in deletions) {
-        if (await _connectivity.checkConnectivity() == ConnectivityResult.none) {
-          _log.warning('Lost connectivity during deletions, will retry later.');
-          break;
-        }
         _log.info('Deleting user weight ${op.date} from Supabase.');
-        await _service.deleteUserWeight(op.date);
-        await removeItems([op]);
+        try {
+          await _service.deleteUserWeight(op.date);
+          await removeItems([op]);
+          _log.fine('Deleted user weight ${op.date} and removed from queue.');
+        } catch (e, stack) {
+          _log.warning('Deletion of ${op.date} failed: $e', e, stack);
+        }
       }
 
       _log.info('Sync completed.');
