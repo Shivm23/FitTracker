@@ -132,8 +132,15 @@ class UserWeightChangeIsolate extends ChangeIsolate<_UserWeightSyncOp> {
         return;
       }
 
-      final upserts = ops.where((e) => !e.isDeletion).toList();
-      final deletions = ops.where((e) => e.isDeletion).toList();
+      final upserts = <_UserWeightSyncOp>[];
+      final deletions = <_UserWeightSyncOp>[];
+      for (final op in ops) {
+        if (op.isDeletion) {
+          deletions.add(op);
+        } else {
+          upserts.add(op);
+        }
+      }
 
       _log.info('Starting sync for ${ops.length} weight operations.');
 
