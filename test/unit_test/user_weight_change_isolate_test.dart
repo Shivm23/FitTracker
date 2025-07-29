@@ -137,5 +137,33 @@ void main() {
       expect(result.length, 1);
       expect(DateTime.parse(result.first['date']), date);
     });
+
+    test('handles deletions correctly', () async {
+      final date = DateTime.utc(2024, 1, 3);
+
+      await repo.addUserWeight(
+        UserWeightEntity(
+          id: IdGenerator.getUniqueID(),
+          weight: 82,
+          date: date,
+        ),
+      );
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).contains(date));
+
+      await repo.deleteUserWeightByDate(date);
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).isNotEmpty);
+
+      connectivity.emit(ConnectivityResult.wifi);
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).isEmpty);
+
+      final result = await mockSupabase.from('user_weight').select();
+      expect(result, isEmpty);
+    });
   });
 }
