@@ -137,5 +137,103 @@ void main() {
       expect(result.length, 1);
       expect(DateTime.parse(result.first['date']), date);
     });
+
+  test('handles deletions correctly', () async {
+      final date = DateTime.utc(2024, 1, 3);
+
+      await repo.addUserWeight(
+        UserWeightEntity(
+          id: IdGenerator.getUniqueID(),
+          weight: 82,
+          date: date,
+        ),
+      );
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).contains(date));
+
+      await repo.deleteUserWeightByDate(date);
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).isNotEmpty);
+
+      connectivity.emit(ConnectivityResult.wifi);
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).isEmpty);
+
+    final result = await mockSupabase.from('user_weight').select();
+    expect(result, isEmpty);
+  });
+
+    test('retry deletion when Supabase call fails', () async {
+      await watcher.stop();
+      await connectivity.close();
+
+      var failDeletion = true;
+      mockHttpClient = MockSupabaseHttpClient(
+        postgrestExceptionTrigger: (schema, table, data, type) {
+          if (table == 'user_weight' &&
+              type == RequestType.delete &&
+              failDeletion) {
+            throw PostgrestException(message: 'fail', code: '500');
+          }
+        },
+      );
+      mockSupabase = SupabaseClient(
+        'https://mock.supabase.co',
+        'fakeAnonKey',
+        httpClient: mockHttpClient,
+      );
+      weightService = SupabaseUserWeightService(client: mockSupabase);
+      connectivity = FakeConnectivity();
+      watcher = UserWeightChangeIsolate(
+        box,
+        service: weightService,
+        connectivity: connectivity,
+      );
+      await watcher.start();
+
+      final date = DateTime(2024, 1, 4);
+
+      await repo.addUserWeight(
+        UserWeightEntity(
+          id: IdGenerator.getUniqueID(),
+          weight: 83,
+          date: date,
+        ),
+      );
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).contains(date));
+
+      connectivity.emit(ConnectivityResult.wifi);
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).isEmpty);
+
+      await repo.deleteUserWeightByDate(date);
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).isNotEmpty);
+
+      connectivity.emit(ConnectivityResult.wifi);
+
+      // Ensure deletion failed and item is retained
+      await Future.delayed(const Duration(milliseconds: 100));
+      var pending = await watcher.getModifiedWeights();
+      expect(pending,
+          contains(DateTime(date.year, date.month, date.day)));
+
+      // Allow deletion to succeed
+      failDeletion = false;
+      connectivity.emit(ConnectivityResult.wifi);
+
+      await waitForCondition(
+          () async => (await watcher.getModifiedWeights()).isEmpty);
+
+      final result = await mockSupabase.from('user_weight').select();
+      expect(result, isEmpty);
+    });
   });
 }

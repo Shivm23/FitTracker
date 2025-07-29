@@ -10,7 +10,24 @@ import 'package:opennutritracker/features/sync/supabase_client.dart';
 
 /// Watches a [UserWeightDbo] box and synchronizes modified weights
 /// with Supabase as soon as a connection is available.
-class UserWeightChangeIsolate extends ChangeIsolate<DateTime> {
+/// Internal representation of a pending weight synchronization operation.
+class _UserWeightSyncOp {
+  final DateTime date;
+  final bool isDeletion;
+
+  const _UserWeightSyncOp(this.date, {this.isDeletion = false});
+
+  @override
+  bool operator ==(Object other) =>
+      other is _UserWeightSyncOp &&
+      other.date == date &&
+      other.isDeletion == isDeletion;
+
+  @override
+  int get hashCode => date.hashCode ^ isDeletion.hashCode;
+}
+
+class UserWeightChangeIsolate extends ChangeIsolate<_UserWeightSyncOp> {
   final SupabaseUserWeightService _service;
   final Connectivity _connectivity;
   final int batchSize;
@@ -28,15 +45,31 @@ class UserWeightChangeIsolate extends ChangeIsolate<DateTime> {
         super(
           box: box,
           extractor: (event) {
+            if (event.deleted) {
+              try {
+                return _UserWeightSyncOp(
+                  DateTime.parse(event.key as String),
+                  isDeletion: true,
+                );
+              } catch (_) {
+                return null;
+              }
+            }
             final value = event.value;
-            if (value is UserWeightDbo) return value.date;
+            if (value is UserWeightDbo) {
+              return _UserWeightSyncOp(value.date);
+            }
             return null;
           },
           onItemCollected: null,
         );
 
-  /// Convenient proxy to get the pending weight dates.
-  Future<List<DateTime>> getModifiedWeights() => getItems();
+  /// Returns the pending synchronization operations.
+  Future<List<_UserWeightSyncOp>> _getPendingOps() => getItems();
+
+  /// Convenient proxy to get the pending weight dates only.
+  Future<List<DateTime>> getModifiedWeights() async =>
+      (await _getPendingOps()).map((e) => e.date).toList();
 
   /* ---------- Lifecycle ---------- */
 
@@ -93,35 +126,55 @@ class UserWeightChangeIsolate extends ChangeIsolate<DateTime> {
         return;
       }
 
-      final dates = await getModifiedWeights();
-      if (dates.isEmpty) {
+      final ops = await _getPendingOps();
+      if (ops.isEmpty) {
         _log.fine('No modified weights to sync.');
         return;
       }
 
-      _log.info('Starting sync for ${dates.length} weights.');
-      for (var i = 0; i < dates.length; i += batchSize) {
-        final batch = dates.skip(i).take(batchSize).toList();
+      final upserts = <_UserWeightSyncOp>[];
+      final deletions = <_UserWeightSyncOp>[];
+      for (final op in ops) {
+        if (op.isDeletion) {
+          deletions.add(op);
+        } else {
+          upserts.add(op);
+        }
+      }
+
+      _log.info('Starting sync for ${ops.length} weight operations.');
+
+      for (var i = 0; i < upserts.length; i += batchSize) {
+        final batchOps = upserts.skip(i).take(batchSize).toList();
         final entries = <Map<String, dynamic>>[];
 
-        for (final date in batch) {
-          final dbo = box.get(_keyForDate(date)) as UserWeightDbo?;
-          if (dbo != null) entries.add(dbo.toJson());
+        for (final op in batchOps) {
+          final dbo = box.get(_keyForDate(op.date)) as UserWeightDbo?;
+          if (dbo != null) {
+            entries.add(dbo.toJson());
+          }
         }
 
         if (entries.isNotEmpty) {
-          if (await _connectivity.checkConnectivity() ==
-              ConnectivityResult.none) {
-            _log.warning('Lost connectivity during sync, will retry later.');
-            break;
-          }
-
           _log.info('Upserting ${entries.length} user weights to Supabase.');
           await _service.upsertUserWeights(entries);
-          await removeItems(batch);
-          _log.fine('Batch of ${batch.length} weights synced and removed.');
+        }
+
+        await removeItems(batchOps);
+        _log.fine('Batch of ${batchOps.length} upserts synced and removed.');
+      }
+
+      for (final op in deletions) {
+        _log.info('Deleting user weight ${op.date} from Supabase.');
+        try {
+          await _service.deleteUserWeight(op.date);
+          await removeItems([op]);
+          _log.fine('Deleted user weight ${op.date} and removed from queue.');
+        } catch (e, stack) {
+          _log.warning('Deletion of ${op.date} failed: $e', e, stack);
         }
       }
+
       _log.info('Sync completed.');
     } catch (e, stack) {
       _log.severe('Sync failed: $e', e, stack);

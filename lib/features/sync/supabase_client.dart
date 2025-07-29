@@ -7,7 +7,7 @@ class SupabaseTrackedDayService {
   final _log = Logger('DatabaseClient');
 
   SupabaseTrackedDayService({SupabaseClient? client})
-      : _client = client ?? locator<SupabaseClient>();
+    : _client = client ?? locator<SupabaseClient>();
 
   /// Upserts a single tracked day.
   /// Logs any exception that occurs during the operation.
@@ -48,7 +48,7 @@ class SupabaseUserWeightService {
   final _log = Logger('SupabaseUserWeightService');
 
   SupabaseUserWeightService({SupabaseClient? client})
-      : _client = client ?? locator<SupabaseClient>();
+    : _client = client ?? locator<SupabaseClient>();
 
   /// Upserts a single user weight entry.
   /// Logs any exception that occurs during the operation.
@@ -57,6 +57,7 @@ class SupabaseUserWeightService {
       await _client.from('user_weight').upsert(json, onConflict: 'date');
     } catch (e, stackTrace) {
       _log.severe('Failed to upsert user weight: $e', e, stackTrace);
+      rethrow;
     }
   }
 
@@ -69,6 +70,7 @@ class SupabaseUserWeightService {
       await _client.from('user_weight').upsert(weights, onConflict: 'date');
     } catch (e, stackTrace) {
       _log.severe('Failed to upsert user weights: $e', e, stackTrace);
+      rethrow;
     }
   }
 
@@ -80,7 +82,7 @@ class SupabaseUserWeightService {
       await _client.from('user_weight').delete().eq('date', iso);
     } catch (e, stackTrace) {
       _log.severe('Failed to delete user weight: $e', e, stackTrace);
+      rethrow;
     }
   }
 }
-
