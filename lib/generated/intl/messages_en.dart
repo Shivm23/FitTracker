@@ -50,10 +50,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "allItemsLabel": MessageLookupByLibrary.simpleMessage("All"),
         "alphaVersionName": MessageLookupByLibrary.simpleMessage("[Alpha]"),
         "appDescription": MessageLookupByLibrary.simpleMessage(
-            "OpenNutriTracker is a free and open-source calorie and nutrient tracker that respects your privacy."),
+            "AtlasTracker is a free and open-source calorie and nutrient tracker that respects your privacy."),
         "appLicenseLabel":
             MessageLookupByLibrary.simpleMessage("GPL-3.0 license"),
-        "appTitle": MessageLookupByLibrary.simpleMessage("OpenNutriTracker"),
+        "appTitle": MessageLookupByLibrary.simpleMessage("AtlasTracker"),
         "appVersionName": m0,
         "averageWeightBody": MessageLookupByLibrary.simpleMessage(
             "Average user weight over the last seven days. The current day is not counted."),

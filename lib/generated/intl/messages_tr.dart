@@ -50,10 +50,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "allItemsLabel": MessageLookupByLibrary.simpleMessage("Tümü"),
         "alphaVersionName": MessageLookupByLibrary.simpleMessage("[Alpha]"),
         "appDescription": MessageLookupByLibrary.simpleMessage(
-            "OpenNutriTracker, gizliliğinize saygı duyan ücretsiz ve açık kaynaklı bir kalori ve besin takipçisidir."),
+            "AtlasTracker, gizliliğinize saygı duyan ücretsiz ve açık kaynaklı bir kalori ve besin takipçisidir."),
         "appLicenseLabel":
             MessageLookupByLibrary.simpleMessage("GPL-3.0 lisansı"),
-        "appTitle": MessageLookupByLibrary.simpleMessage("OpenNutriTracker"),
+        "appTitle": MessageLookupByLibrary.simpleMessage("AtlasTracker"),
         "appVersionName": m0,
         "baseQuantityLabel":
             MessageLookupByLibrary.simpleMessage("Temel miktar (g/ml)"),

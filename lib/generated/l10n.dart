@@ -50,10 +50,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `OpenNutriTracker`
+  /// `AtlasTracker`
   String get appTitle {
     return Intl.message(
-      'OpenNutriTracker',
+      'AtlasTracker',
       name: 'appTitle',
       desc: '',
       args: [],
@@ -70,10 +70,10 @@ class S {
     );
   }
 
-  /// `OpenNutriTracker is a free and open-source calorie and nutrient tracker that respects your privacy.`
+  /// `AtlasTracker is a free and open-source calorie and nutrient tracker that respects your privacy.`
   String get appDescription {
     return Intl.message(
-      'OpenNutriTracker is a free and open-source calorie and nutrient tracker that respects your privacy.',
+      'AtlasTracker is a free and open-source calorie and nutrient tracker that respects your privacy.',
       name: 'appDescription',
       desc: '',
       args: [],

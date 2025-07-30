@@ -75,14 +75,14 @@ void runAppWithChangeNotifiers(bool userInitialized, bool hasAuthSession,
         AppThemeEntity savedAppTheme) =>
     runApp(ChangeNotifierProvider(
         create: (_) => ThemeModeProvider(appTheme: savedAppTheme),
-        child: OpenNutriTrackerApp(
+        child: AtlasTrackerApp(
             userInitialized: userInitialized, hasAuthSession: hasAuthSession)));
 
-class OpenNutriTrackerApp extends StatelessWidget {
+class AtlasTrackerApp extends StatelessWidget {
   final bool userInitialized;
   final bool hasAuthSession;
 
-  const OpenNutriTrackerApp({
+  const AtlasTrackerApp({
     super.key,
     required this.userInitialized,
     required this.hasAuthSession,

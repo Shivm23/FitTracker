@@ -1,8 +1,8 @@
 {
   "coachStudentsLabel": "Meine Schüler",
-  "appTitle": "OpenNutriTracker",
+  "appTitle": "AtlasTracker",
   "appVersionName": "Version {versionNumber}",
-  "appDescription": "OpenNutriTracker ist ein kostenloser und  quelloffener Kalorien- und Nährstofftracker, der Ihre Privatsphäre respektiert.",
+  "appDescription": "AtlasTracker ist ein kostenloser und  quelloffener Kalorien- und Nährstofftracker, der Ihre Privatsphäre respektiert.",
   "alphaVersionName": "[Alpha]",
   "betaVersionName": "[Beta]",
   "addLabel": "Hinzufügen",

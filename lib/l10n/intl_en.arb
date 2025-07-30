@@ -1,7 +1,7 @@
 {
-  "appTitle": "OpenNutriTracker",
+  "appTitle": "AtlasTracker",
   "appVersionName": "Version {versionNumber}",
-  "appDescription": "OpenNutriTracker is a free and open-source calorie and nutrient tracker that respects your privacy.",
+  "appDescription": "AtlasTracker is a free and open-source calorie and nutrient tracker that respects your privacy.",
   "alphaVersionName": "[Alpha]",
   "averageWeightLabel": "Average Weight",
   "averageWeightBody": "Average user weight over the last seven days. The current day is not counted.",

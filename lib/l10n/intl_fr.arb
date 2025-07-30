@@ -1,7 +1,7 @@
 {
-  "appTitle": "OpenNutriTracker",
+  "appTitle": "AtlasTracker",
   "appVersionName": "Version {versionNumber}",
-  "appDescription": "OpenNutriTracker est un traqueur de calories et de nutriments gratuit et open-source qui respecte votre vie privée.",
+  "appDescription": "AtlasTracker est un traqueur de calories et de nutriments gratuit et open-source qui respecte votre vie privée.",
   "alphaVersionName": "[Alpha]",
   "averageWeightLabel": "Poids moyen",
   "averageWeightBody": "Poids moyen de l'utilisateur sur les sept derniers jours. Le jour courant n'étant pas compté.",
