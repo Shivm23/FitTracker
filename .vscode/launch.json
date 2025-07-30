@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "OpenNutriTracker",
+            "name": "AtlasTracker",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "OpenNutriTracker (profile mode)",
+            "name": "AtlasTracker (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "OpenNutriTracker (release mode)",
+            "name": "AtlasTracker (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

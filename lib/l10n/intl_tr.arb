@@ -1,7 +1,7 @@
 {
-  "appTitle": "OpenNutriTracker",
+  "appTitle": "AtlasTracker",
   "appVersionName": "Versiyon {versionNumber}",
-  "appDescription": "OpenNutriTracker, gizliliğinize saygı duyan ücretsiz ve açık kaynaklı bir kalori ve besin takipçisidir.",
+  "appDescription": "AtlasTracker, gizliliğinize saygı duyan ücretsiz ve açık kaynaklı bir kalori ve besin takipçisidir.",
   "alphaVersionName": "[Alpha]",
   "betaVersionName": "[Beta]",
   "addLabel": "Ekle",

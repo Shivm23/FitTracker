@@ -42,7 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "additionalInfoLabelCustom":
             MessageLookupByLibrary.simpleMessage("Aliment personnalisé"),
         "additionalInfoLabelFDC": MessageLookupByLibrary.simpleMessage(
-            "Plus d\'informations sur\nciqual.anses.fr"),
+            "Plus d\'informations sur\nFoodData Central"),
         "additionalInfoLabelOFF": MessageLookupByLibrary.simpleMessage(
             "Plus d\'informations sur\nOpenFoodFacts"),
         "additionalInfoLabelUnknown":
@@ -51,10 +51,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "allItemsLabel": MessageLookupByLibrary.simpleMessage("Tous"),
         "alphaVersionName": MessageLookupByLibrary.simpleMessage("[Alpha]"),
         "appDescription": MessageLookupByLibrary.simpleMessage(
-            "OpenNutriTracker est un traqueur de calories et de nutriments gratuit et open-source qui respecte votre vie privée."),
+            "AtlasTracker est un traqueur de calories et de nutriments gratuit et open-source qui respecte votre vie privée."),
         "appLicenseLabel":
             MessageLookupByLibrary.simpleMessage("Licence GPL-3.0"),
-        "appTitle": MessageLookupByLibrary.simpleMessage("OpenNutriTracker"),
+        "appTitle": MessageLookupByLibrary.simpleMessage("AtlasTracker"),
         "appVersionName": m0,
         "averageWeightBody": MessageLookupByLibrary.simpleMessage(
             "Poids moyen de l\'utilisateur sur les sept derniers jours. Le jour courant n\'étant pas compté."),
