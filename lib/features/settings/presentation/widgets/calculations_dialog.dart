@@ -31,9 +31,9 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
   Future<void> _loadMacroGoals() async {
     final getMacroGoalUsecase = locator<GetMacroGoalUsecase>();
 
-    final protein = await getMacroGoalUsecase.getProteinsGoal() ?? 120;
-    final carbs = await getMacroGoalUsecase.getCarbsGoal() ?? 250;
-    final fats = await getMacroGoalUsecase.getFatsGoal() ?? 60;
+    final protein = await getMacroGoalUsecase.getProteinsGoal();
+    final carbs = await getMacroGoalUsecase.getCarbsGoal();
+    final fats = await getMacroGoalUsecase.getFatsGoal();
 
     _proteinController.text = protein.toString();
     _carbsController.text = carbs.toString();

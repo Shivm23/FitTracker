@@ -234,6 +234,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Mittagessen"),
         "macroDistributionLabel":
             MessageLookupByLibrary.simpleMessage("Makronährstoff-Verteilung:"),
+        "manageAccountConfirmAction":
+            MessageLookupByLibrary.simpleMessage("Löschung bestätigen"),
+        "manageAccountConfirmMessage": MessageLookupByLibrary.simpleMessage(
+            "Dieser Vorgang kann nicht rückgängig gemacht werden."),
+        "manageAccountConfirmTitle":
+            MessageLookupByLibrary.simpleMessage("Bist du sicher?"),
+        "manageAccountDelete":
+            MessageLookupByLibrary.simpleMessage("Mein Konto löschen"),
+        "manageAccountDescription": MessageLookupByLibrary.simpleMessage(
+            "Wir sammeln nur Daten, die für das ordnungsgemäße Funktionieren der App erforderlich sind:\n\nE-Mail-Adresse: Wird für die Anmeldung und Identifikation des Kontos verwendet.\n\nErnährungsdaten: Dein tägliches Gewicht sowie Kalorien-, Protein-, Fett- und Kohlenhydrataufnahme.\n\nZiele: Deine persönlichen Vorgaben für Kalorien, Protein, Fett und Kohlenhydrate.\n\nAlle Daten werden sicher auf Supabase gespeichert. Wir teilen deine Daten nicht mit Dritten."),
+        "manageAccountEnableSync": MessageLookupByLibrary.simpleMessage(
+            "Supabase-Synchronisierung aktivieren"),
+        "manageAccountTitle":
+            MessageLookupByLibrary.simpleMessage("Konto verwalten"),
         "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Marken"),
         "mealCarbsLabel":
             MessageLookupByLibrary.simpleMessage("Kohlenhydrate pro 100 g/ml"),

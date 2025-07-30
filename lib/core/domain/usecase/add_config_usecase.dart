@@ -25,6 +25,10 @@ class AddConfigUsecase {
     _configRepository.setConfigUsesImperialUnits(usesImperialUnits);
   }
 
+  Future<void> setSupabaseSyncEnabled(bool enabled) async {
+    await _configRepository.setSupabaseSyncEnabled(enabled);
+  }
+
   Future<void> setConfigKcalAdjustment(double kcalAdjustment) async {
     _configRepository.setConfigKcalAdjustment(kcalAdjustment);
   }

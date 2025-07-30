@@ -440,6 +440,13 @@
   "signOutOfflineMessage": "Sie k\u00f6nnen sich nur abmelden, wenn eine Internetverbindung besteht, um Datenverlust zu vermeiden.",
   "signOutSyncFailedMessage": "Daten konnten nicht synchronisiert werden. Bitte sp\u00e4ter erneut anmelden.",
   "noInternetConnectionMessage": "Keine Internetverbindung. Funktion nicht verfügbar.",
-  "setMacrosLabel": "Makroziele festlegen"
+  "setMacrosLabel": "Makroziele festlegen",
+  "manageAccountTitle": "Konto verwalten",
+  "manageAccountDescription": "Wir sammeln nur Daten, die f\u00fcr das ordnungsgem\u00e4\u00dfe Funktionieren der App erforderlich sind:\n\nE-Mail-Adresse: Wird f\u00fcr die Anmeldung und Identifikation des Kontos verwendet.\n\nErn\u00e4hrungsdaten: Dein t\u00e4gliches Gewicht sowie Kalorien-, Protein-, Fett- und Kohlenhydrataufnahme.\n\nZiele: Deine pers\u00f6nlichen Vorgaben f\u00fcr Kalorien, Protein, Fett und Kohlenhydrate.\n\nAlle Daten werden sicher auf Supabase gespeichert. Wir teilen deine Daten nicht mit Dritten.",
+  "manageAccountEnableSync": "Supabase-Synchronisierung aktivieren",
+  "manageAccountDelete": "Mein Konto l\u00f6schen",
+  "manageAccountConfirmTitle": "Bist du sicher?",
+  "manageAccountConfirmMessage": "Dieser Vorgang kann nicht r\u00fcckg\u00e4ngig gemacht werden.",
+  "manageAccountConfirmAction": "L\u00f6schung best\u00e4tigen"
 }
 

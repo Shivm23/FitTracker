@@ -6,6 +6,10 @@ class GetMacroGoalUsecase {
   final MacroGoalRepository _macroGoalRepository =
       locator<MacroGoalRepository>();
 
+  static const double defaultProteins = 120.0;
+  static const double defaultCarbs = 250.0;
+  static const double defaultFats = 60.0;
+
   GetMacroGoalUsecase();
 
   bool isSameOrAfterToday(DateTime target) {
@@ -16,34 +20,34 @@ class GetMacroGoalUsecase {
         targetDateOnly == todayDateOnly;
   }
 
-  Future<double?> getCarbsGoal() async {
+  Future<double> getCarbsGoal() async {
     final macroGoal = await _macroGoalRepository.getMacroGoal();
 
     if (macroGoal != null && isSameOrAfterToday(macroGoal.date)) {
       return macroGoal.newCarbsGoal;
     }
 
-    return macroGoal?.oldCarbsGoal;
+    return macroGoal?.oldCarbsGoal ?? defaultCarbs;
   }
 
-  Future<double?> getFatsGoal() async {
+  Future<double> getFatsGoal() async {
     final macroGoal = await _macroGoalRepository.getMacroGoal();
 
     if (macroGoal != null && isSameOrAfterToday(macroGoal.date)) {
       return macroGoal.newFatsGoal;
     }
 
-    return macroGoal?.oldFatsGoal;
+    return macroGoal?.oldFatsGoal ?? defaultFats;
   }
 
-  Future<double?> getProteinsGoal() async {
+  Future<double> getProteinsGoal() async {
     final macroGoal = await _macroGoalRepository.getMacroGoal();
 
     if (macroGoal != null && isSameOrAfterToday(macroGoal.date)) {
       return macroGoal.newProteinsGoal;
     }
 
-    return macroGoal?.oldProteinsGoal;
+    return macroGoal?.oldProteinsGoal ?? defaultProteins;
   }
 
   /// Optionnel : récupérer l'entité complète

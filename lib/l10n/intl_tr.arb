@@ -445,5 +445,12 @@
   "signOutSyncFailedMessage": "Veriler senkronize edilemedi. Lütfen daha sonra tekrar giriş yapın.",
   "coachStudentsLabel": "Öğrencilerim",
   "noInternetConnectionMessage": "İnternet bağlantısı yok. Özellik kullanılamıyor.",
-  "setMacrosLabel": "Makro hedeflerini ayarla"
+  "setMacrosLabel": "Makro hedeflerini ayarla",
+  "manageAccountTitle": "Hesabı yönet",
+  "manageAccountDescription": "Uygulamanın düzgün çalışması için gerekli olan verileri topluyoruz:\n\nE-posta adresi: giriş ve hesap kimliği için kullanılır.\n\nBeslenme verileri: günlük kilonuz ve aldığınız kalori, protein, yağ ve karbonhidrat miktarı.\n\nHedefler: kalori, protein, yağ ve karbonhidrat için kişiselleştirilmiş hedefleriniz.\n\nTüm veriler Supabase üzerinde güvenli bir şekilde saklanır. Verilerinizi üçüncü taraflarla paylaşmayız.",
+  "manageAccountEnableSync": "Supabase Senkronizasyonunu Etkinleştir",
+  "manageAccountDelete": "Hesabımı Sil",
+  "manageAccountConfirmTitle": "Emin misiniz?",
+  "manageAccountConfirmMessage": "Bu işlem geri alınamaz.",
+  "manageAccountConfirmAction": "Silmeyi Onayla"
 }

@@ -13,6 +13,7 @@ class ConfigEntity extends Equatable {
   final double? userProteinGoal;
   final double? userFatGoal;
   final DateTime? lastDataUpdate;
+  final bool supabaseSyncEnabled;
 
   const ConfigEntity(this.hasAcceptedDisclaimer, this.hasAcceptedPolicy,
       this.hasAcceptedSendAnonymousData, this.appTheme,
@@ -21,7 +22,8 @@ class ConfigEntity extends Equatable {
       this.userCarbGoal,
       this.userProteinGoal,
       this.userFatGoal,
-      this.lastDataUpdate});
+      this.lastDataUpdate,
+      this.supabaseSyncEnabled = true});
 
   factory ConfigEntity.fromConfigDBO(ConfigDBO dbo) => ConfigEntity(
         dbo.hasAcceptedDisclaimer,
@@ -34,6 +36,7 @@ class ConfigEntity extends Equatable {
         userProteinGoal: dbo.userProteinGoal,
         userFatGoal: dbo.userFatGoal,
         lastDataUpdate: dbo.lastDataUpdate,
+        supabaseSyncEnabled: dbo.supabaseSyncEnabled,
       );
 
   @override
@@ -47,5 +50,6 @@ class ConfigEntity extends Equatable {
         userProteinGoal,
         userFatGoal,
         lastDataUpdate,
+        supabaseSyncEnabled,
       ];
 }

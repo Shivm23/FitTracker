@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:opennutritracker/core/data/dbo/tracked_day_dbo.dart';
 import 'package:opennutritracker/core/utils/extensions.dart';
 import 'package:opennutritracker/core/utils/hive_db_provider.dart';
+import 'dart:math' as math;
 
 class TrackedDayDataSource {
   final log = Logger('TrackedDayDataSource');
@@ -83,12 +84,13 @@ class TrackedDayDataSource {
   }
 
   Future<void> decreaseDayCaloriesTracked(
-      DateTime day, double addCalories) async {
+      DateTime day, double subtractCalories) async {
     log.fine('Decreasing tracked day calories');
     final updateDay = await getTrackedDay(day);
 
     if (updateDay != null) {
-      updateDay.caloriesTracked -= addCalories;
+      final newCalories = updateDay.caloriesTracked - subtractCalories;
+      updateDay.caloriesTracked = math.max(0, newCalories);
       await updateDay.save();
     }
   }
@@ -132,21 +134,29 @@ class TrackedDayDataSource {
     }
   }
 
-  Future<void> reduceDayMacroGoal(DateTime day,
-      {double? carbsAmount, double? fatAmount, double? proteinAmount}) async {
+  Future<void> reduceDayMacroGoal(
+    DateTime day, {
+    double? carbsAmount,
+    double? fatAmount,
+    double? proteinAmount,
+  }) async {
     log.fine('Reducing tracked day macro goals');
     final updateDay = await getTrackedDay(day);
 
     if (updateDay != null) {
       if (carbsAmount != null) {
-        updateDay.carbsGoal = (updateDay.carbsGoal ?? 0) - carbsAmount;
+        final updatedCarbs = (updateDay.carbsGoal ?? 0) - carbsAmount;
+        updateDay.carbsGoal = math.max(0, updatedCarbs);
       }
       if (fatAmount != null) {
-        updateDay.fatGoal = (updateDay.fatGoal ?? 0) - fatAmount;
+        final updatedFats = (updateDay.fatGoal ?? 0) - fatAmount;
+        updateDay.fatGoal = math.max(0, updatedFats);
       }
       if (proteinAmount != null) {
-        updateDay.proteinGoal = (updateDay.proteinGoal ?? 0) - proteinAmount;
+        final updatedProteins = (updateDay.proteinGoal ?? 0) - proteinAmount;
+        updateDay.proteinGoal = math.max(0, updatedProteins);
       }
+
       await updateDay.save();
     }
   }
@@ -178,14 +188,16 @@ class TrackedDayDataSource {
 
     if (updateDay != null) {
       if (carbsAmount != null) {
-        updateDay.carbsTracked = (updateDay.carbsTracked ?? 0) - carbsAmount;
+        updateDay.carbsTracked =
+            math.max(0, (updateDay.carbsTracked ?? 0) - carbsAmount);
       }
       if (fatAmount != null) {
-        updateDay.fatTracked = (updateDay.fatTracked ?? 0) - fatAmount;
+        updateDay.fatTracked =
+            math.max(0, (updateDay.fatTracked ?? 0) - fatAmount);
       }
       if (proteinAmount != null) {
         updateDay.proteinTracked =
-            (updateDay.proteinTracked ?? 0) - proteinAmount;
+            math.max(0, (updateDay.proteinTracked ?? 0) - proteinAmount);
       }
       await updateDay.save();
     }

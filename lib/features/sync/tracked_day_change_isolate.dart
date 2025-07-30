@@ -7,6 +7,7 @@ import 'package:opennutritracker/core/data/dbo/tracked_day_dbo.dart';
 import 'package:opennutritracker/core/utils/extensions.dart'; // toParsedDay()
 import 'package:opennutritracker/features/sync/change_isolate.dart';
 import 'package:opennutritracker/features/sync/supabase_client.dart';
+import 'package:opennutritracker/core/data/repository/config_repository.dart';
 import 'package:logging/logging.dart';
 
 /// Watches a [TrackedDayDBO] box and synchronizes modified days
@@ -87,6 +88,14 @@ class TrackedDayChangeIsolate extends ChangeIsolate<DateTime> {
     if (_syncing) {
       _log.fine('Sync already in progress, skipping.');
       return;
+    }
+    if (locator.isRegistered<ConfigRepository>()) {
+      final configRepo = locator<ConfigRepository>();
+      final enabled = await configRepo.getSupabaseSyncEnabled();
+      if (!enabled) {
+        _log.fine('Supabase sync disabled, skipping.');
+        return;
+      }
     }
     _syncing = true; // prevent overlapping runs immediately
     try {

@@ -196,6 +196,60 @@ class HiveDBProvider extends ChangeNotifier {
     ]);
   }
 
+  Future<void> _deleteBox(String baseName) async {
+    final name = _boxName(baseName);
+    if (await Hive.boxExists(name)) {
+      _log.finer('🗑️ Deleting box $name from disk');
+      await Hive.deleteBoxFromDisk(name);
+    }
+  }
+
+  /// Completely removes the Hive database for the currently active user from
+  /// disk.
+  ///
+  /// Only boxes prefixed with the current user's id are removed. All opened
+  /// boxes are closed before deletion. After calling this method, all local
+  /// data for that user will be permanently deleted.
+  Future<void> deleteCurrentUserDatabase() async {
+    if (_userId == null) {
+      _log.warning('deleteCurrentUserDatabase called with no active user');
+      return;
+    }
+
+    _log.info('🗑️ Deleting Hive database for user=$_userId');
+
+    // Ensure boxes are closed and watchers stopped
+    if (Hive.isBoxOpen(_boxName(configBoxName))) {
+      await trackedDayWatcher.stop();
+      await userWeightWatcher.stop();
+      await stopUpdateWatchers();
+
+      await Future.wait([
+        configBox.close(),
+        intakeBox.close(),
+        recipeBox.close(),
+        userActivityBox.close(),
+        userBox.close(),
+        trackedDayBox.close(),
+        userWeightBox.close(),
+        macroGoalBox.close(),
+      ]);
+    }
+
+    await Future.wait([
+      _deleteBox(configBoxName),
+      _deleteBox(intakeBoxName),
+      _deleteBox(userActivityBoxName),
+      _deleteBox(userBoxName),
+      _deleteBox(trackedDayBoxName),
+      _deleteBox(recipeBoxName),
+      _deleteBox(userWeightBoxName),
+      _deleteBox(macroGoalBoxName),
+    ]);
+
+    _log.info('✅ Hive database deleted for user=$_userId');
+  }
+
   /// Helper to (re)initialize Hive for the provided [userId].
   /// This fetches the encryption key from secure storage and delegates
   /// to [initHiveDB].

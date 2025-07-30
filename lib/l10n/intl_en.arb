@@ -453,5 +453,12 @@
   "signOutSyncFailedMessage": "Failed to sync your data. Please sign in again later.",
   "coachStudentsLabel": "My students",
   "noInternetConnectionMessage": "No internet connection. Feature unavailable.",
-  "setMacrosLabel": "Set macros"
+  "setMacrosLabel": "Set macros",
+  "manageAccountTitle": "Manage account",
+  "manageAccountDescription": "We only collect data essential to the proper functioning of the app:\n\nEmail address: used for login and account identification.\n\nNutrition data: your daily weight, calories, protein, fat, and carbohydrate intake.\n\nGoals: your personalized targets for calories, protein, fat, and carbs.\n\nAll data is securely stored on Supabase. We do not share any of your data with third parties.",
+  "manageAccountEnableSync": "Enable Supabase Sync",
+  "manageAccountDelete": "Delete My Account",
+  "manageAccountConfirmTitle": "Are you sure?",
+  "manageAccountConfirmMessage": "This action cannot be undone.",
+  "manageAccountConfirmAction": "Confirm Deletion"
 }

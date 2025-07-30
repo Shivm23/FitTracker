@@ -49,6 +49,18 @@ class ConfigDataSource {
     await config?.save();
   }
 
+  Future<void> setSupabaseSyncEnabled(bool enabled) async {
+    _log.fine('Updating config supabaseSyncEnabled to $enabled');
+    final config = _hive.configBox.get(_configKey);
+    config?.supabaseSyncEnabled = enabled;
+    await config?.save();
+  }
+
+  Future<bool> getSupabaseSyncEnabled() async {
+    final config = _hive.configBox.get(_configKey);
+    return config?.supabaseSyncEnabled ?? true;
+  }
+
   Future<double> getKcalAdjustment() async {
     final config = _hive.configBox.get(_configKey);
     return config?.userKcalAdjustment ?? 0;
