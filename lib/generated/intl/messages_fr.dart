@@ -244,6 +244,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Déjeuner"),
         "macroDistributionLabel": MessageLookupByLibrary.simpleMessage(
             "Répartition des macronutriments :"),
+        "manageAccountConfirmAction":
+            MessageLookupByLibrary.simpleMessage("Confirmer la suppression"),
+        "manageAccountConfirmMessage": MessageLookupByLibrary.simpleMessage(
+            "Cette action est irréversible."),
+        "manageAccountConfirmTitle":
+            MessageLookupByLibrary.simpleMessage("Êtes-vous sûr ?"),
+        "manageAccountDelete":
+            MessageLookupByLibrary.simpleMessage("Supprimer mon compte"),
+        "manageAccountDescription": MessageLookupByLibrary.simpleMessage(
+            "Nous ne collectons que les données essentielles au bon fonctionnement de l\'application :\n\nAdresse e-mail : utilisée pour la connexion et l\'identification du compte.\n\nDonnées nutritionnelles : votre poids quotidien, ainsi que vos apports en calories, protéines, lipides et glucides.\n\nObjectifs : vos cibles personnalisées pour les calories, protéines, lipides et glucides.\n\nToutes les données sont stockées en toute sécurité sur Supabase. Nous ne partageons aucune de vos données avec des tiers."),
+        "manageAccountEnableSync": MessageLookupByLibrary.simpleMessage(
+            "Activer la synchronisation Supabase"),
+        "manageAccountTitle":
+            MessageLookupByLibrary.simpleMessage("Gérer le compte"),
         "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Marques"),
         "mealCarbsLabel": MessageLookupByLibrary.simpleMessage("glucides par"),
         "mealFatLabel": MessageLookupByLibrary.simpleMessage("lipides par"),

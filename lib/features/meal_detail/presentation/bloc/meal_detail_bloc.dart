@@ -121,9 +121,9 @@ class MealDetailBloc extends Bloc<MealDetailEvent, MealDetailState> {
       await _addTrackedDayUsecase.addNewTrackedDay(
         day,
         totalKcalGoal,
-        totalCarbsGoal!,
-        totalFatGoal!,
-        totalProteinGoal!,
+        totalCarbsGoal,
+        totalFatGoal,
+        totalProteinGoal,
       );
     }
 

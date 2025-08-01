@@ -28,12 +28,15 @@ class ConfigDBO extends HiveObject {
   double? userFatGoal;
   @HiveField(9)
   DateTime? lastDataUpdate;
+  @HiveField(10)
+  bool supabaseSyncEnabled;
 
   ConfigDBO(this.hasAcceptedDisclaimer, this.hasAcceptedPolicy,
       this.hasAcceptedSendAnonymousData, this.selectedAppTheme,
       {this.usesImperialUnits = false,
       this.userKcalAdjustment,
-      this.lastDataUpdate});
+      this.lastDataUpdate,
+      this.supabaseSyncEnabled = true});
 
   factory ConfigDBO.empty() => ConfigDBO(
         true,
@@ -43,7 +46,8 @@ class ConfigDBO extends HiveObject {
       )
         ..userCarbGoal = 250
         ..userProteinGoal = 120
-        ..userFatGoal = 60;
+        ..userFatGoal = 60
+        ..supabaseSyncEnabled = true;
 
   factory ConfigDBO.fromConfigEntity(ConfigEntity entity) => ConfigDBO(
       entity.hasAcceptedDisclaimer,
@@ -51,7 +55,8 @@ class ConfigDBO extends HiveObject {
       entity.hasAcceptedSendAnonymousData,
       AppThemeDBO.fromAppThemeEntity(entity.appTheme),
       usesImperialUnits: entity.usesImperialUnits,
-      lastDataUpdate: entity.lastDataUpdate);
+      lastDataUpdate: entity.lastDataUpdate,
+      supabaseSyncEnabled: entity.supabaseSyncEnabled);
 
   factory ConfigDBO.fromJson(Map<String, dynamic> json) =>
       _$ConfigDBOFromJson(json);

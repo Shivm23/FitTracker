@@ -24,6 +24,7 @@ class ConfigDBOAdapter extends TypeAdapter<ConfigDBO> {
       usesImperialUnits: fields[4] as bool?,
       userKcalAdjustment: fields[5] as double?,
       lastDataUpdate: fields[9] as DateTime?,
+      supabaseSyncEnabled: fields[10] as bool,
     )
       ..userCarbGoal = fields[6] as double?
       ..userProteinGoal = fields[7] as double?
@@ -33,7 +34,7 @@ class ConfigDBOAdapter extends TypeAdapter<ConfigDBO> {
   @override
   void write(BinaryWriter writer, ConfigDBO obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.hasAcceptedDisclaimer)
       ..writeByte(1)
@@ -53,7 +54,9 @@ class ConfigDBOAdapter extends TypeAdapter<ConfigDBO> {
       ..writeByte(8)
       ..write(obj.userFatGoal)
       ..writeByte(9)
-      ..write(obj.lastDataUpdate);
+      ..write(obj.lastDataUpdate)
+      ..writeByte(10)
+      ..write(obj.supabaseSyncEnabled);
   }
 
   @override
@@ -81,6 +84,7 @@ ConfigDBO _$ConfigDBOFromJson(Map<String, dynamic> json) => ConfigDBO(
       lastDataUpdate: json['lastDataUpdate'] == null
           ? null
           : DateTime.parse(json['lastDataUpdate'] as String),
+      supabaseSyncEnabled: json['supabaseSyncEnabled'] as bool? ?? true,
     )
       ..userCarbGoal = (json['userCarbGoal'] as num?)?.toDouble()
       ..userProteinGoal = (json['userProteinGoal'] as num?)?.toDouble()
@@ -97,6 +101,7 @@ Map<String, dynamic> _$ConfigDBOToJson(ConfigDBO instance) => <String, dynamic>{
       'userProteinGoal': instance.userProteinGoal,
       'userFatGoal': instance.userFatGoal,
       'lastDataUpdate': instance.lastDataUpdate?.toIso8601String(),
+      'supabaseSyncEnabled': instance.supabaseSyncEnabled,
     };
 
 const _$AppThemeDBOEnumMap = {

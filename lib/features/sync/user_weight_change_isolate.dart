@@ -7,6 +7,7 @@ import 'package:opennutritracker/core/data/data_source/user_weight_dbo.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/sync/change_isolate.dart';
 import 'package:opennutritracker/features/sync/supabase_client.dart';
+import 'package:opennutritracker/core/data/repository/config_repository.dart';
 
 /// Internal representation of a pending weight synchronization operation.
 class _UserWeightSyncOp {
@@ -100,6 +101,14 @@ class UserWeightChangeIsolate extends ChangeIsolate<_UserWeightSyncOp> {
     if (_syncing) {
       _log.fine('Sync already in progress, skipping.');
       return;
+    }
+    if (locator.isRegistered<ConfigRepository>()) {
+      final configRepo = locator<ConfigRepository>();
+      final enabled = await configRepo.getSupabaseSyncEnabled();
+      if (!enabled) {
+        _log.fine('Supabase sync disabled, skipping.');
+        return;
+      }
     }
     _syncing = true;
     try {

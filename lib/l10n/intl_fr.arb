@@ -451,6 +451,13 @@
   "signOutSyncFailedMessage": "Échec de la synchronisation des données. Veuillez vous reconnecter plus tard.",
   "coachStudentsLabel": "Voir mes élèves",
   "noInternetConnectionMessage": "Pas de connexion Internet. Fonctionnalité indisponible.",
-  "setMacrosLabel": "Définir les macros"
+  "setMacrosLabel": "Définir les macros",
+  "manageAccountTitle": "Gérer le compte",
+  "manageAccountDescription": "Nous ne collectons que les données essentielles au bon fonctionnement de l'application :\n\nAdresse e-mail : utilisée pour la connexion et l'identification du compte.\n\nDonnées nutritionnelles : votre poids quotidien, ainsi que vos apports en calories, protéines, lipides et glucides.\n\nObjectifs : vos cibles personnalisées pour les calories, protéines, lipides et glucides.\n\nToutes les données sont stockées en toute sécurité sur Supabase. Nous ne partageons aucune de vos données avec des tiers.",
+  "manageAccountEnableSync": "Activer la synchronisation Supabase",
+  "manageAccountDelete": "Supprimer mon compte",
+  "manageAccountConfirmTitle": "Êtes-vous sûr ?",
+  "manageAccountConfirmMessage": "Cette action est irréversible.",
+  "manageAccountConfirmAction": "Confirmer la suppression"
 }
 

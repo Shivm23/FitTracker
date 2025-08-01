@@ -4541,6 +4541,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Manage account`
+  String get manageAccountTitle {
+    return Intl.message(
+      'Manage account',
+      name: 'manageAccountTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We only collect data essential to the proper functioning of the app:\n\nEmail address: used for login and account identification.\n\nNutrition data: your daily weight, calories, protein, fat, and carbohydrate intake.\n\nGoals: your personalized targets for calories, protein, fat, and carbs.\n\nAll data is securely stored on Supabase. We do not share any of your data with third parties.`
+  String get manageAccountDescription {
+    return Intl.message(
+      'We only collect data essential to the proper functioning of the app:\n\nEmail address: used for login and account identification.\n\nNutrition data: your daily weight, calories, protein, fat, and carbohydrate intake.\n\nGoals: your personalized targets for calories, protein, fat, and carbs.\n\nAll data is securely stored on Supabase. We do not share any of your data with third parties.',
+      name: 'manageAccountDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enable Supabase Sync`
+  String get manageAccountEnableSync {
+    return Intl.message(
+      'Enable Supabase Sync',
+      name: 'manageAccountEnableSync',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete My Account`
+  String get manageAccountDelete {
+    return Intl.message(
+      'Delete My Account',
+      name: 'manageAccountDelete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure?`
+  String get manageAccountConfirmTitle {
+    return Intl.message(
+      'Are you sure?',
+      name: 'manageAccountConfirmTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This action cannot be undone.`
+  String get manageAccountConfirmMessage {
+    return Intl.message(
+      'This action cannot be undone.',
+      name: 'manageAccountConfirmMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Deletion`
+  String get manageAccountConfirmAction {
+    return Intl.message(
+      'Confirm Deletion',
+      name: 'manageAccountConfirmAction',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -95,9 +95,9 @@ class ActivityDetailBloc
       await _addTrackedDayUsecase.addNewTrackedDay(
         day,
         totalKcalGoal,
-        totalCarbsGoal!,
-        totalFatGoal!,
-        totalProteinGoal!,
+        totalCarbsGoal,
+        totalFatGoal,
+        totalProteinGoal,
       );
     }
 

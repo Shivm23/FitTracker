@@ -236,6 +236,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
         "macroDistributionLabel":
             MessageLookupByLibrary.simpleMessage("Macronutrient Distribution:"),
+        "manageAccountConfirmAction":
+            MessageLookupByLibrary.simpleMessage("Confirm Deletion"),
+        "manageAccountConfirmMessage": MessageLookupByLibrary.simpleMessage(
+            "This action cannot be undone."),
+        "manageAccountConfirmTitle":
+            MessageLookupByLibrary.simpleMessage("Are you sure?"),
+        "manageAccountDelete":
+            MessageLookupByLibrary.simpleMessage("Delete My Account"),
+        "manageAccountDescription": MessageLookupByLibrary.simpleMessage(
+            "We only collect data essential to the proper functioning of the app:\n\nEmail address: used for login and account identification.\n\nNutrition data: your daily weight, calories, protein, fat, and carbohydrate intake.\n\nGoals: your personalized targets for calories, protein, fat, and carbs.\n\nAll data is securely stored on Supabase. We do not share any of your data with third parties."),
+        "manageAccountEnableSync":
+            MessageLookupByLibrary.simpleMessage("Enable Supabase Sync"),
+        "manageAccountTitle":
+            MessageLookupByLibrary.simpleMessage("Manage account"),
         "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Brands"),
         "mealCarbsLabel": MessageLookupByLibrary.simpleMessage("carbs per"),
         "mealFatLabel": MessageLookupByLibrary.simpleMessage("fat per"),

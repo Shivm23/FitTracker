@@ -46,6 +46,14 @@ class ConfigRepository {
     _configDataSource.setConfigUsesImperialUnits(usesImperialUnits);
   }
 
+  Future<void> setSupabaseSyncEnabled(bool enabled) async {
+    await _configDataSource.setSupabaseSyncEnabled(enabled);
+  }
+
+  Future<bool> getSupabaseSyncEnabled() async {
+    return await _configDataSource.getSupabaseSyncEnabled();
+  }
+
   Future<double> getConfigKcalAdjustment() async {
     return await _configDataSource.getKcalAdjustment();
   }

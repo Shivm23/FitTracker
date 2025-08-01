@@ -229,6 +229,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Öğle Yemeği"),
         "macroDistributionLabel":
             MessageLookupByLibrary.simpleMessage("Makro besin Dağılımı:"),
+        "manageAccountConfirmAction":
+            MessageLookupByLibrary.simpleMessage("Silmeyi Onayla"),
+        "manageAccountConfirmMessage":
+            MessageLookupByLibrary.simpleMessage("Bu işlem geri alınamaz."),
+        "manageAccountConfirmTitle":
+            MessageLookupByLibrary.simpleMessage("Emin misiniz?"),
+        "manageAccountDelete":
+            MessageLookupByLibrary.simpleMessage("Hesabımı Sil"),
+        "manageAccountDescription": MessageLookupByLibrary.simpleMessage(
+            "Uygulamanın düzgün çalışması için gerekli olan verileri topluyoruz:\n\nE-posta adresi: giriş ve hesap kimliği için kullanılır.\n\nBeslenme verileri: günlük kilonuz ve aldığınız kalori, protein, yağ ve karbonhidrat miktarı.\n\nHedefler: kalori, protein, yağ ve karbonhidrat için kişiselleştirilmiş hedefleriniz.\n\nTüm veriler Supabase üzerinde güvenli bir şekilde saklanır. Verilerinizi üçüncü taraflarla paylaşmayız."),
+        "manageAccountEnableSync": MessageLookupByLibrary.simpleMessage(
+            "Supabase Senkronizasyonunu Etkinleştir"),
+        "manageAccountTitle":
+            MessageLookupByLibrary.simpleMessage("Hesabı yönet"),
         "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Markalar"),
         "mealCarbsLabel":
             MessageLookupByLibrary.simpleMessage("karbonhidrat başına"),
