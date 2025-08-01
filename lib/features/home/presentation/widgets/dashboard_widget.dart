@@ -94,9 +94,12 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                     animation: true,
                     percent: gaugeValue,
                     arcType: ArcType.FULL,
-                    progressColor: Theme.of(context).colorScheme.primary,
-                    arcBackgroundColor:
-                        Theme.of(context).colorScheme.primary.withAlpha(50),
+                    progressColor:
+                        Theme.of(context).colorScheme.primaryContainer,
+                    arcBackgroundColor: Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withAlpha(50),
                     center: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

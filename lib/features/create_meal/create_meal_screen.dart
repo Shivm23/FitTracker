@@ -18,6 +18,7 @@ import 'package:opennutritracker/core/domain/entity/recipe_entity.dart';
 import 'package:opennutritracker/features/create_meal/pick_image_screen.dart';
 import 'package:opennutritracker/core/domain/entity/tracked_day_entity.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:opennutritracker/core/styles/color_macro.dart';
 
 class MealCreationScreen extends StatefulWidget {
   const MealCreationScreen({super.key});
@@ -135,7 +136,7 @@ class _MealCreationScreenState extends State<MealCreationScreen> {
                                       suffixIcon: Padding(
                                         padding: const EdgeInsets.all(
                                           6.0,
-                                        ), // Ajuste l’espacement autour du bouton
+                                        ),
                                         child: PhotoPickerButton(
                                           initialImagePath: _imagePath,
                                           onImagePicked: (imagePath) {
@@ -220,15 +221,10 @@ class _MealCreationScreenState extends State<MealCreationScreen> {
                                                 ).size.width /
                                                 2.5,
                                             colorList: [
-                                              Theme.of(
-                                                context,
-                                              ).colorScheme.primaryContainer,
-                                              Theme.of(
-                                                context,
-                                              ).colorScheme.secondaryContainer,
-                                              Theme.of(
-                                                context,
-                                              ).colorScheme.onTertiaryContainer,
+                                              proteinColor.withValues(
+                                                  alpha: 0.75),
+                                              carbColor.withValues(alpha: 0.75),
+                                              fatColor.withValues(alpha: 0.75),
                                             ],
                                             initialAngleInDegree: 0,
                                             chartType: ChartType.ring,

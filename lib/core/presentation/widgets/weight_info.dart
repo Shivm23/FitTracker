@@ -5,11 +5,13 @@ class WeightInfo extends StatelessWidget {
   final Widget widget;
   final String title;
   final String body;
+  final Color color;
   const WeightInfo(
       {super.key,
       required this.widget,
       required this.title,
-      required this.body});
+      required this.body,
+      required this.color});
 
   void _showInfoDialog(BuildContext context) {
     showDialog(
@@ -28,7 +30,7 @@ class WeightInfo extends StatelessWidget {
       height: 75,
       padding: const EdgeInsets.all(20.0),
       decoration: ShapeDecoration(
-        color: Theme.of(context).cardColor,
+        color: color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),

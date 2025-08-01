@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:opennutritracker/core/styles/color_macro.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
 class MacroNutrientsView extends StatelessWidget {
@@ -31,6 +32,7 @@ class MacroNutrientsView extends StatelessWidget {
               intake: totalCarbsIntake,
               goal: totalCarbsGoal,
               label: S.of(context).carbsLabel,
+              color: carbColor,
             ),
           ),
           Expanded(
@@ -38,6 +40,7 @@ class MacroNutrientsView extends StatelessWidget {
               intake: totalFatsIntake,
               goal: totalFatsGoal,
               label: S.of(context).fatLabel,
+              color: fatColor,
             ),
           ),
           Expanded(
@@ -45,6 +48,7 @@ class MacroNutrientsView extends StatelessWidget {
               intake: totalProteinsIntake,
               goal: totalProteinsGoal,
               label: S.of(context).proteinLabel,
+              color: proteinColor,
             ),
           ),
         ],
@@ -57,11 +61,13 @@ class _MacronutrientItem extends StatelessWidget {
   final double intake;
   final double goal;
   final String label;
+  final Color color;
 
   const _MacronutrientItem({
     required this.intake,
     required this.goal,
     required this.label,
+    required this.color,
   });
 
   double _getGoalPercentage(double goal, double supplied) {
@@ -77,7 +83,6 @@ class _MacronutrientItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final primaryColor = theme.colorScheme.primary;
     final onSurfaceColor = theme.colorScheme.onSurface;
 
     return Column(
@@ -90,8 +95,8 @@ class _MacronutrientItem extends StatelessWidget {
           lineWidth: 6.0,
           animation: true,
           percent: _getGoalPercentage(goal, intake),
-          progressColor: primaryColor,
-          backgroundColor: primaryColor.withAlpha(50),
+          progressColor: color,
+          backgroundColor: color.withAlpha(50),
           circularStrokeCap: CircularStrokeCap.round,
         ),
         const SizedBox(height: 8.0),

@@ -97,7 +97,7 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /* init state.weight */
+    final backgroundColor = Theme.of(context).colorScheme.surfaceContainerLow;
 
     return Scaffold(
       appBar: AppBar(title: Text(S.of(context).weightLabel)),
@@ -108,101 +108,97 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
           child: SingleChildScrollView(
             child: FutureBuilder<WeightSummary>(
               future: _getWeightsSummary(),
-              builder:
-                  (
-                    BuildContext context,
-                    AsyncSnapshot<WeightSummary> snapshot,
-                  ) {
-                    if (snapshot.hasData) {
-                      final WeightSummary weightSummary = snapshot.data!;
-                      final List<WeightData> weightDataList =
-                          weightSummary.weightDataList;
-                      final double averageWeight = roundDecimal(
-                        weightSummary.averageWeight,
-                      );
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<WeightSummary> snapshot,
+              ) {
+                if (snapshot.hasData) {
+                  final WeightSummary weightSummary = snapshot.data!;
+                  final List<WeightData> weightDataList =
+                      weightSummary.weightDataList;
+                  final double averageWeight = roundDecimal(
+                    weightSummary.averageWeight,
+                  );
 
-                      return Column(
-                        children: [
-                          /* WEIGHT SELECTION*/
-                          Container(
-                            padding: const EdgeInsets.all(20.0),
-                            decoration: ShapeDecoration(
-                              color: Theme.of(context).cardColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              shadows: kElevationToShadow[2],
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
+                  return Column(
+                    children: [
+                      /* WEIGHT SELECTION*/
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: ShapeDecoration(
+                          color: backgroundColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          shadows: kElevationToShadow[2],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.remove),
-                                      onPressed: _isEditable
-                                          ? null
-                                          : () => _weightBloc.add(
-                                              WeightDecrement(),
-                                            ),
-                                    ),
-                                    BlocBuilder<WeightBloc, WeightState>(
-                                      bloc: _weightBloc,
-                                      builder: (context, state) {
-                                        return Center(
-                                          child: EditableTextWidget(
-                                            initialValue: state.weight
-                                                .toStringAsFixed(1),
-                                            disabledEnter: _isEditable,
+                                IconButton(
+                                  icon: const Icon(Icons.remove),
+                                  onPressed: _isEditable
+                                      ? null
+                                      : () => _weightBloc.add(
+                                            WeightDecrement(),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: _isEditable
-                                          ? null
-                                          : () => _weightBloc.add(
-                                              WeightIncrement(),
-                                            ),
-                                    ),
-                                  ],
                                 ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton.icon(
-                                    onPressed: _isEditable
-                                        ? null
-                                        : () => _onButtonPressed(context),
-                                    style:
-                                        ElevatedButton.styleFrom(
-                                          foregroundColor: Theme.of(
-                                            context,
-                                          ).colorScheme.onPrimaryContainer,
-                                          backgroundColor: Theme.of(
-                                            context,
-                                          ).colorScheme.primaryContainer,
-                                        ).copyWith(
-                                          elevation:
-                                              ButtonStyleButton.allOrNull(0.0),
-                                        ),
-                                    icon: const Icon(Icons.add_outlined),
-                                    label: Text(S.of(context).buttonSaveLabel),
-                                  ),
+                                BlocBuilder<WeightBloc, WeightState>(
+                                  bloc: _weightBloc,
+                                  builder: (context, state) {
+                                    return Center(
+                                      child: EditableTextWidget(
+                                        initialValue:
+                                            state.weight.toStringAsFixed(1),
+                                        disabledEnter: _isEditable,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.add),
+                                  onPressed: _isEditable
+                                      ? null
+                                      : () => _weightBloc.add(
+                                            WeightIncrement(),
+                                          ),
                                 ),
                               ],
                             ),
-                          ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton.icon(
+                                onPressed: _isEditable
+                                    ? null
+                                    : () => _onButtonPressed(context),
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimaryContainer,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primaryContainer,
+                                ).copyWith(
+                                  elevation: ButtonStyleButton.allOrNull(0.0),
+                                ),
+                                icon: const Icon(Icons.add_outlined),
+                                label: Text(S.of(context).buttonSaveLabel),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
 
-                          /* INFO BOXES */
-                          SizedBox(height: 50),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              WeightInfo(
+                      /* INFO BOXES */
+                      SizedBox(height: 25),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            WeightInfo(
                                 widget: Text(
                                   averageWeight.toString(),
                                   style: Theme.of(
@@ -211,91 +207,88 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
                                 ),
                                 title: S.of(context).averageWeightLabel,
                                 body: S.of(context).averageWeightBody,
-                              ),
-                              SizedBox(width: 20),
-                              Builder(
-                                builder: (context) {
-                                  final delta = roundDecimal(
-                                    _weightBloc.state.weight - averageWeight,
-                                  );
-                                  return WeightInfo(
-                                    widget: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
+                                color: backgroundColor),
+                            SizedBox(width: 20),
+                            Builder(
+                              builder: (context) {
+                                final delta = roundDecimal(
+                                    _weightBloc.state.weight - averageWeight);
+                                return WeightInfo(
+                                  widget: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
                                           AppIcons.getIconForDifference(
-                                            _weightBloc.state.weight,
-                                            averageWeight,
-                                          ),
-                                          size: 26,
+                                              _weightBloc.state.weight,
+                                              averageWeight),
+                                          size: 26),
+                                      Container(
+                                        width: 50,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          delta.abs().toStringAsFixed(1),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall,
                                         ),
-                                        Container(
-                                          width: 50,
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            delta.abs().toStringAsFixed(1),
-                                            style: Theme.of(
-                                              context,
-                                            ).textTheme.headlineSmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    title: S.of(context).deltaWeightLabel,
-                                    body: S.of(context).deltaWeightBody,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
+                                      ),
+                                    ],
+                                  ),
+                                  title: S.of(context).deltaWeightLabel,
+                                  body: S.of(context).deltaWeightBody,
+                                  color: backgroundColor,
+                                );
+                              },
+                            ),
+                          ]),
 
-                          /* GRAPHIC */
-                          SizedBox(height: 10),
-                          Container(
-                            padding: const EdgeInsets.all(20.0),
-                            decoration: ShapeDecoration(
-                              color: Theme.of(context).cardColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              shadows: kElevationToShadow[2],
-                            ),
-                            child: SfCartesianChart(
-                              primaryXAxis: DateTimeAxis(
-                                dateFormat: DateFormat('dd/MM/yyyy'),
-                                intervalType: DateTimeIntervalType.days,
-                                interval: 1,
-                                labelRotation: -90,
-                                maximum: _day.add(Duration(hours: 12)),
-                                minimum: _day.subtract(Duration(days: nbDays)),
-                              ),
-                              primaryYAxis: NumericAxis(
-                                interval: 0.5,
-                                maximum: (averageWeight * 2).round() / 2 + 1.5,
-                                minimum: (averageWeight * 2).round() / 2 - 1.5,
-                              ),
-                              series: <CartesianSeries<WeightData, DateTime>>[
-                                ColumnSeries(
-                                  xValueMapper: (WeightData data, _) =>
-                                      data.date,
-                                  yValueMapper: (WeightData data, _) =>
-                                      data.weight,
-                                  dataSource: weightDataList,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  width:
-                                      0.8, // Vous pouvez ajuster cette valeur (entre 0.0 et 1.0)
-                                ),
-                              ],
-                            ),
+                      /* GRAPHIC */
+                      SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: ShapeDecoration(
+                          color: backgroundColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
                           ),
-                        ],
-                      );
-                    } else {
-                      return const Center(
-                        child: Text('No weight data available.'),
-                      );
-                    }
-                  },
+                          shadows: kElevationToShadow[2],
+                        ),
+                        child: SfCartesianChart(
+                          primaryXAxis: DateTimeAxis(
+                            dateFormat: DateFormat('dd/MM/yyyy'),
+                            intervalType: DateTimeIntervalType.days,
+                            interval: 1,
+                            labelRotation: -90,
+                            maximum: _day.add(Duration(hours: 12)),
+                            minimum: _day.subtract(Duration(days: nbDays)),
+                          ),
+                          primaryYAxis: NumericAxis(
+                            interval: 0.5,
+                            maximum: (averageWeight * 2).round() / 2 + 1.5,
+                            minimum: (averageWeight * 2).round() / 2 - 1.5,
+                          ),
+                          series: <CartesianSeries<WeightData, DateTime>>[
+                            ColumnSeries(
+                              xValueMapper: (WeightData data, _) => data.date,
+                              yValueMapper: (WeightData data, _) => data.weight,
+                              dataSource: weightDataList,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                              width:
+                                  0.8, // Vous pouvez ajuster cette valeur (entre 0.0 et 1.0)
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return const Center(
+                    child: Text('No weight data available.'),
+                  );
+                }
+              },
             ),
           ),
         ),
