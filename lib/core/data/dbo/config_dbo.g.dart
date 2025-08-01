@@ -23,16 +23,18 @@ class ConfigDBOAdapter extends TypeAdapter<ConfigDBO> {
       fields[3] as AppThemeDBO,
       usesImperialUnits: fields[4] as bool?,
       userKcalAdjustment: fields[5] as double?,
+      lastDataUpdate: fields[9] as DateTime?,
+      supabaseSyncEnabled: fields[10] as bool,
     )
-      ..userCarbGoalPct = fields[6] as double?
-      ..userProteinGoalPct = fields[7] as double?
-      ..userFatGoalPct = fields[8] as double?;
+      ..userCarbGoal = fields[6] as double?
+      ..userProteinGoal = fields[7] as double?
+      ..userFatGoal = fields[8] as double?;
   }
 
   @override
   void write(BinaryWriter writer, ConfigDBO obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.hasAcceptedDisclaimer)
       ..writeByte(1)
@@ -46,11 +48,15 @@ class ConfigDBOAdapter extends TypeAdapter<ConfigDBO> {
       ..writeByte(5)
       ..write(obj.userKcalAdjustment)
       ..writeByte(6)
-      ..write(obj.userCarbGoalPct)
+      ..write(obj.userCarbGoal)
       ..writeByte(7)
-      ..write(obj.userProteinGoalPct)
+      ..write(obj.userProteinGoal)
       ..writeByte(8)
-      ..write(obj.userFatGoalPct);
+      ..write(obj.userFatGoal)
+      ..writeByte(9)
+      ..write(obj.lastDataUpdate)
+      ..writeByte(10)
+      ..write(obj.supabaseSyncEnabled);
   }
 
   @override
@@ -75,10 +81,14 @@ ConfigDBO _$ConfigDBOFromJson(Map<String, dynamic> json) => ConfigDBO(
       $enumDecode(_$AppThemeDBOEnumMap, json['selectedAppTheme']),
       usesImperialUnits: json['usesImperialUnits'] as bool? ?? false,
       userKcalAdjustment: (json['userKcalAdjustment'] as num?)?.toDouble(),
+      lastDataUpdate: json['lastDataUpdate'] == null
+          ? null
+          : DateTime.parse(json['lastDataUpdate'] as String),
+      supabaseSyncEnabled: json['supabaseSyncEnabled'] as bool? ?? true,
     )
-      ..userCarbGoalPct = (json['userCarbGoalPct'] as num?)?.toDouble()
-      ..userProteinGoalPct = (json['userProteinGoalPct'] as num?)?.toDouble()
-      ..userFatGoalPct = (json['userFatGoalPct'] as num?)?.toDouble();
+      ..userCarbGoal = (json['userCarbGoal'] as num?)?.toDouble()
+      ..userProteinGoal = (json['userProteinGoal'] as num?)?.toDouble()
+      ..userFatGoal = (json['userFatGoal'] as num?)?.toDouble();
 
 Map<String, dynamic> _$ConfigDBOToJson(ConfigDBO instance) => <String, dynamic>{
       'hasAcceptedDisclaimer': instance.hasAcceptedDisclaimer,
@@ -87,9 +97,11 @@ Map<String, dynamic> _$ConfigDBOToJson(ConfigDBO instance) => <String, dynamic>{
       'selectedAppTheme': _$AppThemeDBOEnumMap[instance.selectedAppTheme]!,
       'usesImperialUnits': instance.usesImperialUnits,
       'userKcalAdjustment': instance.userKcalAdjustment,
-      'userCarbGoalPct': instance.userCarbGoalPct,
-      'userProteinGoalPct': instance.userProteinGoalPct,
-      'userFatGoalPct': instance.userFatGoalPct,
+      'userCarbGoal': instance.userCarbGoal,
+      'userProteinGoal': instance.userProteinGoal,
+      'userFatGoal': instance.userFatGoal,
+      'lastDataUpdate': instance.lastDataUpdate?.toIso8601String(),
+      'supabaseSyncEnabled': instance.supabaseSyncEnabled,
     };
 
 const _$AppThemeDBOEnumMap = {

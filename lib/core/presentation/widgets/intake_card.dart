@@ -6,6 +6,7 @@ import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/core/presentation/widgets/meal_value_unit_text.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
+import 'package:opennutritracker/core/utils/path_helper.dart';
 import 'dart:io';
 
 class IntakeCard extends StatelessWidget {
@@ -49,14 +50,23 @@ class IntakeCard extends StatelessWidget {
                 children: [
                   intake.meal.mainImageUrl != null
                       ? intake.meal.mealOrRecipe == MealOrRecipeEntity.recipe
-                          ? Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: FileImage(
-                                      File(intake.meal.mainImageUrl!)),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                          ? FutureBuilder<String>(
+                              future: PathHelper.localImagePath(
+                                  intake.meal.mainImageUrl!),
+                              builder: (context, snapshot) {
+                                final path = snapshot.data;
+                                if (path == null) {
+                                  return const SizedBox.shrink();
+                                }
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: FileImage(File(path)),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              },
                             )
                           : CachedNetworkImage(
                               cacheManager: locator<CacheManager>(),

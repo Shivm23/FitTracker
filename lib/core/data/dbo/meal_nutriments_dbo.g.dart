@@ -24,8 +24,7 @@ class MealNutrimentsDBOAdapter extends TypeAdapter<MealNutrimentsDBO> {
       sugarsPerQuantity: fields[4] as double?,
       saturatedFatPerQuantity: fields[5] as double?,
       fiberPerQuantity: fields[6] as double?,
-      mealOrRecipe:
-          (fields[7] as MealOrRecipeDBO?) ?? MealOrRecipeDBO.meal,
+      mealOrRecipe: fields[7] as MealOrRecipeDBO,
     );
   }
 

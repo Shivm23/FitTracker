@@ -9,11 +9,11 @@ import 'package:opennutritracker/core/data/dbo/meal_or_recipe_dbo.dart';
 import 'package:opennutritracker/core/data/repository/intake_repository.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
+import 'package:opennutritracker/core/utils/hive_db_provider.dart';
 
 import '../fixture/meal_entity_fixtures.dart';
 
 void main() {
-
   group('IntakeRepository test', () {
     setUp(() {
       TestWidgetsFlutterBinding.ensureInitialized();
@@ -34,30 +34,43 @@ void main() {
     test('returns last added first', () async {
       final box = await Hive.openBox<IntakeDBO>('intake_test');
 
-      final repo = IntakeRepository(IntakeDataSource(box));
+      final hive = HiveDBProvider();
+      hive.intakeBox = box;
+      final repo = IntakeRepository(IntakeDataSource(hive));
 
-
-      await repo.addIntake(IntakeEntity(
+      await repo.addIntake(
+        IntakeEntity(
           id: "1",
           unit: "g",
           amount: 1,
           type: IntakeTypeEntity.breakfast,
           meal: MealEntityFixtures.mealOne,
-          dateTime: DateTime.utc(2024, 1, 1, 0, 0, 0)));
-      await repo.addIntake(IntakeEntity(
+          dateTime: DateTime.utc(2024, 1, 1, 0, 0, 0),
+          updatedAt: DateTime.now().toUtc(),
+        ),
+      );
+      await repo.addIntake(
+        IntakeEntity(
           id: "2",
           unit: "g",
           amount: 1,
           type: IntakeTypeEntity.breakfast,
           meal: MealEntityFixtures.mealTwo,
-          dateTime: DateTime.utc(2024, 1, 2, 0, 0, 0)));
-      await repo.addIntake(IntakeEntity(
+          dateTime: DateTime.utc(2024, 1, 2, 0, 0, 0),
+          updatedAt: DateTime.now().toUtc(),
+        ),
+      );
+      await repo.addIntake(
+        IntakeEntity(
           id: "3",
           unit: "g",
           amount: 1,
           type: IntakeTypeEntity.breakfast,
           meal: MealEntityFixtures.mealThree,
-          dateTime: DateTime.utc(2024, 1, 3, 0, 0, 0)));
+          dateTime: DateTime.utc(2024, 1, 3, 0, 0, 0),
+          updatedAt: DateTime.now().toUtc(),
+        ),
+      );
 
       final recents = (await repo.getRecentIntake()).map((e) => e.id).toList();
       expect(recents, List.from(["3", "2", "1"]));

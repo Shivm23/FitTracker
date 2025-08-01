@@ -5,6 +5,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:opennutritracker/core/presentation/widgets/meal_value_unit_text.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/navigation_options.dart';
+import 'package:opennutritracker/core/utils/path_helper.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
@@ -41,11 +42,21 @@ class MealItemCard extends StatelessWidget {
                     mealEntity.thumbnailImageUrl != null
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image.file(
-                      File(mealEntity.thumbnailImageUrl!),
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
+                    child: FutureBuilder<String>(
+                      future: PathHelper.localImagePath(
+                          mealEntity.thumbnailImageUrl!),
+                      builder: (context, snapshot) {
+                        final path = snapshot.data;
+                        if (path == null) {
+                          return const SizedBox(width: 60, height: 60);
+                        }
+                        return Image.file(
+                          File(path),
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   )
                 : mealEntity.thumbnailImageUrl != null

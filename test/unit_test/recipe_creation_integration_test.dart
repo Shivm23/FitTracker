@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:opennutritracker/core/data/data_source/recipe_data_source.dart';
+import 'package:opennutritracker/core/utils/hive_db_provider.dart';
 import 'package:opennutritracker/core/data/dbo/intake_recipe_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/meal_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/meal_nutriments_dbo.dart';
@@ -44,7 +45,9 @@ void main() {
       Hive.registerAdapter(MealOrRecipeDBOAdapter());
 
       box = await Hive.openBox<RecipesDBO>('recipes_test');
-      final dataSource = RecipesDataSource(box);
+      final hive = HiveDBProvider();
+      hive.recipeBox = box;
+      final dataSource = RecipesDataSource(hive);
       final repo = RecipeRepository(dataSource);
       addUsecase = AddRecipeUsecase(repo);
 

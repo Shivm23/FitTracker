@@ -14,10 +14,6 @@ class ConfigRepository {
     _configDataSource.addConfig(configDBO);
   }
 
-  Future<void> setConfigDisclaimer(bool hasAcceptedDisclaimer) async {
-    _configDataSource.setConfigDisclaimer(hasAcceptedDisclaimer);
-  }
-
   Future<void> setConfigHasAcceptedAnonymousData(
       bool hasAcceptedAnonymousData) async {
     _configDataSource.setConfigAcceptedAnonymousData(hasAcceptedAnonymousData);
@@ -50,6 +46,14 @@ class ConfigRepository {
     _configDataSource.setConfigUsesImperialUnits(usesImperialUnits);
   }
 
+  Future<void> setSupabaseSyncEnabled(bool enabled) async {
+    await _configDataSource.setSupabaseSyncEnabled(enabled);
+  }
+
+  Future<bool> getSupabaseSyncEnabled() async {
+    return await _configDataSource.getSupabaseSyncEnabled();
+  }
+
   Future<double> getConfigKcalAdjustment() async {
     return await _configDataSource.getKcalAdjustment();
   }
@@ -58,9 +62,18 @@ class ConfigRepository {
     _configDataSource.setConfigKcalAdjustment(kcalAdjustment);
   }
 
-  Future<void> setUserMacroPct(double carbs, double protein, double fat) async {
-    _configDataSource.setConfigCarbGoalPct(carbs);
-    _configDataSource.setConfigProteinGoalPct(protein);
-    _configDataSource.setConfigFatGoalPct(fat);
+  Future<void> setUserMacroGoals(
+      double carbs, double protein, double fat) async {
+    _configDataSource.setConfigCarbGoal(carbs);
+    _configDataSource.setConfigProteinGoal(protein);
+    _configDataSource.setConfigFatGoal(fat);
+  }
+
+  Future<void> setLastDataUpdate(DateTime date) async {
+    await _configDataSource.setLastDataUpdate(date);
+  }
+
+  Future<DateTime?> getLastDataUpdate() async {
+    return await _configDataSource.getLastDataUpdate();
   }
 }

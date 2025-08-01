@@ -1,17 +1,17 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:opennutritracker/core/data/dbo/recipe_dbo.dart';
+import 'package:opennutritracker/core/utils/hive_db_provider.dart';
 
 class RecipesDataSource {
   final log = Logger('RecipesDataSource');
-  final Box<RecipesDBO> _recipesBox;
+  final HiveDBProvider _hive;
 
-  RecipesDataSource(this._recipesBox);
+  RecipesDataSource(this._hive);
 
   /// Ajouter une recette complète
   Future<void> addRecipe(RecipesDBO recipe) async {
     log.fine('Adding new recipe to db');
-    await _recipesBox.put(
+    await _hive.recipeBox.put(
         recipe.recipe.code ?? recipe.recipe.name ?? "", recipe);
   }
 
@@ -21,35 +21,35 @@ class RecipesDataSource {
     final Map<String, RecipesDBO> entries = {
       for (var r in recipes) (r.recipe.code ?? r.recipe.name ?? ""): r
     };
-    await _recipesBox.putAll(entries);
+    await _hive.recipeBox.putAll(entries);
   }
 
   /// Supprimer une recette à partir de son code ou nom
   Future<void> deleteRecipe(String key) async {
     log.fine('Deleting recipe with key $key');
-    await _recipesBox.delete(key);
+    await _hive.recipeBox.delete(key);
   }
 
   /// Mettre à jour une recette (remplace tout l'objet)
   Future<void> updateRecipe(String key, RecipesDBO updatedRecipe) async {
     log.fine('Updating recipe with key $key');
-    await _recipesBox.put(key, updatedRecipe);
+    await _hive.recipeBox.put(key, updatedRecipe);
   }
 
   /// Obtenir une recette à partir de son code ou nom
   Future<RecipesDBO?> getRecipeByKey(String key) async {
-    return _recipesBox.get(key);
+    return _hive.recipeBox.get(key);
   }
 
   /// Obtenir toutes les recettes
   Future<List<RecipesDBO>> getAllRecipes() async {
-    return _recipesBox.values.toList();
+    return _hive.recipeBox.values.toList();
   }
 
   /// Rechercher une recette par nom (contains)
   Future<List<RecipesDBO>> searchRecipes(String query) async {
     final lowerQuery = query.toLowerCase();
-    return _recipesBox.values
+    return _hive.recipeBox.values
         .where((recipe) =>
             recipe.recipe.name?.toLowerCase().contains(lowerQuery) ?? false)
         .toList();

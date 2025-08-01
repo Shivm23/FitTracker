@@ -13,3 +13,13 @@ class ImportDataEvent extends ExportImportEvent {
   @override
   List<Object?> get props => [];
 }
+
+class ExportDataSupabaseEvent extends ExportImportEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class ImportDataSupabaseEvent extends ExportImportEvent {
+  @override
+  List<Object?> get props => [];
+}

@@ -11,10 +11,6 @@ class AddConfigUsecase {
     _configRepository.updateConfig(configEntity);
   }
 
-  Future<void> setConfigDisclaimer(bool hasAcceptedDisclaimer) async {
-    _configRepository.setConfigDisclaimer(hasAcceptedDisclaimer);
-  }
-
   Future<void> setConfigHasAcceptedAnonymousData(
       bool hasAcceptedAnonymousData) async {
     _configRepository
@@ -29,12 +25,16 @@ class AddConfigUsecase {
     _configRepository.setConfigUsesImperialUnits(usesImperialUnits);
   }
 
+  Future<void> setSupabaseSyncEnabled(bool enabled) async {
+    await _configRepository.setSupabaseSyncEnabled(enabled);
+  }
+
   Future<void> setConfigKcalAdjustment(double kcalAdjustment) async {
     _configRepository.setConfigKcalAdjustment(kcalAdjustment);
   }
 
-  Future<void> setConfigMacroGoalPct(
-      double carbGoalPct, double proteinGoalPct, double fatPctGoal) async {
-    _configRepository.setUserMacroPct(carbGoalPct, proteinGoalPct, fatPctGoal);
+  Future<void> setConfigMacroGoals(
+      double carbGoal, double proteinGoal, double fatGoal) async {
+    _configRepository.setUserMacroGoals(carbGoal, proteinGoal, fatGoal);
   }
 }

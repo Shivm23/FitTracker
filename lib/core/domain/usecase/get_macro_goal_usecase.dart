@@ -1,32 +1,57 @@
-import 'package:opennutritracker/core/data/repository/config_repository.dart';
-import 'package:opennutritracker/core/utils/calc/macro_calc.dart';
+import 'package:opennutritracker/core/data/repository/macro_goal_repository.dart';
+import 'package:opennutritracker/core/domain/entity/macro_goal_entity.dart';
+import 'package:opennutritracker/core/utils/locator.dart';
 
 class GetMacroGoalUsecase {
-  final ConfigRepository _configRepository;
+  final MacroGoalRepository _macroGoalRepository =
+      locator<MacroGoalRepository>();
 
-  GetMacroGoalUsecase(this._configRepository);
+  static const double defaultProteins = 120.0;
+  static const double defaultCarbs = 250.0;
+  static const double defaultFats = 60.0;
 
-  Future<double> getCarbsGoal(double totalCalorieGoal) async {
-    final config = await _configRepository.getConfig();
-    final userCarbGoal = config.userCarbGoalPct;
+  GetMacroGoalUsecase();
 
-    return MacroCalc.getTotalCarbsGoal(totalCalorieGoal,
-        userCarbsGoal: userCarbGoal);
+  bool isSameOrAfterToday(DateTime target) {
+    final today = DateTime.now();
+    final todayDateOnly = DateTime(today.year, today.month, today.day);
+    final targetDateOnly = DateTime(target.year, target.month, target.day);
+    return targetDateOnly.isAfter(todayDateOnly) ||
+        targetDateOnly == todayDateOnly;
   }
 
-  Future<double> getFatsGoal(double totalCalorieGoal) async {
-    final config = await _configRepository.getConfig();
-    final userFatGoal = config.userFatGoalPct;
+  Future<double> getCarbsGoal() async {
+    final macroGoal = await _macroGoalRepository.getMacroGoal();
 
-    return MacroCalc.getTotalFatsGoal(totalCalorieGoal,
-        userFatsGoal: userFatGoal);
+    if (macroGoal != null && isSameOrAfterToday(macroGoal.date)) {
+      return macroGoal.newCarbsGoal;
+    }
+
+    return macroGoal?.oldCarbsGoal ?? defaultCarbs;
   }
 
-  Future<double> getProteinsGoal(double totalCalorieGoal) async {
-    final config = await _configRepository.getConfig();
-    final userProteinGoal = config.userProteinGoalPct;
+  Future<double> getFatsGoal() async {
+    final macroGoal = await _macroGoalRepository.getMacroGoal();
 
-    return MacroCalc.getTotalProteinsGoal(totalCalorieGoal,
-        userProteinsGoal: userProteinGoal);
+    if (macroGoal != null && isSameOrAfterToday(macroGoal.date)) {
+      return macroGoal.newFatsGoal;
+    }
+
+    return macroGoal?.oldFatsGoal ?? defaultFats;
+  }
+
+  Future<double> getProteinsGoal() async {
+    final macroGoal = await _macroGoalRepository.getMacroGoal();
+
+    if (macroGoal != null && isSameOrAfterToday(macroGoal.date)) {
+      return macroGoal.newProteinsGoal;
+    }
+
+    return macroGoal?.oldProteinsGoal ?? defaultProteins;
+  }
+
+  /// Optionnel : récupérer l'entité complète
+  Future<MacroGoalEntity?> getMacroGoal() async {
+    return await _macroGoalRepository.getMacroGoal();
   }
 }

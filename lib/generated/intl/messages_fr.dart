@@ -42,7 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "additionalInfoLabelCustom":
             MessageLookupByLibrary.simpleMessage("Aliment personnalisé"),
         "additionalInfoLabelFDC": MessageLookupByLibrary.simpleMessage(
-            "Plus d\'informations sur\nciqual.anses.fr"),
+            "Plus d\'informations sur\nFoodData Central"),
         "additionalInfoLabelOFF": MessageLookupByLibrary.simpleMessage(
             "Plus d\'informations sur\nOpenFoodFacts"),
         "additionalInfoLabelUnknown":
@@ -51,10 +51,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "allItemsLabel": MessageLookupByLibrary.simpleMessage("Tous"),
         "alphaVersionName": MessageLookupByLibrary.simpleMessage("[Alpha]"),
         "appDescription": MessageLookupByLibrary.simpleMessage(
-            "OpenNutriTracker est un traqueur de calories et de nutriments gratuit et open-source qui respecte votre vie privée."),
+            "AtlasTracker est un traqueur de calories et de nutriments gratuit et open-source qui respecte votre vie privée."),
         "appLicenseLabel":
             MessageLookupByLibrary.simpleMessage("Licence GPL-3.0"),
-        "appTitle": MessageLookupByLibrary.simpleMessage("OpenNutriTracker"),
+        "appTitle": MessageLookupByLibrary.simpleMessage("AtlasTracker"),
         "appVersionName": m0,
         "averageWeightBody": MessageLookupByLibrary.simpleMessage(
             "Poids moyen de l\'utilisateur sur les sept derniers jours. Le jour courant n\'étant pas compté."),
@@ -87,11 +87,15 @@ class MessageLookup extends MessageLookupByLibrary {
             "Équation de l\'Institut de Médecine"),
         "calculationsTDEELabel":
             MessageLookupByLibrary.simpleMessage("Équation TDEE"),
+        "caloriesLabel": MessageLookupByLibrary.simpleMessage("Calories"),
         "carbohydrateLabel": MessageLookupByLibrary.simpleMessage("glucides"),
+        "carbohydratesLabel": MessageLookupByLibrary.simpleMessage("Glucides"),
         "carbsLabel": MessageLookupByLibrary.simpleMessage("glucides"),
         "chooseWeightGoalLabel": MessageLookupByLibrary.simpleMessage(
             "Choisir l\'objectif de poids"),
         "cmLabel": MessageLookupByLibrary.simpleMessage("cm"),
+        "coachStudentsLabel":
+            MessageLookupByLibrary.simpleMessage("Voir mes élèves"),
         "copyDialogTitle": MessageLookupByLibrary.simpleMessage(
             "Vers quel type de repas voulez-vous copier ?"),
         "copyOrDeleteTimeDialogContent": MessageLookupByLibrary.simpleMessage(
@@ -131,8 +135,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "dinnerExample":
             MessageLookupByLibrary.simpleMessage("ex : soupe, poulet, vin..."),
         "dinnerLabel": MessageLookupByLibrary.simpleMessage("Dîner"),
-        "disclaimerText": MessageLookupByLibrary.simpleMessage(
-            "OpenNutriTracker n\'est pas une application médicale. Toutes les données fournies ne sont pas validées et doivent être utilisées avec prudence. Veuillez maintenir un mode de vie sain et consulter un professionnel si vous avez des problèmes. L\'utilisation pendant la maladie, la grossesse ou l\'allaitement n\'est pas recommandée."),
         "editItemDialogTitle":
             MessageLookupByLibrary.simpleMessage("Modifier l\'élément"),
         "editMealLabel":
@@ -148,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Erreur lors de l\'ouverture de l\'application navigateur"),
         "errorOpeningEmail": MessageLookupByLibrary.simpleMessage(
             "Erreur lors de l\'ouverture de l\'application e-mail"),
+        "errorPrefix": MessageLookupByLibrary.simpleMessage("Erreur :"),
         "errorProductNotFound":
             MessageLookupByLibrary.simpleMessage("Produit non trouvé"),
         "errorRecipeLabel":
@@ -163,9 +166,30 @@ class MessageLookup extends MessageLookupByLibrary {
             "Exporter / Importer des données"),
         "exportImportSuccessLabel": MessageLookupByLibrary.simpleMessage(
             "Exportation / Importation réussie"),
+        "exportImportSupabaseDescription": MessageLookupByLibrary.simpleMessage(
+            "Sauvegardez vos données dans Supabase ou restaurez-les depuis ce stockage."),
+        "exportImportSupabaseLabel": MessageLookupByLibrary.simpleMessage(
+            "Exporter / Importer via Supabase"),
+        "exportSupabaseDescription": MessageLookupByLibrary.simpleMessage(
+            "Sauvegardez vos données dans le stockage Supabase sous forme de fichier zip."),
+        "exportSupabaseLabel":
+            MessageLookupByLibrary.simpleMessage("Exporter vers Supabase"),
         "fatLabel": MessageLookupByLibrary.simpleMessage("lipides"),
+        "fatsLabel": MessageLookupByLibrary.simpleMessage("Lipides"),
         "fiberLabel": MessageLookupByLibrary.simpleMessage("fibres"),
         "flOzUnit": MessageLookupByLibrary.simpleMessage("fl.oz"),
+        "forgotPasswordBackToLogin":
+            MessageLookupByLibrary.simpleMessage("Retour à la connexion"),
+        "forgotPasswordButton": MessageLookupByLibrary.simpleMessage(
+            "Envoyer l\'e-mail de réinitialisation"),
+        "forgotPasswordEmailLabel":
+            MessageLookupByLibrary.simpleMessage("Entrez votre e-mail"),
+        "forgotPasswordEmailSent": MessageLookupByLibrary.simpleMessage(
+            "E-mail envoyé ! Clique sur le lien dans ton e-mail pour choisir un nouveau mot de passe."),
+        "forgotPasswordSendError": MessageLookupByLibrary.simpleMessage(
+            "Erreur lors de l\'envoi de l\'e-mail :"),
+        "forgotPasswordTitle":
+            MessageLookupByLibrary.simpleMessage("Mot de passe oublié ?"),
         "ftLabel": MessageLookupByLibrary.simpleMessage("pieds"),
         "genderFemaleLabel": MessageLookupByLibrary.simpleMessage("♀ femme"),
         "genderLabel": MessageLookupByLibrary.simpleMessage("Sexe"),
@@ -182,6 +206,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "heightLabel": MessageLookupByLibrary.simpleMessage("Taille"),
         "homeLabel": MessageLookupByLibrary.simpleMessage("Accueil"),
         "importAction": MessageLookupByLibrary.simpleMessage("Importer"),
+        "importSupabaseDescription": MessageLookupByLibrary.simpleMessage(
+            "Restaurez vos données à partir d\'une sauvegarde stockée sur Supabase."),
+        "importSupabaseLabel":
+            MessageLookupByLibrary.simpleMessage("Importer depuis Supabase"),
         "infoAddedActivityLabel":
             MessageLookupByLibrary.simpleMessage("Nouvelle activité ajoutée"),
         "infoAddedIntakeLabel":
@@ -194,11 +222,42 @@ class MessageLookup extends MessageLookupByLibrary {
         "kcalLeftLabel": MessageLookupByLibrary.simpleMessage("kcal restantes"),
         "kgLabel": MessageLookupByLibrary.simpleMessage("kg"),
         "lbsLabel": MessageLookupByLibrary.simpleMessage("lbs"),
+        "loginAlreadySignedIn": MessageLookupByLibrary.simpleMessage(
+            "Déjà connecté sur un autre appareil. Veuillez d\'abord vous déconnecter."),
+        "loginButton": MessageLookupByLibrary.simpleMessage("Se connecter"),
+        "loginEmailInvalid":
+            MessageLookupByLibrary.simpleMessage("Adresse e-mail invalide"),
+        "loginEmailLabel": MessageLookupByLibrary.simpleMessage("E-mail"),
+        "loginEmailRequired":
+            MessageLookupByLibrary.simpleMessage("E-mail requis"),
+        "loginError":
+            MessageLookupByLibrary.simpleMessage("Erreur de connexion"),
+        "loginForgotPassword":
+            MessageLookupByLibrary.simpleMessage("Mot de passe oublié ?"),
+        "loginPasswordLabel":
+            MessageLookupByLibrary.simpleMessage("Mot de passe"),
+        "loginTitle": MessageLookupByLibrary.simpleMessage("Connexion"),
+        "loginUnknownError":
+            MessageLookupByLibrary.simpleMessage("Erreur inconnue"),
         "lunchExample":
             MessageLookupByLibrary.simpleMessage("ex : pizza, salade, riz..."),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Déjeuner"),
         "macroDistributionLabel": MessageLookupByLibrary.simpleMessage(
             "Répartition des macronutriments :"),
+        "manageAccountConfirmAction":
+            MessageLookupByLibrary.simpleMessage("Confirmer la suppression"),
+        "manageAccountConfirmMessage": MessageLookupByLibrary.simpleMessage(
+            "Cette action est irréversible."),
+        "manageAccountConfirmTitle":
+            MessageLookupByLibrary.simpleMessage("Êtes-vous sûr ?"),
+        "manageAccountDelete":
+            MessageLookupByLibrary.simpleMessage("Supprimer mon compte"),
+        "manageAccountDescription": MessageLookupByLibrary.simpleMessage(
+            "Nous ne collectons que les données essentielles au bon fonctionnement de l\'application :\n\nAdresse e-mail : utilisée pour la connexion et l\'identification du compte.\n\nDonnées nutritionnelles : votre poids quotidien, ainsi que vos apports en calories, protéines, lipides et glucides.\n\nObjectifs : vos cibles personnalisées pour les calories, protéines, lipides et glucides.\n\nToutes les données sont stockées en toute sécurité sur Supabase. Nous ne partageons aucune de vos données avec des tiers."),
+        "manageAccountEnableSync": MessageLookupByLibrary.simpleMessage(
+            "Activer la synchronisation Supabase"),
+        "manageAccountTitle":
+            MessageLookupByLibrary.simpleMessage("Gérer le compte"),
         "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Marques"),
         "mealCarbsLabel": MessageLookupByLibrary.simpleMessage("glucides par"),
         "mealFatLabel": MessageLookupByLibrary.simpleMessage("lipides par"),
@@ -216,14 +275,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "milliliterUnit": MessageLookupByLibrary.simpleMessage("ml"),
         "missingProductInfo": MessageLookupByLibrary.simpleMessage(
             "Le produit ne contient pas les informations requises sur les kcal ou les macronutriments"),
+        "myStudentsTitle": MessageLookupByLibrary.simpleMessage("Mes élèves"),
         "noActivityRecentlyAddedLabel": MessageLookupByLibrary.simpleMessage(
             "Aucune activité ajoutée récemment"),
+        "noDataToday": MessageLookupByLibrary.simpleMessage(
+            "Aucune donnée pour aujourd’hui"),
         "noFoodAddedLabel":
             MessageLookupByLibrary.simpleMessage("Aucun aliment ajouté"),
+        "noInternetConnectionMessage": MessageLookupByLibrary.simpleMessage(
+            "Pas de connexion Internet. Fonctionnalité indisponible."),
         "noMealsRecentlyAddedLabel": MessageLookupByLibrary.simpleMessage(
             "Aucun repas ajouté récemment"),
         "noResultsFound":
             MessageLookupByLibrary.simpleMessage("Aucun résultat trouvé"),
+        "noStudents": MessageLookupByLibrary.simpleMessage("Aucun élève"),
         "notAvailableLabel": MessageLookupByLibrary.simpleMessage("N/A"),
         "nothingAddedLabel":
             MessageLookupByLibrary.simpleMessage("Rien ajouté"),
@@ -254,54 +319,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Très sévère"),
         "nutritionalStatusUnderweight":
             MessageLookupByLibrary.simpleMessage("Insuffisance pondérale"),
-        "offDisclaimer": MessageLookupByLibrary.simpleMessage(
-            "Les données qui vous sont fournies par cette application sont récupérées de la base de données Open Food Facts. Aucune garantie ne peut être faite quant à l\'exactitude, l\'exhaustivité ou la fiabilité des informations fournies. Les données sont fournies « telles quelles » et la source d\'origine des données (Open Food Facts) n\'est pas responsable des dommages résultant de l\'utilisation des données."),
-        "onboardingActivityQuestionSubtitle":
-            MessageLookupByLibrary.simpleMessage(
-                "Quel est votre niveau d\'activité ? (sans les entraînements)"),
-        "onboardingBirthdayHint":
-            MessageLookupByLibrary.simpleMessage("Entrez la date"),
-        "onboardingBirthdayQuestionSubtitle":
-            MessageLookupByLibrary.simpleMessage(
-                "Quelle est votre date de naissance ?"),
-        "onboardingEnterBirthdayLabel":
-            MessageLookupByLibrary.simpleMessage("Date de naissance"),
-        "onboardingGenderQuestionSubtitle":
-            MessageLookupByLibrary.simpleMessage("Quel est votre sexe ?"),
-        "onboardingGoalQuestionSubtitle": MessageLookupByLibrary.simpleMessage(
-            "Quel est votre objectif de poids actuel ?"),
-        "onboardingHeightExampleHintCm":
-            MessageLookupByLibrary.simpleMessage("ex : 170"),
-        "onboardingHeightExampleHintFt":
-            MessageLookupByLibrary.simpleMessage("ex : 5.8"),
-        "onboardingHeightQuestionSubtitle":
-            MessageLookupByLibrary.simpleMessage(
-                "Quelle est votre taille actuelle ?"),
-        "onboardingIntroDescription": MessageLookupByLibrary.simpleMessage(
-            "Pour commencer, l\'application a besoin de quelques informations vous concernant pour calculer votre objectif calorique quotidien.\nToutes les informations vous concernant sont stockées en toute sécurité sur votre appareil."),
-        "onboardingKcalPerDayLabel":
-            MessageLookupByLibrary.simpleMessage("kcal par jour"),
-        "onboardingOverviewLabel":
-            MessageLookupByLibrary.simpleMessage("Aperçu"),
-        "onboardingSaveUserError": MessageLookupByLibrary.simpleMessage(
-            "Saisie incorrecte, veuillez réessayer"),
-        "onboardingWeightExampleHintKg":
-            MessageLookupByLibrary.simpleMessage("ex : 60"),
-        "onboardingWeightExampleHintLbs":
-            MessageLookupByLibrary.simpleMessage("ex : 132"),
-        "onboardingWeightQuestionSubtitle":
-            MessageLookupByLibrary.simpleMessage(
-                "Quel est votre poids actuel ?"),
-        "onboardingWelcomeLabel":
-            MessageLookupByLibrary.simpleMessage("Bienvenue sur"),
-        "onboardingWrongHeightLabel":
-            MessageLookupByLibrary.simpleMessage("Entrez une taille correcte"),
-        "onboardingWrongWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Entrez un poids correct"),
-        "onboardingYourGoalLabel":
-            MessageLookupByLibrary.simpleMessage("Votre objectif calorique :"),
-        "onboardingYourMacrosGoalLabel": MessageLookupByLibrary.simpleMessage(
-            "Vos objectifs en macronutriments :"),
         "ozUnit": MessageLookupByLibrary.simpleMessage("oz"),
         "paAmericanFootballGeneral":
             MessageLookupByLibrary.simpleMessage("football américain"),
@@ -624,6 +641,18 @@ class MessageLookup extends MessageLookupByLibrary {
             "Majoritairement en marche, en course ou en portant des poids au travail et activités de loisirs actives"),
         "palVeryActiveLabel":
             MessageLookupByLibrary.simpleMessage("Très actif"),
+        "passwordDigit":
+            MessageLookupByLibrary.simpleMessage("Au moins 1 chiffre"),
+        "passwordLowercase":
+            MessageLookupByLibrary.simpleMessage("Au moins 1 minuscule"),
+        "passwordMinLength":
+            MessageLookupByLibrary.simpleMessage("Au moins 8 caractères"),
+        "passwordRequired":
+            MessageLookupByLibrary.simpleMessage("Mot de passe requis"),
+        "passwordSpecialChar": MessageLookupByLibrary.simpleMessage(
+            "Au moins 1 caractère spécial"),
+        "passwordUppercase":
+            MessageLookupByLibrary.simpleMessage("Au moins 1 majuscule"),
         "per100gmlLabel": MessageLookupByLibrary.simpleMessage("Pour 100g/ml"),
         "perServingLabel": MessageLookupByLibrary.simpleMessage("Par portion"),
         "portionEatLabel":
@@ -632,6 +661,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Politique de confidentialité"),
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profil"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("protéines"),
+        "proteinsLabel": MessageLookupByLibrary.simpleMessage("Protéines"),
         "quantityLabel": MessageLookupByLibrary.simpleMessage("Quantité"),
         "readLabel": MessageLookupByLibrary.simpleMessage(
             "J\'ai lu et j\'accepte la politique de confidentialité."),
@@ -639,7 +669,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "recipeLabel": MessageLookupByLibrary.simpleMessage("Recette"),
         "reportErrorDialogText": MessageLookupByLibrary.simpleMessage(
             "Voulez-vous signaler une erreur au développeur ?"),
+        "resetPasswordButton":
+            MessageLookupByLibrary.simpleMessage("Changer le mot de passe"),
+        "resetPasswordChanged": MessageLookupByLibrary.simpleMessage(
+            "Mot de passe changé ! Tu peux maintenant te connecter avec ton nouveau mot de passe."),
+        "resetPasswordConfirmLabel":
+            MessageLookupByLibrary.simpleMessage("Confirmer le mot de passe"),
+        "resetPasswordNewLabel":
+            MessageLookupByLibrary.simpleMessage("Nouveau mot de passe"),
+        "resetPasswordNoMatch": MessageLookupByLibrary.simpleMessage(
+            "Les mots de passe ne correspondent pas"),
+        "resetPasswordTips": MessageLookupByLibrary.simpleMessage(
+            "• Utilise au moins 8 caractères\n• Mélange chiffres & caractères spéciaux\n• Majuscules + minuscules"),
+        "resetPasswordTitle":
+            MessageLookupByLibrary.simpleMessage("Nouveau mot de passe"),
         "retryLabel": MessageLookupByLibrary.simpleMessage("Réessayer"),
+        "roleCoachLabel": MessageLookupByLibrary.simpleMessage("Coach"),
+        "roleLabel": MessageLookupByLibrary.simpleMessage("Rôle"),
+        "roleStudentLabel": MessageLookupByLibrary.simpleMessage("Élève"),
         "saturatedFatLabel":
             MessageLookupByLibrary.simpleMessage("graisses saturées"),
         "scanProductLabel":
@@ -657,6 +704,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sélectionner la taille"),
         "selectPalCategoryLabel": MessageLookupByLibrary.simpleMessage(
             "Sélectionner le niveau d\'activité"),
+        "selectRoleDialogLabel":
+            MessageLookupByLibrary.simpleMessage("Sélectionner le rôle"),
         "selectWeightDialogLabel":
             MessageLookupByLibrary.simpleMessage("Sélectionner le poids"),
         "sendAnonymousUserData": MessageLookupByLibrary.simpleMessage(
@@ -666,13 +715,13 @@ class MessageLookup extends MessageLookupByLibrary {
             "Taille de la portion (oz/fl oz)"),
         "servingSizeLabelMetric":
             MessageLookupByLibrary.simpleMessage("Taille de la portion (g/ml)"),
+        "setMacrosLabel":
+            MessageLookupByLibrary.simpleMessage("Définir les macros"),
         "settingAboutLabel": MessageLookupByLibrary.simpleMessage("À propos"),
         "settingFeedbackLabel":
             MessageLookupByLibrary.simpleMessage("Commentaires"),
         "settingsCalculationsLabel":
             MessageLookupByLibrary.simpleMessage("Calculs"),
-        "settingsDisclaimerLabel":
-            MessageLookupByLibrary.simpleMessage("Avertissement"),
         "settingsDistanceLabel":
             MessageLookupByLibrary.simpleMessage("Distance"),
         "settingsImperialLabel":
@@ -698,6 +747,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Par défaut du système"),
         "settingsUnitsLabel": MessageLookupByLibrary.simpleMessage("Unités"),
         "settingsVolumeLabel": MessageLookupByLibrary.simpleMessage("Volume"),
+        "signOutOfflineMessage": MessageLookupByLibrary.simpleMessage(
+            "Vous ne pouvez vous déconnecter que lorsque la connexion internet est rétablie pour ne pas perdre vos données."),
+        "signOutSyncFailedMessage": MessageLookupByLibrary.simpleMessage(
+            "Échec de la synchronisation des données. Veuillez vous reconnecter plus tard."),
         "snackExample": MessageLookupByLibrary.simpleMessage(
             "ex : pomme, glace, chocolat..."),
         "snackLabel": MessageLookupByLibrary.simpleMessage("Collation"),
