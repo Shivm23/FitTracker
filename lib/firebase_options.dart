@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'atlas-tracker-b389e.firebasestorage.app',
     iosBundleId: 'com.opennutritracker2025.ont.opennutritracker',
   );
+
 }
