@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -17,101 +18,139 @@ class SetStudentMacrosPage extends StatefulWidget {
 class _SetStudentMacrosPageState extends State<SetStudentMacrosPage> {
   DateTime _startDate = DateTime.now();
   final log = Logger('SetStudentMacrosPage');
-  final _kcalController = TextEditingController(text: '2000');
   final _carbsController = TextEditingController(text: '250');
   final _fatController = TextEditingController(text: '60');
   final _proteinController = TextEditingController(text: '120');
 
+  int _calculatedCalories = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateCalories();
+
+    _carbsController.addListener(_calculateCalories);
+    _fatController.addListener(_calculateCalories);
+    _proteinController.addListener(_calculateCalories);
+  }
+
   @override
   void dispose() {
-    _kcalController.dispose();
     _carbsController.dispose();
     _fatController.dispose();
     _proteinController.dispose();
     super.dispose();
   }
 
+  void _calculateCalories() {
+    final carbs = int.tryParse(_carbsController.text) ?? 0;
+    final fat = int.tryParse(_fatController.text) ?? 0;
+    final protein = int.tryParse(_proteinController.text) ?? 0;
+
+    setState(() {
+      _calculatedCalories = (carbs * 4) + (fat * 9) + (protein * 4);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(S.of(context).setMacrosLabel),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.chevron_left),
-                  onPressed: _goToPreviousDay,
-                ),
-                InkWell(
-                  onTap: _selectDate,
-                  child: Row(
-                    children: [
-                      Text(
-                        DateFormat('yyyy-MM-dd').format(_startDate),
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const Icon(Icons.arrow_drop_down),
-                    ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Date selector
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.chevron_left),
+                    onPressed: _goToPreviousDay,
                   ),
+                  InkWell(
+                    onTap: _selectDate,
+                    child: Row(
+                      children: [
+                        Text(
+                          DateFormat('yyyy-MM-dd').format(_startDate),
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const Icon(Icons.arrow_drop_down),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.chevron_right),
+                    onPressed: _goToNextDay,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              // Glucides
+              TextFormField(
+                controller: _carbsController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: S.of(context).carbsLabel,
                 ),
-                IconButton(
-                  icon: const Icon(Icons.chevron_right),
-                  onPressed: _goToNextDay,
+              ),
+              const SizedBox(height: 16),
+
+              // Lipides
+              TextFormField(
+                controller: _fatController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: S.of(context).fatLabel,
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _kcalController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: S.of(context).caloriesLabel,
               ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _carbsController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: S.of(context).carbsLabel,
+              const SizedBox(height: 16),
+
+              // Protéines
+              TextFormField(
+                controller: _proteinController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: S.of(context).proteinLabel,
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _fatController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: S.of(context).fatLabel,
+              const SizedBox(height: 24),
+
+              // Calories affichées
+              Center(
+                child: Text(
+                  '${S.of(context).caloriesLabel}: $_calculatedCalories kcal',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _proteinController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: S.of(context).proteinLabel,
+
+              const SizedBox(height: 32),
+
+              // Bouton Enregistrer
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: _saveMacros,
+                  child: Text(S.of(context).buttonSaveLabel),
+                ),
               ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: _saveMacros,
-                child: Text(S.of(context).buttonSaveLabel),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -149,7 +188,7 @@ class _SetStudentMacrosPageState extends State<SetStudentMacrosPage> {
       final json = {
         'user_id': widget.studentId,
         'start_date': DateFormat('yyyy-MM-dd').format(_startDate),
-        'calorie_goal': int.parse(_kcalController.text),
+        'calorie_goal': _calculatedCalories,
         'carb_goal': int.parse(_carbsController.text),
         'fat_goal': int.parse(_fatController.text),
         'protein_goal': int.parse(_proteinController.text),
@@ -168,8 +207,10 @@ class _SetStudentMacrosPageState extends State<SetStudentMacrosPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-                  "Problème lors de l'enregistrement des objectifs macro.")),
+            content: Text(
+              "Problème lors de l'enregistrement des objectifs macro.",
+            ),
+          ),
         );
       }
     }
