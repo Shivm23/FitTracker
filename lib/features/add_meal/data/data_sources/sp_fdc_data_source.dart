@@ -21,7 +21,7 @@ class SpFdcDataSource {
       final response = await supaBaseClient
           .from(SPConst.fdcFoodTableName)
           .select(
-              '''${SPConst.fdcFoodPictureUrl}, $queryDescriptionColumn, ${SPConst.fdcFoodPictureUrl}, fdc_portions (  ${SPConst.fdcPortionsMeasureUnitId}, ${SPConst.fdcPortionsAmount}, ${SPConst.fdcPortionsGramWeight} ), fdc_nutrients ( ${SPConst.fdcNutrientId}, ${SPConst.fdcNutrientsAmount} )''')
+              '''${SPConst.fdcFoodId}, $queryDescriptionColumn, fdc_portions (  ${SPConst.fdcPortionsMeasureUnitId}, ${SPConst.fdcPortionsAmount}, ${SPConst.fdcPortionsGramWeight} ), fdc_nutrients ( ${SPConst.fdcNutrientId}, ${SPConst.fdcNutrientsAmount} )''')
           .textSearch(queryDescriptionColumn, searchString,
               type: TextSearchType.websearch)
           .limit(SPConst.maxNumberOfItems);
