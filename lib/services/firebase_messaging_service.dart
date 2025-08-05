@@ -15,6 +15,7 @@ class FirebaseMessagingService {
   static final FirebaseMessagingService _instance =
       FirebaseMessagingService._internal();
   factory FirebaseMessagingService.instance() => _instance;
+  String? _lastMessageId;
 
   final Logger log = Logger('FirebaseMessagingService');
 
@@ -132,10 +133,15 @@ class FirebaseMessagingService {
   }
 
   void _onForegroundMessage(RemoteMessage message) async {
+    if (message.messageId != null && message.messageId == _lastMessageId) {
+      log.warning('[🛑] Notification déjà traitée: ${message.messageId}');
+      return;
+    }
     log.fine('[📥] Message reçu en foreground');
     log.fine(
         '🔸 Notification: ${message.notification?.title} - ${message.notification?.body}');
     log.fine('🔸 Données: ${message.data}');
+    log.fine('🔹 Message ID: ${message.messageId}');
 
     final notificationData = message.notification;
     if (notificationData != null) {
@@ -148,21 +154,17 @@ class FirebaseMessagingService {
       log.warning('[⚠️] Aucune donnée de notification à afficher');
     }
 
-    // If a student received a notification, update macro goals
-    final user = await locator.get<GetUserUsecase>().getUserData();
-    if (user.role == UserRoleEntity.student) {
-      try {
-        await locator.get<AddMacroGoalUsecase>().addMacroGoalFromCoach();
-        log.fine('[✅] Objectifs macro mis à jour depuis Supabase');
-        // Refresh Home Page
-        locator<HomeBloc>().add(const LoadItemsEvent());
-        // Refresh Diary Page
-        locator<DiaryBloc>().add(const LoadDiaryYearEvent());
-        locator<CalendarDayBloc>().add(RefreshCalendarDayEvent());
-      } catch (e, stack) {
-        log.warning('[❌] Erreur lors de la mise à jour des macros : $e');
-        log.warning(stack.toString());
-      }
+    try {
+      await locator.get<AddMacroGoalUsecase>().addMacroGoalFromCoach();
+      log.fine('[✅] Objectifs macro mis à jour depuis Supabase');
+      // Refresh Home Page
+      locator<HomeBloc>().add(const LoadItemsEvent());
+      // Refresh Diary Page
+      locator<DiaryBloc>().add(const LoadDiaryYearEvent());
+      locator<CalendarDayBloc>().add(RefreshCalendarDayEvent());
+    } catch (e, stack) {
+      log.warning('[❌] Erreur lors de la mise à jour des macros : $e');
+      log.warning(stack.toString());
     }
   }
 
