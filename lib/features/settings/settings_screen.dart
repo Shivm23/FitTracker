@@ -5,7 +5,6 @@ import 'package:opennutritracker/core/presentation/widgets/app_banner_version.da
 import 'package:opennutritracker/core/utils/app_const.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/theme_mode_provider.dart';
-import 'package:opennutritracker/core/utils/url_const.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
 import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/profile/presentation/bloc/profile_bloc.dart';
@@ -360,28 +359,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Text(S.of(context).settingsSourceCodeLabel),
                   ],
                 )),
-            TextButton(
-                onPressed: () {
-                  _launchPrivacyPolicyUrl(context);
-                },
-                child: Row(
-                  children: [
-                    const Icon(Icons.policy_outlined),
-                    const SizedBox(width: 8.0),
-                    Text(S.of(context).privacyPolicyLabel),
-                  ],
-                ))
           ]);
     }
   }
 
   void _launchSourceCodeUrl(BuildContext context) async {
     final sourceCodeUri = Uri.parse(AppConst.sourceCodeUrl);
-    _launchUrl(context, sourceCodeUri);
-  }
-
-  void _launchPrivacyPolicyUrl(BuildContext context) async {
-    final sourceCodeUri = Uri.parse(URLConst.privacyPolicyURLEn);
     _launchUrl(context, sourceCodeUri);
   }
 
