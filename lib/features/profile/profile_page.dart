@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opennutritracker/core/domain/entity/user_bmi_entity.dart';
@@ -244,6 +245,25 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           title: const Text('Log out'),
           onTap: () => safeSignOut(context),
+        ),
+        const SizedBox(height: 12),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
+                backgroundColor: Theme.of(context).colorScheme.errorContainer,
+              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+              icon: const Icon(Icons.bug_report_outlined),
+              label: const Text("Simuler un crash"),
+              onPressed: () {
+                FirebaseCrashlytics.instance.crash();
+              },
+            ),
+          ),
         ),
       ],
     );
