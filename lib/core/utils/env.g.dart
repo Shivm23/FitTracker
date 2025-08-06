@@ -32,37 +32,13 @@ final class _Env {
     580232904,
   ];
 
-  static final String fdcApiKey = String.fromCharCodes(List<int>.generate(
-    _envieddatafdcApiKey.length,
-    (int i) => i,
-    growable: false,
-  ).map((int i) => _envieddatafdcApiKey[i] ^ _enviedkeyfdcApiKey[i]));
-
-  static const List<int> _enviedkeysentryDns = <int>[
-    4065897516,
-    1786406579,
-    1205664123,
-    2120058108,
-    1194277666,
-    3924344519,
-    4147071270,
-  ];
-
-  static const List<int> _envieddatasentryDns = <int>[
-    4065897576,
-    1786406653,
-    1205664040,
-    2120058019,
-    1194277751,
-    3924344469,
-    4147071338,
-  ];
-
-  static final String sentryDns = String.fromCharCodes(List<int>.generate(
-    _envieddatasentryDns.length,
-    (int i) => i,
-    growable: false,
-  ).map((int i) => _envieddatasentryDns[i] ^ _enviedkeysentryDns[i]));
+  static final String fdcApiKey = String.fromCharCodes(
+    List<int>.generate(
+      _envieddatafdcApiKey.length,
+      (int i) => i,
+      growable: false,
+    ).map((int i) => _envieddatafdcApiKey[i] ^ _enviedkeyfdcApiKey[i]),
+  );
 
   static const List<int> _enviedkeysupabaseProjectUrl = <int>[
     2470113399,
@@ -151,12 +127,15 @@ final class _Env {
   ];
 
   static final String supabaseProjectUrl = String.fromCharCodes(
-      List<int>.generate(
-    _envieddatasupabaseProjectUrl.length,
-    (int i) => i,
-    growable: false,
-  ).map((int i) =>
-          _envieddatasupabaseProjectUrl[i] ^ _enviedkeysupabaseProjectUrl[i]));
+    List<int>.generate(
+      _envieddatasupabaseProjectUrl.length,
+      (int i) => i,
+      growable: false,
+    ).map(
+      (int i) =>
+          _envieddatasupabaseProjectUrl[i] ^ _enviedkeysupabaseProjectUrl[i],
+    ),
+  );
 
   static const List<int> _enviedkeysupabaseProjectAnonKey = <int>[
     4123831419,
@@ -581,11 +560,14 @@ final class _Env {
   ];
 
   static final String supabaseProjectAnonKey = String.fromCharCodes(
-      List<int>.generate(
-    _envieddatasupabaseProjectAnonKey.length,
-    (int i) => i,
-    growable: false,
-  ).map((int i) =>
+    List<int>.generate(
+      _envieddatasupabaseProjectAnonKey.length,
+      (int i) => i,
+      growable: false,
+    ).map(
+      (int i) =>
           _envieddatasupabaseProjectAnonKey[i] ^
-          _enviedkeysupabaseProjectAnonKey[i]));
+          _enviedkeysupabaseProjectAnonKey[i],
+    ),
+  );
 }
