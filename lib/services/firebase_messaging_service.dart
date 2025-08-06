@@ -137,6 +137,7 @@ class FirebaseMessagingService {
       log.warning('[🛑] Notification déjà traitée: ${message.messageId}');
       return;
     }
+    _lastMessageId = message.messageId;
     log.fine('[📥] Message reçu en foreground');
     log.fine(
         '🔸 Notification: ${message.notification?.title} - ${message.notification?.body}');
