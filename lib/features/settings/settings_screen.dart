@@ -5,7 +5,6 @@ import 'package:opennutritracker/core/presentation/widgets/app_banner_version.da
 import 'package:opennutritracker/core/utils/app_const.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/theme_mode_provider.dart';
-import 'package:opennutritracker/core/utils/url_const.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
 import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/profile/presentation/bloc/profile_bloc.dart';
@@ -16,7 +15,7 @@ import 'package:opennutritracker/features/settings/presentation/widgets/calculat
 import 'package:opennutritracker/generated/l10n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -44,9 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).settingsLabel),
-      ),
+      appBar: AppBar(title: Text(S.of(context).settingsLabel)),
       body: BlocBuilder<SettingsBloc, SettingsState>(
         bloc: _settingsBloc,
         builder: (context, state) {
@@ -101,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: () => _showAboutDialog(context),
                 ),
                 const SizedBox(height: 32.0),
-                AppBannerVersion(versionNumber: state.versionNumber)
+                AppBannerVersion(versionNumber: state.versionNumber),
               ],
             );
           }
@@ -116,46 +113,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ? SystemDropDownType.imperial
         : SystemDropDownType.metric;
     final shouldUpdate = await showDialog<bool?>(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Text(S.of(context).settingsUnitsLabel),
-              content: Wrap(children: [
-                Column(
-                  children: [
-                    DropdownButtonFormField(
-                      value: selectedUnit,
-                      decoration: InputDecoration(
-                        enabled: true,
-                        filled: false,
-                        labelText: S.of(context).settingsSystemLabel,
-                      ),
-                      onChanged: (value) {
-                        selectedUnit = value ?? SystemDropDownType.metric;
-                      },
-                      items: [
-                        DropdownMenuItem(
-                            value: SystemDropDownType.metric,
-                            child: Text(S.of(context).settingsMetricLabel)),
-                        DropdownMenuItem(
-                            value: SystemDropDownType.imperial,
-                            child: Text(S.of(context).settingsImperialLabel))
-                      ],
-                    )
-                  ],
-                ),
-              ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(S.of(context).settingsUnitsLabel),
+          content: Wrap(
+            children: [
+              Column(
+                children: [
+                  DropdownButtonFormField(
+                    value: selectedUnit,
+                    decoration: InputDecoration(
+                      enabled: true,
+                      filled: false,
+                      labelText: S.of(context).settingsSystemLabel,
+                    ),
+                    onChanged: (value) {
+                      selectedUnit = value ?? SystemDropDownType.metric;
                     },
-                    child: Text(S.of(context).dialogOKLabel))
-              ]);
-        });
+                    items: [
+                      DropdownMenuItem(
+                        value: SystemDropDownType.metric,
+                        child: Text(S.of(context).settingsMetricLabel),
+                      ),
+                      DropdownMenuItem(
+                        value: SystemDropDownType.imperial,
+                        child: Text(S.of(context).settingsImperialLabel),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text(S.of(context).dialogOKLabel),
+            ),
+          ],
+        );
+      },
+    );
     if (shouldUpdate == true) {
-      _settingsBloc
-          .setUsesImperialUnits(selectedUnit == SystemDropDownType.imperial);
+      _settingsBloc.setUsesImperialUnits(
+        selectedUnit == SystemDropDownType.imperial,
+      );
       _settingsBloc.add(LoadSettingsEvent());
 
       // Update blocs
@@ -166,17 +171,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showCalculationsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => CalculationsDialog(),
-    );
+    showDialog(context: context, builder: (context) => CalculationsDialog());
   }
 
   void _showExportImportDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => ExportImportDialog(),
-    );
+    showDialog(context: context, builder: (context) => ExportImportDialog());
   }
 
   void _showExportImportSupabaseDialog(BuildContext context) {
@@ -189,102 +188,114 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _showThemeDialog(BuildContext context, AppThemeEntity currentAppTheme) {
     AppThemeEntity selectedTheme = currentAppTheme;
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            contentPadding: EdgeInsets.zero,
-            title: Text(S.of(context).settingsThemeLabel),
-            content: StatefulBuilder(
-              builder: (BuildContext context,
-                  void Function(void Function()) setState) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    RadioListTile(
-                      title:
-                          Text(S.of(context).settingsThemeSystemDefaultLabel),
-                      value: AppThemeEntity.system,
-                      groupValue: selectedTheme,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedTheme = value as AppThemeEntity;
-                        });
-                      },
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          title: Text(S.of(context).settingsThemeLabel),
+          content: StatefulBuilder(
+            builder: (
+              BuildContext context,
+              void Function(void Function()) setState,
+            ) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RadioListTile(
+                    title: Text(
+                      S.of(context).settingsThemeSystemDefaultLabel,
                     ),
-                    RadioListTile(
-                      title: Text(S.of(context).settingsThemeLightLabel),
-                      value: AppThemeEntity.light,
-                      groupValue: selectedTheme,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedTheme = value as AppThemeEntity;
-                        });
-                      },
-                    ),
-                    RadioListTile(
-                      title: Text(S.of(context).settingsThemeDarkLabel),
-                      value: AppThemeEntity.dark,
-                      groupValue: selectedTheme,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedTheme = value as AppThemeEntity;
-                        });
-                      },
-                    ),
-                  ],
-                );
+                    value: AppThemeEntity.system,
+                    groupValue: selectedTheme,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedTheme = value as AppThemeEntity;
+                      });
+                    },
+                  ),
+                  RadioListTile(
+                    title: Text(S.of(context).settingsThemeLightLabel),
+                    value: AppThemeEntity.light,
+                    groupValue: selectedTheme,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedTheme = value as AppThemeEntity;
+                      });
+                    },
+                  ),
+                  RadioListTile(
+                    title: Text(S.of(context).settingsThemeDarkLabel),
+                    value: AppThemeEntity.dark,
+                    groupValue: selectedTheme,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedTheme = value as AppThemeEntity;
+                      });
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
               },
+              child: Text(S.of(context).dialogCancelLabel),
             ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(S.of(context).dialogCancelLabel)),
-              TextButton(
-                  onPressed: () async {
-                    _settingsBloc.setAppTheme(selectedTheme);
-                    _settingsBloc.add(LoadSettingsEvent());
-                    setState(() {
-                      // Update Theme
-                      Provider.of<ThemeModeProvider>(context, listen: false)
-                          .updateTheme(selectedTheme);
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(S.of(context).dialogOKLabel)),
-            ],
-          );
-        });
+            TextButton(
+              onPressed: () async {
+                _settingsBloc.setAppTheme(selectedTheme);
+                _settingsBloc.add(LoadSettingsEvent());
+                setState(() {
+                  // Update Theme
+                  Provider.of<ThemeModeProvider>(
+                    context,
+                    listen: false,
+                  ).updateTheme(selectedTheme);
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text(S.of(context).dialogOKLabel),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showReportErrorDialog(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(S.of(context).settingsReportErrorLabel),
-            content: Text(S.of(context).reportErrorDialogText),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(S.of(context).dialogCancelLabel)),
-              TextButton(
-                  onPressed: () async {
-                    _reportError(context);
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(S.of(context).dialogOKLabel))
-            ],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(S.of(context).settingsReportErrorLabel),
+          content: Text(S.of(context).reportErrorDialogText),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(S.of(context).dialogCancelLabel),
+            ),
+            TextButton(
+              onPressed: () async {
+                _reportError(context);
+                Navigator.of(context).pop();
+              },
+              child: Text(S.of(context).dialogOKLabel),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _reportError(BuildContext context) async {
-    final reportUri =
-        Uri.parse("mailto:${AppConst.reportErrorEmail}?subject=Report_Error");
+    final reportUri = Uri.parse(
+      "mailto:${AppConst.reportErrorEmail}?subject=Report_Error",
+    );
 
     if (await canLaunchUrl(reportUri)) {
       launchUrl(reportUri);
@@ -292,96 +303,95 @@ class _SettingsScreenState extends State<SettingsScreen> {
       // Cannot open email app, show error snackbar
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(S.of(context).errorOpeningEmail)));
+          SnackBar(content: Text(S.of(context).errorOpeningEmail)),
+        );
       }
     }
   }
 
   void _showPrivacyDialog(
-      BuildContext context, bool hasAcceptedAnonymousData) async {
+    BuildContext context,
+    bool hasAcceptedAnonymousData,
+  ) async {
     bool switchActive = hasAcceptedAnonymousData;
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(S.of(context).settingsPrivacySettings),
-            content: StatefulBuilder(
-              builder: (BuildContext context,
-                  void Function(void Function()) setState) {
-                return SwitchListTile(
-                  title: Text(S.of(context).sendAnonymousUserData),
-                  value: switchActive,
-                  onChanged: (bool value) {
-                    setState(() {
-                      switchActive = value;
-                    });
-                  },
-                );
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(S.of(context).settingsPrivacySettings),
+          content: StatefulBuilder(
+            builder: (
+              BuildContext context,
+              void Function(void Function()) setState,
+            ) {
+              return SwitchListTile(
+                title: Text(S.of(context).sendAnonymousUserData),
+                value: switchActive,
+                onChanged: (bool value) {
+                  setState(() {
+                    switchActive = value;
+                  });
+                },
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
               },
+              child: Text(S.of(context).dialogCancelLabel),
             ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(S.of(context).dialogCancelLabel)),
-              TextButton(
-                  onPressed: () async {
-                    _settingsBloc.setHasAcceptedAnonymousData(switchActive);
-                    if (!switchActive) Sentry.close();
-                    _settingsBloc.add(LoadSettingsEvent());
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(S.of(context).dialogOKLabel))
-            ],
-          );
-        });
+            TextButton(
+              onPressed: () async {
+                _settingsBloc.setHasAcceptedAnonymousData(switchActive);
+                await FirebaseCrashlytics.instance
+                    .setCrashlyticsCollectionEnabled(switchActive);
+                _settingsBloc.add(LoadSettingsEvent());
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Text(S.of(context).dialogOKLabel),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showAboutDialog(BuildContext context) async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     if (context.mounted) {
       showAboutDialog(
-          context: context,
-          applicationName: S.of(context).appTitle,
-          applicationIcon: SizedBox(
-              width: 40, child: Image.asset('assets/icon/ont_logo_square.png')),
-          applicationVersion: packageInfo.version,
-          applicationLegalese: S.of(context).appLicenseLabel,
-          children: [
-            TextButton(
-                onPressed: () {
-                  _launchSourceCodeUrl(context);
-                },
-                child: Row(
-                  children: [
-                    const Icon(Icons.code_outlined),
-                    const SizedBox(width: 8.0),
-                    Text(S.of(context).settingsSourceCodeLabel),
-                  ],
-                )),
-            TextButton(
-                onPressed: () {
-                  _launchPrivacyPolicyUrl(context);
-                },
-                child: Row(
-                  children: [
-                    const Icon(Icons.policy_outlined),
-                    const SizedBox(width: 8.0),
-                    Text(S.of(context).privacyPolicyLabel),
-                  ],
-                ))
-          ]);
+        context: context,
+        applicationName: S.of(context).appTitle,
+        applicationIcon: SizedBox(
+          width: 40,
+          child: Image.asset('assets/icon/ont_logo_square.png'),
+        ),
+        applicationVersion: packageInfo.version,
+        applicationLegalese: S.of(context).appLicenseLabel,
+        children: [
+          TextButton(
+            onPressed: () {
+              _launchSourceCodeUrl(context);
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.code_outlined),
+                const SizedBox(width: 8.0),
+                Text(S.of(context).settingsSourceCodeLabel),
+              ],
+            ),
+          ),
+        ],
+      );
     }
   }
 
   void _launchSourceCodeUrl(BuildContext context) async {
     final sourceCodeUri = Uri.parse(AppConst.sourceCodeUrl);
-    _launchUrl(context, sourceCodeUri);
-  }
-
-  void _launchPrivacyPolicyUrl(BuildContext context) async {
-    final sourceCodeUri = Uri.parse(URLConst.privacyPolicyURLEn);
     _launchUrl(context, sourceCodeUri);
   }
 
@@ -392,7 +402,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       // Cannot open browser app, show error snackbar
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(S.of(context).errorOpeningBrowser)));
+          SnackBar(content: Text(S.of(context).errorOpeningBrowser)),
+        );
       }
     }
   }

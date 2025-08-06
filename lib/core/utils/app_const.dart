@@ -5,9 +5,9 @@ class AppConst {
   static const userAgentAppName = "AtlasTracker";
   static const platformNameAndroid = "Android";
   static const platformNameIOS = "iOS";
-  static const reportErrorEmail = "AtlasTracker-dev@pm.me";
+  static const reportErrorEmail = "myatlastracker@gmail.com";
   static const sourceCodeUrl =
-      "https://github.com/simonoppowa/AtlasTracker";
+      "https://github.com/ATLAS-Tracker/OpenNutriTracker";
 
   static Future<String> getVersionNumber() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();

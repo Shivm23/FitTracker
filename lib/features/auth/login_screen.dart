@@ -22,6 +22,7 @@ import 'package:opennutritracker/core/domain/entity/user_gender_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_weight_goal_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_pal_entity.dart';
 import 'package:opennutritracker/core/domain/usecase/add_macro_goal_usecase.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -138,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
           } catch (e, stackTrace) {
             debugPrint('Error when getting profile from Supabase: $e');
             debugPrint('Stack trace: $stackTrace');
+            await supabase.auth.signOut();
             return;
           }
         }
@@ -297,6 +299,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 child: Text(S.of(context).loginForgotPassword),
+              ),
+              const SizedBox(height: 24),
+              TextButton(
+                onPressed: () =>
+                    launchUrl(Uri.parse('https://atlas-tracker.fr/')),
+                child: const Text('En savoir plus : atlas-tracker.fr'),
               ),
             ],
           ),

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:opennutritracker/generated/l10n.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:logging/logging.dart';
 
 class SetStudentMacrosPage extends StatefulWidget {
@@ -56,9 +56,7 @@ class _SetStudentMacrosPageState extends State<SetStudentMacrosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: Text(S.of(context).setMacrosLabel),
-      ),
+      appBar: AppBar(title: Text(S.of(context).setMacrosLabel)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -134,8 +132,8 @@ class _SetStudentMacrosPageState extends State<SetStudentMacrosPage> {
                 child: Text(
                   '${S.of(context).caloriesLabel}: $_calculatedCalories kcal',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
 
@@ -202,7 +200,7 @@ class _SetStudentMacrosPageState extends State<SetStudentMacrosPage> {
       Navigator.pop(context);
     } catch (exception, stacktrace) {
       log.warning("Erreur lors de l'enregistrement des objectifs macro.");
-      Sentry.captureException(exception, stackTrace: stacktrace);
+      FirebaseCrashlytics.instance.recordError(exception, stacktrace);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -11,7 +11,7 @@ import 'package:opennutritracker/core/domain/usecase/get_macro_goal_usecase.dart
 import 'package:opennutritracker/core/utils/calc/unit_calc.dart';
 import 'package:opennutritracker/core/utils/id_generator.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 part 'meal_detail_event.dart';
 
@@ -30,11 +30,11 @@ class MealDetailBloc extends Bloc<MealDetailEvent, MealDetailState> {
     this._getKcalGoalUsecase,
     this._getMacroGoalUsecase,
   ) : super(
-          MealDetailInitial(
-            totalQuantityConverted: '100',
-            selectedUnit: UnitDropdownItem.gml.toString(),
-          ),
-        ) {
+        MealDetailInitial(
+          totalQuantityConverted: '100',
+          selectedUnit: UnitDropdownItem.gml.toString(),
+        ),
+      ) {
     on<UpdateKcalEvent>((event, emit) async {
       try {
         final selectedTotalQuantity =
@@ -79,7 +79,7 @@ class MealDetailBloc extends Bloc<MealDetailEvent, MealDetailState> {
         );
       } catch (e) {
         log.severe('Error calculating kcal: $e');
-        Sentry.captureException(e);
+        FirebaseCrashlytics.instance.recordError(e, StackTrace.current);
       }
     });
   }
