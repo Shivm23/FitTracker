@@ -138,6 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
           } catch (e, stackTrace) {
             debugPrint('Error when getting profile from Supabase: $e');
             debugPrint('Stack trace: $stackTrace');
+            await supabase.auth.signOut();
             return;
           }
         }
