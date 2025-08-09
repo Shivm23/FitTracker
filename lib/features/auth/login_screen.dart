@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -37,42 +39,144 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordCtrl = TextEditingController();
 
   bool _obscurePassword = true;
-
   bool _loading = false;
+  Timer? _deepLinkDebounce;
   final supabase = Supabase.instance.client;
 
-  /// Navigate to the home screen after a successful sign‑in.
+  // Deep-link / auth
+  StreamSubscription<Uri?>? _linksSub;
+  bool _handledDeepLink = false; // évite de consommer le flow PKCE 2x
+  bool _navigatedToReset = false; // évite la navigation multiple
+
+  /// Navigate to the home screen after a successful sign-in.
   void _navigateHome() =>
       Navigator.of(context).pushReplacementNamed(NavigationOptions.mainRoute);
 
   /// Display an error message and log it.
   void _showError(Object error) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('$error')));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('$error')));
     Logger('LoginScreen').warning('Auth error', error);
   }
 
-  /// Configure deep‑link handling (password‑reset flow).
+  /// Configure deep-link handling (password-reset flow).
   void _configDeepLink() {
     final links = AppLinks();
 
-    links.uriLinkStream.listen((Uri? uri) async {
-      if (uri == null || uri.host != 'login-callback') return;
+    _linksSub = links.uriLinkStream.listen((Uri? uri) async {
+      if (!mounted || uri == null || uri.host != 'login-callback') return;
 
-      try {
-        await supabase.auth.getSessionFromUrl(uri);
-        if (!mounted) return;
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (_) => const ResetPasswordScreen()));
-      } catch (e) {
-        debugPrint('Deep‑link error: $e');
+      // Debounce pour éviter 2 appels en rafale (Android activity resume, etc.)
+      _deepLinkDebounce?.cancel();
+      _deepLinkDebounce = Timer(const Duration(milliseconds: 250), () async {
+        if (_handledDeepLink) return;
+        _handledDeepLink = true;
+
+        try {
+          // Consomme le flow state UNE fois
+          await supabase.auth.getSessionFromUrl(uri);
+          // Ne pas naviguer ici : on attend l’event passwordRecovery
+        } on AuthException catch (e, s) {
+          final msg = e.message.toLowerCase();
+
+          // ➜ Cas “bruyant mais OK” : 500 ‘Database error granting user’
+          final isGrantingUser500 = e.statusCode == "500" &&
+              msg.contains('database error granting user');
+
+          // ➜ Cas « déjà consommé »
+          final alreadyConsumed =
+              msg.contains('flow state') || e.statusCode == "404";
+
+          if (isGrantingUser500 || alreadyConsumed) {
+            Logger('LoginScreen').fine('Deep-link secondaire ignoré: $e');
+            // On relâche le verrou pour autoriser une future tentative si besoin
+            _handledDeepLink = false;
+            return;
+          }
+
+          Logger('LoginScreen').warning('Deep-link error', e, s);
+          _handledDeepLink = false;
+        } catch (e, s) {
+          Logger('LoginScreen').warning('Deep-link error', e, s);
+          _handledDeepLink = false;
+        }
+      });
+    });
+  }
+
+  /// Écoute les changements d’état auth (dont passwordRecovery).
+  void _listenAuthEvents() {
+    supabase.auth.onAuthStateChange.listen((data) {
+      final event = data.event;
+      if (!mounted) return;
+
+      if (event == AuthChangeEvent.passwordRecovery && !_navigatedToReset) {
+        _navigatedToReset = true;
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const ResetPasswordScreen()),
+        );
       }
     });
   }
 
-  /// Attempt to authenticate with e‑mail / password.
+  UserGenderEntity parseGender(String? v) {
+    switch ((v ?? '').toLowerCase()) {
+      case 'female':
+        return UserGenderEntity.female;
+      case 'male':
+        return UserGenderEntity.male;
+      default:
+        return UserGenderEntity.male; // défaut raisonnable
+    }
+  }
+
+  UserWeightGoalEntity parseGoal(String? v) {
+    switch ((v ?? '').toLowerCase()) {
+      case 'loseweight':
+        return UserWeightGoalEntity.loseWeight;
+      case 'gainweight':
+        return UserWeightGoalEntity.gainWeight;
+      case 'maintainweight':
+        return UserWeightGoalEntity.maintainWeight;
+      default:
+        return UserWeightGoalEntity.maintainWeight;
+    }
+  }
+
+  UserPALEntity parsePal(String? v) {
+    switch ((v ?? '').toLowerCase()) {
+      case 'sedentary':
+        return UserPALEntity.sedentary;
+      case 'lightlyactive':
+        return UserPALEntity.lowActive;
+      case 'active':
+        return UserPALEntity.active;
+      case 'veryactive':
+        return UserPALEntity.veryActive;
+      default:
+        return UserPALEntity.active;
+    }
+  }
+
+  double parseNumToDouble(dynamic v, {double fallback = 0}) {
+    if (v == null) return fallback;
+    if (v is num) return v.toDouble();
+    if (v is String) return double.tryParse(v) ?? fallback;
+    return fallback;
+  }
+
+  DateTime parseBirthday(dynamic v) {
+    if (v == null) return DateTime(2000, 1, 1);
+    // Supabase renvoie généralement une string ISO pour DATE/TIMESTAMPTZ
+    if (v is String) {
+      final parsed = DateTime.tryParse(v);
+      return parsed ?? DateTime(2000, 1, 1);
+    }
+    if (v is DateTime) return v;
+    return DateTime(2000, 1, 1);
+  }
+
+  /// Attempt to authenticate with e-mail / password.
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -81,10 +185,13 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = _emailCtrl.text.trim();
     final pass = _passwordCtrl.text.trim();
 
-    // Capture everything that needs context before the async gap
+    // Capture tout ce qui touche au context avant l'async gap
     final l10n = S.of(context);
 
     try {
+      // ❌ Ne pas faire de signOut() avant un signIn : ça peut casser le flow PKCE.
+      // await supabase.auth.signOut();
+
       final res = await supabase.auth.signInWithPassword(
         email: email,
         password: pass,
@@ -106,35 +213,43 @@ class _LoginScreenState extends State<LoginScreen> {
           try {
             final List<Map<String, dynamic>> rows = await supabase
                 .from('users')
-                .select('display_name, role')
+                .select(
+                    'display_name, role, height_cm, weight_kg, gender, goal, birthday, pal')
                 .eq('id', userId!);
 
             if (rows.isEmpty) {
               debugPrint('No users found with ID $userId');
-              return;
+              // On continue quand même : le profil local sera créé par défaut
             }
 
             if (rows.isNotEmpty) {
               final row = rows.first;
               final roleStr = (row['role'] as String?) ?? 'student';
-              final displayName =
-                  (row['display_name'] as String?) ?? 'John Doe';
+              final displayName = (row['display_name'] as String?)?.trim();
+              final heightCm =
+                  parseNumToDouble(row['height_cm'], fallback: 180);
+              final weightKg = parseNumToDouble(row['weight_kg'], fallback: 80);
+              final gender = parseGender(row['gender'] as String?);
+              final goal = parseGoal(row['goal'] as String?);
+              final pal = parsePal(row['pal'] as String?);
+              final birthday = parseBirthday(row['birthday']);
               final role = roleStr == 'coach'
                   ? UserRoleEntity.coach
                   : UserRoleEntity.student;
-              final defaultUser = UserEntity(
-                name: displayName,
-                birthday: DateTime(2000, 1, 1),
-                heightCM: 180,
-                weightKG: 80,
-                gender: UserGenderEntity.male,
-                goal: UserWeightGoalEntity.maintainWeight,
-                pal: UserPALEntity.active,
+
+              final user = UserEntity(
+                name: displayName!,
+                birthday: birthday,
+                heightCM: heightCm,
+                weightKG: weightKg,
+                gender: gender,
+                goal: goal,
+                pal: pal,
                 role: role,
                 profileImagePath: null,
               );
 
-              await addUser.addUser(defaultUser);
+              await addUser.addUser(user);
             }
           } catch (e, stackTrace) {
             debugPrint('Error when getting profile from Supabase: $e');
@@ -176,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
           return; // reste sur l’écran de login
         }
 
-        // Récuperer les objectifs si student
+        // Récupérer les objectifs si student
         final user = await getUser.getUserData();
         if (user.role == UserRoleEntity.student) {
           try {
@@ -227,6 +342,16 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _configDeepLink();
+    _listenAuthEvents();
+  }
+
+  @override
+  void dispose() {
+    _deepLinkDebounce?.cancel();
+    _linksSub?.cancel();
+    _emailCtrl.dispose();
+    _passwordCtrl.dispose();
+    super.dispose();
   }
 
   @override
@@ -277,12 +402,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 48,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Theme.of(
-                      context,
-                    ).colorScheme.onPrimaryContainer,
-                    backgroundColor: Theme.of(
-                      context,
-                    ).colorScheme.primaryContainer,
+                    foregroundColor:
+                        Theme.of(context).colorScheme.onPrimaryContainer,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primaryContainer,
                   ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                   onPressed: _loading ? null : _submit,
                   child: _loading

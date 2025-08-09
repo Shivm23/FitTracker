@@ -51,16 +51,20 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           title: Text(S.of(context).resetPasswordChanged),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () async {
+                Navigator.pop(context);
+                await supabase.auth.signOut();
+                if (mounted) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    NavigationOptions.loginRoute,
+                    (_) => false,
+                  );
+                }
+              },
               child: Text(S.of(context).dialogOKLabel),
             ),
           ],
         ),
-      );
-      if (!mounted) return;
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        NavigationOptions.mainRoute,
-        (_) => false,
       );
     } catch (e) {
       if (mounted) {
@@ -89,94 +93,110 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).resetPasswordTitle)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Form(
-          key: _formKey,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // --- New password --- //
-            TextFormField(
-              controller: _passwordCtrl,
-              obscureText: _obscureNewPassword,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: _decoration(
-                      S.of(context).resetPasswordNewLabel, Icons.lock_outline)
-                  .copyWith(
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(_obscureNewPassword
+    return PopScope(
+      canPop: false, // ⬅️ bloque toute navigation “back” (geste + bouton)
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(S.of(context).resetPasswordTitle),
+          automaticallyImplyLeading:
+              false, // ⬅️ cache la flèche retour de l’appbar
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // --- New password --- //
+                TextFormField(
+                  controller: _passwordCtrl,
+                  obscureText: _obscureNewPassword,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: _decoration(
+                    S.of(context).resetPasswordNewLabel,
+                    Icons.lock_outline,
+                  ).copyWith(
+                    suffixIcon: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(_obscureNewPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () => setState(
+                            () => _obscureNewPassword = !_obscureNewPassword,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.help_outline_outlined),
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (_) => PasswordRulesDialog(
+                              validMinLength: _validMinLength,
+                              validUppercase: _validUppercase,
+                              validLowercase: _validLowercase,
+                              validDigit: _validDigit,
+                              validSpecial: _validSpecial,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  onChanged: _updatePasswordRules,
+                  validator: (value) => validatePassword(context, value),
+                ),
+                const SizedBox(height: 16),
+
+                // --- Confirm --- //
+                TextFormField(
+                  controller: _confirmCtrl,
+                  obscureText: _obscureConfirmPassword,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: _decoration(
+                    S.of(context).resetPasswordConfirmLabel,
+                    Icons.lock_outline,
+                  ).copyWith(
+                    suffixIcon: IconButton(
+                      icon: Icon(_obscureConfirmPassword
                           ? Icons.visibility_off
                           : Icons.visibility),
                       onPressed: () => setState(
-                          () => _obscureNewPassword = !_obscureNewPassword),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.help_outline_outlined),
-                      onPressed: () => showDialog(
-                        context: context,
-                        builder: (_) => PasswordRulesDialog(
-                          validMinLength: _validMinLength,
-                          validUppercase: _validUppercase,
-                          validLowercase: _validLowercase,
-                          validDigit: _validDigit,
-                          validSpecial: _validSpecial,
-                        ),
+                        () =>
+                            _obscureConfirmPassword = !_obscureConfirmPassword,
                       ),
                     ),
-                  ],
+                  ),
+                  validator: (v) => (v != _passwordCtrl.text)
+                      ? S.of(context).resetPasswordNoMatch
+                      : null,
                 ),
-              ),
-              onChanged: _updatePasswordRules,
-              validator: (value) => validatePassword(context, value),
-            ),
-            const SizedBox(height: 16),
+                const SizedBox(height: 32),
 
-            // --- Confirm --- //
-            TextFormField(
-              controller: _confirmCtrl,
-              obscureText: _obscureConfirmPassword,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: _decoration(S.of(context).resetPasswordConfirmLabel,
-                      Icons.lock_outline)
-                  .copyWith(
-                suffixIcon: IconButton(
-                  icon: Icon(_obscureConfirmPassword
-                      ? Icons.visibility_off
-                      : Icons.visibility),
-                  onPressed: () => setState(
-                      () => _obscureConfirmPassword = !_obscureConfirmPassword),
+                // --- Button --- //
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor:
+                          Theme.of(context).colorScheme.onPrimaryContainer,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                    ).copyWith(
+                      elevation: ButtonStyleButton.allOrNull(0.0),
+                    ),
+                    onPressed: _loading ? null : _resetPassword,
+                    child: _loading
+                        ? const CircularProgressIndicator()
+                        : Text(S.of(context).resetPasswordButton),
+                  ),
                 ),
-              ),
-              validator: (v) => (v != _passwordCtrl.text)
-                  ? S.of(context).resetPasswordNoMatch
-                  : null,
+                const SizedBox(height: 32),
+              ],
             ),
-            const SizedBox(height: 32),
-
-            // --- Button --- //
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor:
-                      Theme.of(context).colorScheme.onPrimaryContainer,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primaryContainer,
-                ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                onPressed: _loading ? null : _resetPassword,
-                child: _loading
-                    ? const CircularProgressIndicator()
-                    : Text(S.of(context).resetPasswordButton),
-              ),
-            ),
-            const SizedBox(height: 32),
-          ]),
+          ),
         ),
       ),
     );
