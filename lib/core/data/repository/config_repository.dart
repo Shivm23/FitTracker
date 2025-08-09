@@ -3,6 +3,7 @@ import 'package:opennutritracker/core/data/dbo/app_theme_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/config_dbo.dart';
 import 'package:opennutritracker/core/domain/entity/app_theme_entity.dart';
 import 'package:opennutritracker/core/domain/entity/config_entity.dart';
+import 'package:opennutritracker/core/domain/entity/common_config_entity.dart';
 
 class ConfigRepository {
   final ConfigDataSource _configDataSource;
@@ -38,10 +39,16 @@ class ConfigRepository {
     return ConfigEntity.fromConfigDBO(configDBO);
   }
 
+  Future<CommonConfigEntity> getCommonConfig() async {
+    final commonConfigDBO = await _configDataSource.getCommonConfig();
+    return CommonConfigEntity.fromConfigDBO(commonConfigDBO);
+  }
+
   Future<ConfigDBO> getConfigDBO() async {
     final configDBO = await _configDataSource.getConfig();
     return configDBO;
   }
+
   Future<void> setConfigUsesImperialUnits(bool usesImperialUnits) async {
     _configDataSource.setConfigUsesImperialUnits(usesImperialUnits);
   }

@@ -7,6 +7,7 @@ import 'package:opennutritracker/core/data/data_source/user_activity_dbo.dart';
 import 'package:opennutritracker/core/data/data_source/user_weight_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/app_theme_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/config_dbo.dart';
+import 'package:opennutritracker/core/data/dbo/common_config_dbo.dart';
 import 'package:opennutritracker/core/data/data_source/macro_goal_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/intake_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/recipe_dbo.dart';
@@ -31,6 +32,7 @@ import 'package:logging/logging.dart';
 class HiveDBProvider extends ChangeNotifier {
   static final Logger _log = Logger('HiveDBProvider');
   static const configBoxName = 'ConfigBox';
+  static const commonConfigBoxName = 'commonConfigBox';
   static const intakeBoxName = 'IntakeBox';
   static const userActivityBoxName = 'UserActivityBox';
   static const userBoxName = 'UserBox';
@@ -43,6 +45,7 @@ class HiveDBProvider extends ChangeNotifier {
   String _boxName(String base) => _userId == null ? base : '${_userId}_$base';
 
   late Box<ConfigDBO> configBox;
+  late Box<CommonConfigDBO> commonConfigBox;
   late Box<IntakeDBO> intakeBox;
   late Box<UserActivityDBO> userActivityBox;
   late Box<UserDBO> userBox;
@@ -57,21 +60,53 @@ class HiveDBProvider extends ChangeNotifier {
 
   static bool _adaptersRegistered = false;
 
+  // Registers Hive type adapters
+  static void _registerAdapters() {
+    if (_adaptersRegistered) return;
+    _log.finer('📦 Registering Hive adapters (one-time)');
+    Hive.registerAdapter(ConfigDBOAdapter());
+    Hive.registerAdapter(CommonConfigDBOAdapter());
+    Hive.registerAdapter(IntakeDBOAdapter());
+    Hive.registerAdapter(MealDBOAdapter());
+    Hive.registerAdapter(IntakeForRecipeDBOAdapter());
+    Hive.registerAdapter(MealOrRecipeDBOAdapter());
+    Hive.registerAdapter(MealNutrimentsDBOAdapter());
+    Hive.registerAdapter(MealSourceDBOAdapter());
+    Hive.registerAdapter(IntakeTypeDBOAdapter());
+    Hive.registerAdapter(RecipesDBOAdapter());
+    Hive.registerAdapter(UserDBOAdapter());
+    Hive.registerAdapter(UserGenderDBOAdapter());
+    Hive.registerAdapter(UserWeightGoalDBOAdapter());
+    Hive.registerAdapter(UserPALDBOAdapter());
+    Hive.registerAdapter(UserRoleDBOAdapter());
+    Hive.registerAdapter(TrackedDayDBOAdapter());
+    Hive.registerAdapter(UserActivityDBOAdapter());
+    Hive.registerAdapter(PhysicalActivityDBOAdapter());
+    Hive.registerAdapter(PhysicalActivityTypeDBOAdapter());
+    Hive.registerAdapter(AppThemeDBOAdapter());
+    Hive.registerAdapter(UserWeightDboAdapter());
+    Hive.registerAdapter(MacroGoalDboAdapter());
+    _adaptersRegistered = true;
+  }
+
   Future<void> initHiveDB(Uint8List encryptionKey, {String? userId}) async {
     try {
       _log.info(
           '↪️  initHiveDB called — currentUserId=$_userId → newUserId=$userId');
       final encryptionCypher = HiveAesCipher(encryptionKey);
 
+      await Hive.initFlutter();
+
+      // Enregistrement des adaptateurs avant toute ouverture de boîte
+      _registerAdapters();
+
       // Close previously opened boxes and watcher if any
       if (Hive.isBoxOpen(_boxName(configBoxName))) {
-        // trackedDayWatcher must be stopped before its box is closed
         _log.fine('🔒 Closing boxes for user=$_userId');
         await trackedDayWatcher.stop();
         await userWeightWatcher.stop();
         await stopUpdateWatchers();
 
-        // To prevent resource leaks, any new box added to this provider must also be added here.
         await Future.wait([
           configBox.close(),
           intakeBox.close(),
@@ -87,33 +122,14 @@ class HiveDBProvider extends ChangeNotifier {
       _userId = userId;
       _log.fine('🆕 _userId set to $_userId');
 
-      await Hive.initFlutter();
-      if (!_adaptersRegistered) {
-        _log.finer('📦 Registering Hive adapters (one-time)');
-        Hive.registerAdapter(ConfigDBOAdapter());
-        Hive.registerAdapter(IntakeDBOAdapter());
-        Hive.registerAdapter(MealDBOAdapter());
-        Hive.registerAdapter(IntakeForRecipeDBOAdapter());
-
-        Hive.registerAdapter(MealOrRecipeDBOAdapter());
-
-        Hive.registerAdapter(MealNutrimentsDBOAdapter());
-        Hive.registerAdapter(MealSourceDBOAdapter());
-        Hive.registerAdapter(IntakeTypeDBOAdapter());
-        Hive.registerAdapter(RecipesDBOAdapter());
-        Hive.registerAdapter(UserDBOAdapter());
-        Hive.registerAdapter(UserGenderDBOAdapter());
-        Hive.registerAdapter(UserWeightGoalDBOAdapter());
-        Hive.registerAdapter(UserPALDBOAdapter());
-        Hive.registerAdapter(UserRoleDBOAdapter());
-        Hive.registerAdapter(TrackedDayDBOAdapter());
-        Hive.registerAdapter(UserActivityDBOAdapter());
-        Hive.registerAdapter(PhysicalActivityDBOAdapter());
-        Hive.registerAdapter(PhysicalActivityTypeDBOAdapter());
-        Hive.registerAdapter(AppThemeDBOAdapter());
-        Hive.registerAdapter(UserWeightDboAdapter());
-        Hive.registerAdapter(MacroGoalDboAdapter());
-        _adaptersRegistered = true;
+      if (!Hive.isBoxOpen(commonConfigBoxName)) {
+        _log.fine('🚪 Opening common config box…');
+        commonConfigBox = await Hive.openBox<CommonConfigDBO>(
+            commonConfigBoxName,
+            encryptionCipher: encryptionCypher);
+        _log.fine('✅ Common config box opened');
+      } else {
+        commonConfigBox = Hive.box<CommonConfigDBO>(commonConfigBoxName);
       }
 
       // Helpers pour log la réouverture
@@ -140,9 +156,7 @@ class HiveDBProvider extends ChangeNotifier {
       macroGoalBox = await openBox(macroGoalBoxName);
       _log.info('✅ Hive initialised for user=$_userId');
     } catch (e, s) {
-      // Log the error for debugging. You'll need to add a logger to the class.
       _log.severe('Failed to initialize Hive DB', e, s);
-      // Re-throw or handle the error as appropriate for your app's architecture.
       rethrow;
     }
   }
@@ -179,13 +193,14 @@ class HiveDBProvider extends ChangeNotifier {
     }
   }
 
-  /// Removes all user data from the opened Hive boxes.
+  /// Removes all user-specific data from the opened Hive boxes.
   ///
-  /// The configuration box is intentionally **not** cleared so that user
-  /// preferences such as theme and units persist across logins.
+  /// The common configuration box (e.g., for theme settings) is not cleared,
+  /// allowing settings to persist across user sessions.
   Future<void> clearAllData() async {
     _log.info('🗑️ Clearing user Hive boxes');
     await Future.wait([
+      configBox.clear(),
       intakeBox.clear(),
       recipeBox.clear(),
       userActivityBox.clear(),
@@ -218,7 +233,6 @@ class HiveDBProvider extends ChangeNotifier {
 
     _log.info('🗑️ Deleting Hive database for user=$_userId');
 
-    // Ensure boxes are closed and watchers stopped
     if (Hive.isBoxOpen(_boxName(configBoxName))) {
       await trackedDayWatcher.stop();
       await userWeightWatcher.stop();
@@ -250,9 +264,6 @@ class HiveDBProvider extends ChangeNotifier {
     _log.info('✅ Hive database deleted for user=$_userId');
   }
 
-  /// Helper to (re)initialize Hive for the provided [userId].
-  /// This fetches the encryption key from secure storage and delegates
-  /// to [initHiveDB].
   Future<void> initForUser(String? userId) async {
     _log.info('🔄 initForUser($userId) called');
     final secure = SecureAppStorageProvider();

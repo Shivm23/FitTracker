@@ -52,8 +52,8 @@ Future<void> main() async {
   const isUserInitialized = true;
   final hasAuthSession = Supabase.instance.client.auth.currentSession != null;
   final configRepo = locator<ConfigRepository>();
-  final hasAcceptedAnonymousData = await configRepo
-      .getConfigHasAcceptedAnonymousData();
+  final hasAcceptedAnonymousData =
+      await configRepo.getConfigHasAcceptedAnonymousData();
   final savedAppTheme = await configRepo.getConfigAppTheme();
   final log = Logger('main');
 
@@ -71,15 +71,16 @@ void runAppWithChangeNotifiers(
   bool userInitialized,
   bool hasAuthSession,
   AppThemeEntity savedAppTheme,
-) => runApp(
-  ChangeNotifierProvider(
-    create: (_) => ThemeModeProvider(appTheme: savedAppTheme),
-    child: AtlasTrackerApp(
-      userInitialized: userInitialized,
-      hasAuthSession: hasAuthSession,
-    ),
-  ),
-);
+) =>
+    runApp(
+      ChangeNotifierProvider(
+        create: (_) => ThemeModeProvider(appTheme: savedAppTheme),
+        child: AtlasTrackerApp(
+          userInitialized: userInitialized,
+          hasAuthSession: hasAuthSession,
+        ),
+      ),
+    );
 
 class AtlasTrackerApp extends StatelessWidget {
   final bool userInitialized;

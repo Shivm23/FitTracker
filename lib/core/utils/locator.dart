@@ -348,4 +348,8 @@ Future<void> _initializeConfig(ConfigDataSource configDataSource) async {
   if (!await configDataSource.configInitialized()) {
     configDataSource.initializeConfig();
   }
+
+  if (!await configDataSource.commonConfigInitialized()) {
+    configDataSource.initializeCommonConfig();
+  }
 }

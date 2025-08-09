@@ -45,10 +45,10 @@ Future<void> safeSignOut(BuildContext context) async {
   try {
     if (userId != null) {
       final localDate = await configRepo.getLastDataUpdate();
+
       DateTime? remoteDate;
       try {
-        final files =
-            await supabase.storage.from('exports').list(path: userId);
+        final files = await supabase.storage.from('exports').list(path: userId);
         final file = files.firstWhereOrNull(
             (f) => f.name == ExportImportBloc.exportZipFileName);
         if (file != null && file.updatedAt != null) {

@@ -1,5 +1,6 @@
 import 'package:opennutritracker/core/data/repository/config_repository.dart';
 import 'package:opennutritracker/core/domain/entity/config_entity.dart';
+import 'package:opennutritracker/core/domain/entity/common_config_entity.dart';
 
 class GetConfigUsecase {
   final ConfigRepository _configRepository;
@@ -8,5 +9,9 @@ class GetConfigUsecase {
 
   Future<ConfigEntity> getConfig() async {
     return await _configRepository.getConfig();
+  }
+
+  Future<CommonConfigEntity> getCommonConfig() async {
+    return await _configRepository.getCommonConfig();
   }
 }
