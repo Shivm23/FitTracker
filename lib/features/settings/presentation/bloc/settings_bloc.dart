@@ -33,13 +33,14 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       emit(SettingsLoadingState());
 
       final userConfig = await _getConfigUsecase.getConfig();
+      final commonConfig = await _getConfigUsecase.getCommonConfig();
       final appVersion = await AppConst.getVersionNumber();
       final usesImperialUnits = userConfig.usesImperialUnits;
 
       emit(SettingsLoadedState(
           appVersion,
           userConfig.hasAcceptedSendAnonymousData,
-          userConfig.appTheme,
+          commonConfig.appTheme,
           usesImperialUnits));
     });
   }
