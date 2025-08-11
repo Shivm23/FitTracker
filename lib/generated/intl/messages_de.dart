@@ -2,35 +2,38 @@
 // This is a library that provides messages for a de locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
-
+// @dart=2.12
 // Ignore issues from commonly used lints in this file.
-// ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
+// ignore_for_file:unnecessary_brace_in_string_interps
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
-// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
+// ignore_for_file:unused_import, file_names
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-final messages = new MessageLookup();
+final messages = MessageLookup();
 
-typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
+typedef String? MessageIfAbsent(String? messageStr, List<Object>? args);
 
 class MessageLookup extends MessageLookupByLibrary {
+  @override
   String get localeName => 'de';
 
-  static String m0(versionNumber) => 'Version ${versionNumber}';
+  static m0(versionNumber) => "Version ${versionNumber}";
 
-  static String m1(pctCarbs, pctFats, pctProteins) =>
-      '${pctCarbs}% Kohlenhydrate, ${pctFats}% Fette, ${pctProteins}% Proteine';
+  static m1(pctCarbs, pctFats, pctProteins) =>
+      "${pctCarbs}% Kohlenhydrate, ${pctFats}% Fette, ${pctProteins}% Proteine";
 
-  static String m2(riskValue) => 'Risiko für Begleiterkrankungen: ${riskValue}';
+  static m2(riskValue) => "Risiko für Begleiterkrankungen: ${riskValue}";
 
-  static String m3(age) => '${age} Jahre';
+  static m3(age) => "${age} Jahre";
 
-  final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+  @override
+  final Map<String, dynamic> messages =
+      _notInlinedMessages(_notInlinedMessages);
+
+  static Map<String, dynamic> _notInlinedMessages(_) => {
         'activityExample': MessageLookupByLibrary.simpleMessage(
             'z. B. Laufen, Radfahren, Yoga ...'),
         'activityLabel': MessageLookupByLibrary.simpleMessage('Aktivität'),
@@ -89,7 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'copyDialogTitle': MessageLookupByLibrary.simpleMessage(
             'Zu welcher Mahlzeit hinzufügen?'),
         'copyOrDeleteTimeDialogContent': MessageLookupByLibrary.simpleMessage(
-            'Auf \'Nach heute kopieren\' klicken, um die Mahlzeit nach heute zu kopieren. Mit \'Löschen\' kann die Mahlzeit entfernt werden'),
+            'Auf \"Nach heute kopieren\" klicken, um die Mahlzeit nach heute zu kopieren. Mit \"Löschen\" kann die Mahlzeit entfernt werden'),
         'copyOrDeleteTimeDialogTitle':
             MessageLookupByLibrary.simpleMessage('Was soll getan werden?'),
         'createCustomDialogContent': MessageLookupByLibrary.simpleMessage(
@@ -675,6 +678,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'suppliedLabel': MessageLookupByLibrary.simpleMessage('zugeführt'),
         'unitLabel': MessageLookupByLibrary.simpleMessage('Einheit'),
         'weightLabel': MessageLookupByLibrary.simpleMessage('Gewicht'),
-        'yearsLabel': m3,
+        'yearsLabel': m3
       };
 }

@@ -2,35 +2,38 @@
 // This is a library that provides messages for a en locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
-
+// @dart=2.12
 // Ignore issues from commonly used lints in this file.
-// ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
+// ignore_for_file:unnecessary_brace_in_string_interps
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
-// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
+// ignore_for_file:unused_import, file_names
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-final messages = new MessageLookup();
+final messages = MessageLookup();
 
-typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
+typedef String? MessageIfAbsent(String? messageStr, List<Object>? args);
 
 class MessageLookup extends MessageLookupByLibrary {
+  @override
   String get localeName => 'en';
 
-  static String m0(versionNumber) => 'Version ${versionNumber}';
+  static m0(versionNumber) => "Version ${versionNumber}";
 
-  static String m1(pctCarbs, pctFats, pctProteins) =>
-      '${pctCarbs}% carbs, ${pctFats}% fats, ${pctProteins}% proteins';
+  static m1(pctCarbs, pctFats, pctProteins) =>
+      "${pctCarbs}% carbs, ${pctFats}% fats, ${pctProteins}% proteins";
 
-  static String m2(riskValue) => 'Risk of comorbidities: ${riskValue}';
+  static m2(riskValue) => "Risk of comorbidities: ${riskValue}";
 
-  static String m3(age) => '${age} years';
+  static m3(age) => "${age} years";
 
-  final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+  @override
+  final Map<String, dynamic> messages =
+      _notInlinedMessages(_notInlinedMessages);
+
+  static Map<String, dynamic> _notInlinedMessages(_) => {
         'activityExample': MessageLookupByLibrary.simpleMessage(
             'e.g. running, biking, yoga ...'),
         'activityLabel': MessageLookupByLibrary.simpleMessage('Activity'),
@@ -88,7 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'copyDialogTitle': MessageLookupByLibrary.simpleMessage(
             'Which meal type do you want to copy to?'),
         'copyOrDeleteTimeDialogContent': MessageLookupByLibrary.simpleMessage(
-            'With \'Copy to today\' you can copy the meal to today. With \'Delete\' you can delete the meal.'),
+            'With \"Copy to today\" you can copy the meal to today. With \"Delete\" you can delete the meal.'),
         'copyOrDeleteTimeDialogTitle':
             MessageLookupByLibrary.simpleMessage('What do you want to do?'),
         'createCustomDialogContent': MessageLookupByLibrary.simpleMessage(
@@ -183,7 +186,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'mealFatLabel': MessageLookupByLibrary.simpleMessage('fat per'),
         'mealKcalLabel': MessageLookupByLibrary.simpleMessage('kcal per'),
         'mealNameLabel': MessageLookupByLibrary.simpleMessage('Meal name'),
-        'mealProteinLabel': MessageLookupByLibrary.simpleMessage('protein per'),
+        'mealProteinLabel':
+            MessageLookupByLibrary.simpleMessage('protein per 100 g/ml'),
         'mealSizeLabel':
             MessageLookupByLibrary.simpleMessage('Meal size (g/ml)'),
         'mealSizeLabelImperial':
@@ -666,6 +670,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'suppliedLabel': MessageLookupByLibrary.simpleMessage('supplied'),
         'unitLabel': MessageLookupByLibrary.simpleMessage('Unit'),
         'weightLabel': MessageLookupByLibrary.simpleMessage('Weight'),
-        'yearsLabel': m3,
+        'yearsLabel': m3
       };
 }

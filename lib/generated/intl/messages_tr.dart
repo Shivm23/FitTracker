@@ -2,35 +2,38 @@
 // This is a library that provides messages for a tr locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
-
+// @dart=2.12
 // Ignore issues from commonly used lints in this file.
-// ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
+// ignore_for_file:unnecessary_brace_in_string_interps
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
-// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
+// ignore_for_file:unused_import, file_names
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-final messages = new MessageLookup();
+final messages = MessageLookup();
 
-typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
+typedef String? MessageIfAbsent(String? messageStr, List<Object>? args);
 
 class MessageLookup extends MessageLookupByLibrary {
+  @override
   String get localeName => 'tr';
 
-  static String m0(versionNumber) => 'Versiyon ${versionNumber}';
+  static m0(versionNumber) => "Versiyon ${versionNumber}";
 
-  static String m1(pctCarbs, pctFats, pctProteins) =>
-      '%${pctCarbs} karbonhidrat, %${pctFats} yağ, %${pctProteins} protein';
+  static m1(pctCarbs, pctFats, pctProteins) =>
+      "%${pctCarbs} karbonhidrat, %${pctFats} yağ, %${pctProteins} protein";
 
-  static String m2(riskValue) => 'Eşlik eden hastalık riski: ${riskValue}';
+  static m2(riskValue) => "Eşlik eden hastalık riski: ${riskValue}";
 
-  static String m3(age) => '${age} yıl';
+  static m3(age) => "${age} yıl";
 
-  final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+  @override
+  final Map<String, dynamic> messages =
+      _notInlinedMessages(_notInlinedMessages);
+
+  static Map<String, dynamic> _notInlinedMessages(_) => {
         'activityExample': MessageLookupByLibrary.simpleMessage(
             'ör. koşu, bisiklet, yoga ...'),
         'activityLabel': MessageLookupByLibrary.simpleMessage('Aktivite'),
@@ -88,7 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'copyDialogTitle': MessageLookupByLibrary.simpleMessage(
             'Hangi yemek türüne kopyalamak istiyorsunuz?'),
         'copyOrDeleteTimeDialogContent': MessageLookupByLibrary.simpleMessage(
-            '\'Bugüne Kopyala\' ile yemeği bugüne kopyalayabilirsiniz. \'Sil\' ile yemeği silebilirsiniz.'),
+            '\"Bugüne Kopyala\" ile yemeği bugüne kopyalayabilirsiniz. \"Sil\" ile yemeği silebilirsiniz.'),
         'copyOrDeleteTimeDialogTitle':
             MessageLookupByLibrary.simpleMessage('Ne yapmak istiyorsunuz?'),
         'createCustomDialogContent': MessageLookupByLibrary.simpleMessage(
@@ -230,7 +233,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'nutritionalStatusUnderweight':
             MessageLookupByLibrary.simpleMessage('Düşük Kilolu'),
         'offDisclaimer': MessageLookupByLibrary.simpleMessage(
-            'Bu uygulama tarafından size sağlanan veriler Open Food Facts veritabanından alınmaktadır. Sağlanan bilgilerin doğruluğu, eksiksizliği veya güvenilirliği konusunda hiçbir garanti verilmemektedir. Veriler \'olduğu gibi\' sağlanır ve verilerin kullanımıyla ilgili herhangi bir zarardan verilerin kaynağı (Open Food Facts) sorumlu tutulamaz.'),
+            'Bu uygulama tarafından size sağlanan veriler Open Food Facts veritabanından alınmaktadır. Sağlanan bilgilerin doğruluğu, eksiksizliği veya güvenilirliği konusunda hiçbir garanti verilmemektedir. Veriler \"olduğu gibi\" sağlanır ve verilerin kullanımıyla ilgili herhangi bir zarardan verilerin kaynağı (Open Food Facts) sorumlu tutulamaz.'),
         'onboardingActivityQuestionSubtitle':
             MessageLookupByLibrary.simpleMessage(
                 'Ne kadar aktifsiz? (antrenmanlar hariç)'),
@@ -659,6 +662,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'suppliedLabel': MessageLookupByLibrary.simpleMessage('tüketilen'),
         'unitLabel': MessageLookupByLibrary.simpleMessage('Birim'),
         'weightLabel': MessageLookupByLibrary.simpleMessage('Kilo'),
-        'yearsLabel': m3,
+        'yearsLabel': m3
       };
 }
