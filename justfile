@@ -1,8 +1,17 @@
+intl_output_dir := "./lib/generated/intl/"
+
+# Build OpenNutriTracker
 build:
   flutter pub run build_runner build --delete-conflicting-outputs
 
-format:
-  dart format ./lib ./test
+# Format dart code
+format *OPTIONS:
+  dart format {{OPTIONS}} ./lib ./test
 
-run_intl: 
-  dart run intl_translation:generate_from_arb --output-dir ./lib/generated/intl/ lib/**/*.dart ./lib/l10n/*.arb
+# Regenerate intl files
+run_intl: && format
+  dart run intl_translation:generate_from_arb --output-dir {{intl_output_dir}} lib/**/*.dart ./lib/l10n/*.arb
+
+# Check if intl files are correctly generated
+check_intl: run_intl 
+  git diff  --exit-code {{intl_output_dir}}
