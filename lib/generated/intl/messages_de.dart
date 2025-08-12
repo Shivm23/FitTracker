@@ -185,14 +185,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Makronährstoff-Verteilung:'),
         'mealBrandsLabel': MessageLookupByLibrary.simpleMessage('Marken'),
         'mealCarbsLabel':
-            MessageLookupByLibrary.simpleMessage('Kohlenhydrate pro 100 g/ml'),
-        'mealFatLabel':
-            MessageLookupByLibrary.simpleMessage('Fett pro 100 g/ml'),
-        'mealKcalLabel':
-            MessageLookupByLibrary.simpleMessage('kcal pro 100 g/ml'),
+            MessageLookupByLibrary.simpleMessage('Kohlenhydrate pro'),
+        'mealFatLabel': MessageLookupByLibrary.simpleMessage('Fett pro'),
+        'mealKcalLabel': MessageLookupByLibrary.simpleMessage('kcal pro'),
         'mealNameLabel': MessageLookupByLibrary.simpleMessage('Mahlzeitenname'),
-        'mealProteinLabel':
-            MessageLookupByLibrary.simpleMessage('Protein pro 100 g/ml'),
+        'mealProteinLabel': MessageLookupByLibrary.simpleMessage('Protein pro'),
         'mealSizeLabel':
             MessageLookupByLibrary.simpleMessage('Mahlzeitsgröße (g/ml)'),
         'mealSizeLabelImperial':

@@ -186,8 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'mealFatLabel': MessageLookupByLibrary.simpleMessage('fat per'),
         'mealKcalLabel': MessageLookupByLibrary.simpleMessage('kcal per'),
         'mealNameLabel': MessageLookupByLibrary.simpleMessage('Meal name'),
-        'mealProteinLabel':
-            MessageLookupByLibrary.simpleMessage('protein per 100 g/ml'),
+        'mealProteinLabel': MessageLookupByLibrary.simpleMessage('protein per'),
         'mealSizeLabel':
             MessageLookupByLibrary.simpleMessage('Meal size (g/ml)'),
         'mealSizeLabelImperial':

@@ -186,7 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'mealKcalLabel': MessageLookupByLibrary.simpleMessage('kcal başına'),
         'mealNameLabel': MessageLookupByLibrary.simpleMessage('Yemek adı'),
         'mealProteinLabel':
-            MessageLookupByLibrary.simpleMessage('protein başına 100 g/ml'),
+            MessageLookupByLibrary.simpleMessage('protein başına'),
         'mealSizeLabel':
             MessageLookupByLibrary.simpleMessage('Yemek boyutu (g/ml)'),
         'mealSizeLabelImperial':
