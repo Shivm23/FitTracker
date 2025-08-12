@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCLoVB9T1-7iMGYxyE6RXOUexHQXMgB_o8',
-    appId: '1:342104152243:ios:14552c4c6f31ce117bb8c6',
+    appId: '1:342104152243:ios:a32bac353496b05e7bb8c6',
     messagingSenderId: '342104152243',
     projectId: 'atlas-tracker-b389e',
     storageBucket: 'atlas-tracker-b389e.firebasestorage.app',
-    iosBundleId: 'com.opennutritracker2025.ont.opennutritracker',
+    iosBundleId: 'com.atlastracker.testflight',
   );
 
 }

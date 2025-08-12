@@ -16,6 +16,7 @@ import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart'
 import 'package:opennutritracker/features/home/presentation/widgets/dashboard_widget.dart';
 import 'package:opennutritracker/features/home/presentation/widgets/intake_vertical_list.dart';
 import 'package:opennutritracker/generated/l10n.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -114,8 +115,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       List<UserActivityEntity> userActivities,
       UserWeightEntity? userWeight,
       bool usesImperialUnits) {
-
-
     return Stack(children: [
       ListView(children: [
         DashboardWidget(
@@ -241,6 +240,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final deleteWeight = await showDialog<bool>(
         context: context, builder: (context) => const DeleteDialog());
 
+    final info = await PackageInfo.fromPlatform();
+    debugPrint('Bundle ID: ${info.packageName}');
     if (deleteWeight != null) {
       _homeBloc.deleteUserWeightItem();
       _homeBloc.add(const LoadItemsEvent());
