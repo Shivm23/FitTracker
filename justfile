@@ -1,5 +1,9 @@
 intl_output_dir := "./lib/generated/intl/"
 
+# Install dependencies
+install:
+  flutter pub get
+
 # Build OpenNutriTracker
 build:
   flutter pub run build_runner build --delete-conflicting-outputs
@@ -15,3 +19,11 @@ run_intl: && format
 # Check if intl files are correctly generated
 check_intl: run_intl 
   git diff  --exit-code {{intl_output_dir}}
+
+# Run tests
+test:
+  flutter test
+
+# Run CI checks
+ci: install (format "--set-exit-if-changed") check_intl build && test
+  flutter analyze
