@@ -86,16 +86,19 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
       content: _loading
           ? const SizedBox(
               height: 100, child: Center(child: CircularProgressIndicator()))
-          : Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildMacroField(
-                    S.of(context).proteinLabel, _proteinController),
-                _buildMacroField(S.of(context).carbsLabel, _carbsController),
-                _buildMacroField(S.of(context).fatLabel, _fatsController),
-                const SizedBox(height: 24),
-                Text('${S.of(context).kcalLabel}: ${_calculatedKcal.round()}'),
-              ],
+          : SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildMacroField(
+                      S.of(context).proteinLabel, _proteinController),
+                  _buildMacroField(S.of(context).carbsLabel, _carbsController),
+                  _buildMacroField(S.of(context).fatLabel, _fatsController),
+                  const SizedBox(height: 24),
+                  Text(
+                      '${S.of(context).kcalLabel}: ${_calculatedKcal.round()}'),
+                ],
+              ),
             ),
       actions: [
         TextButton(

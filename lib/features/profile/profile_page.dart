@@ -20,7 +20,6 @@ import 'package:opennutritracker/features/auth/auth_safe_sign_out.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'coach_students_page.dart';
 import 'presentation/widgets/manage_account_dialog.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -237,37 +236,6 @@ class _ProfilePageState extends State<ProfilePage> {
             context: context,
             builder: (_) => const ManageAccountDialog(),
           ),
-        ),
-        ListTile(
-          leading: const SizedBox(
-            height: double.infinity,
-            child: Icon(Icons.bug_report_outlined, color: Colors.red),
-          ),
-          title: const Text('Simulate crash'),
-          subtitle: const Text('Force a test crash (Crashlytics)'),
-          onTap: () async {
-            final confirm = await showDialog<bool>(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                title: const Text('Simulate crash?'),
-                content:
-                    const Text('The app will crash now to test Crashlytics.'),
-                actions: [
-                  TextButton(
-                      onPressed: () => Navigator.pop(ctx, false),
-                      child: const Text('Cancel')),
-                  TextButton(
-                      onPressed: () => Navigator.pop(ctx, true),
-                      child: const Text('Crash')),
-                ],
-              ),
-            );
-            if (confirm != true) return;
-
-            await FirebaseCrashlytics.instance
-                .log('Manual crash from settings tile');
-            FirebaseCrashlytics.instance.crash(); // ← boom
-          },
         ),
         ListTile(
           leading: const SizedBox(
