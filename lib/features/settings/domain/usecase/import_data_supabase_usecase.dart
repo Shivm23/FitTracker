@@ -12,7 +12,6 @@ import 'package:opennutritracker/core/data/repository/intake_repository.dart';
 import 'package:opennutritracker/core/data/repository/tracked_day_repository.dart';
 import 'package:opennutritracker/core/data/repository/user_activity_repository.dart';
 import 'package:opennutritracker/core/data/repository/user_weight_repository.dart';
-import 'package:opennutritracker/core/data/repository/config_repository.dart';
 import 'package:opennutritracker/core/data/repository/recipe_repository.dart';
 import 'package:opennutritracker/core/data/repository/user_repository.dart';
 import 'package:opennutritracker/core/data/dbo/recipe_dbo.dart';
@@ -43,7 +42,6 @@ class ImportDataSupabaseUsecase {
   final RecipeRepository _recipeRepository;
   final UserRepository _userRepository;
   final SupabaseClient _client;
-  final ConfigRepository _configRepository;
   final _log = Logger('ImportDataSupabaseUsecase');
 
   ImportDataSupabaseUsecase(
@@ -54,7 +52,6 @@ class ImportDataSupabaseUsecase {
     this._recipeRepository,
     this._userRepository,
     this._client,
-    this._configRepository,
   );
 
   Future<bool> importData(

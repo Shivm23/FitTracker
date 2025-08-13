@@ -251,7 +251,6 @@ Future<void> registerUserScope(HiveDBProvider hive) async {
       locator(),
       locator(),
       locator(),
-      locator(),
     ),
   );
 
