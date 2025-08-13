@@ -82,15 +82,6 @@ class ImportDataSupabaseUsecase {
         return true; // 👍 Rien à synchroniser
       }
 
-      if (file.updatedAt != null) {
-        final remoteDate = DateTime.parse(file.updatedAt!);
-        final localDate = await _configRepository.getLastDataUpdate();
-        if (localDate != null && !remoteDate.isAfter(localDate)) {
-          _log.fine('Local data is up to date – skipping import');
-          return true;
-        }
-      }
-
       final filePath = '$userId/$exportZipFileName';
       final Uint8List data = await bucket.download(filePath);
       final archive = ZipDecoder().decodeBytes(data);
