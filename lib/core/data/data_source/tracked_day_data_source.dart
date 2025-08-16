@@ -95,6 +95,28 @@ class TrackedDayDataSource {
     }
   }
 
+  Future<void> addDayCaloriesBurned(DateTime day, double addCalories) async {
+    log.fine('Adding new burned calories');
+    final updateDay = await getTrackedDay(day);
+
+    if (updateDay != null) {
+      updateDay.caloriesBurned += addCalories;
+      await updateDay.save();
+    }
+  }
+
+  Future<void> decreaseDayCaloriesBurned(
+      DateTime day, double subtractCalories) async {
+    log.fine('Decreasing burned calories');
+    final updateDay = await getTrackedDay(day);
+
+    if (updateDay != null) {
+      final newValue = updateDay.caloriesBurned - subtractCalories;
+      updateDay.caloriesBurned = math.max(0, newValue);
+      await updateDay.save();
+    }
+  }
+
   Future<void> updateDayMacroGoals(DateTime day,
       {double? carbsGoal, double? fatGoal, double? proteinGoal}) async {
     log.fine('Updating tracked day macro goals');

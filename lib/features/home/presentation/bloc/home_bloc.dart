@@ -218,6 +218,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         carbsAmount: carbsAmount,
         fatAmount: fatAmount,
         proteinAmount: proteinAmount);
+    await _addTrackedDayUseCase.removeDayCaloriesBurned(
+        dateTime, activityEntity.burnedKcal);
     _updateDiaryPage(dateTime);
   }
 

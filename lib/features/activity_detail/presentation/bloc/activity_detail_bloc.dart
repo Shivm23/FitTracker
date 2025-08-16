@@ -112,5 +112,6 @@ class ActivityDetailBloc
       fatAmount: fatIncrease,
       proteinAmount: proteinIncrease,
     );
+    await _addTrackedDayUsecase.addDayCaloriesBurned(day, caloriesBurned);
   }
 }
