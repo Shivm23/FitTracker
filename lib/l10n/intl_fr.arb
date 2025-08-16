@@ -13,6 +13,8 @@
   "createCustomDialogTitle": "Créer un aliment personnalisé ?",
   "createCustomDialogContent": "Voulez-vous créer un aliment personnalisé ?",
   "settingsLabel": "Paramètres",
+  "notificationsLabel": "Notifications",
+  "notificationActivationError": "Problème d'activation des notifications. Veuillez réessayer plus tard.",
   "homeLabel": "Accueil",
   "deltaWeightLabel": "Écart de poids",
   "deltaWeightBody": "L'écart de poids est la différence entre le poids moyen et le poids courant renseigné pour ce jour.\nSi aucun poids n'est enregistré pour le jour courant, le dernier poids valide sera utilisé.",

@@ -161,6 +161,26 @@ class S {
     );
   }
 
+  /// `Notifications`
+  String get notificationsLabel {
+    return Intl.message(
+      'Notifications',
+      name: 'notificationsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification activation problem. Please try again later.`
+  String get notificationActivationError {
+    return Intl.message(
+      'Notification activation problem. Please try again later.',
+      name: 'notificationActivationError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Home`
   String get homeLabel {
     return Intl.message(

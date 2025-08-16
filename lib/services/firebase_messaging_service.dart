@@ -27,7 +27,12 @@ class FirebaseMessagingService {
 
     _localNotificationsService = localNotificationsService;
 
-    await _handlePushNotificationsToken();
+    final succeed = await _handlePushNotificationsToken();
+    if (!succeed) {
+      log.warning('[❗] Échec de l\'initialisation du token FCM');
+      return;
+    }
+
     await _requestPermission();
 
     log.fine('[🟡] Enregistrement du handler background...');
@@ -51,9 +56,10 @@ class FirebaseMessagingService {
     log.fine('[✅] Initialisation FirebaseMessagingService terminée');
   }
 
-  Future<void> _handlePushNotificationsToken() async {
+  Future<bool> _handlePushNotificationsToken() async {
     log.fine('[🔑] Récupération du token FCM...');
     final token = await FirebaseMessaging.instance.getToken();
+    var success = false;
 
     if (token != null) {
       log.fine('[✅] Token FCM obtenu: $token');
@@ -64,7 +70,7 @@ class FirebaseMessagingService {
         if (userId == null) {
           log.severe(
               '[❌] Utilisateur non authentifié, impossible de mettre à jour le token.');
-          return;
+          return false;
         }
 
         log.fine('[📬] Mise à jour du token dans Supabase pour user: $userId');
@@ -75,9 +81,11 @@ class FirebaseMessagingService {
         }, onConflict: 'user_id');
 
         log.fine('[✅] Token FCM mis à jour dans Supabase');
+        success = true;
       } catch (e, stack) {
         log.fine('[🔥] UPDATE Erreur lors de l\'update FCM dans Supabase: $e');
         log.fine(stack.toString());
+        return false;
       }
     } else {
       log.fine('[❌] Token FCM est nul');
@@ -105,6 +113,32 @@ class FirebaseMessagingService {
     }).onError((error) {
       log.severe('[❌] Erreur lors du rafraîchissement du token FCM: $error');
     });
+
+    return success;
+  }
+
+  Future<bool> refreshPushNotificationsToken() async {
+    return _handlePushNotificationsToken();
+  }
+
+  Future<bool> hasPushNotificationsToken() async {
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+    if (userId == null) {
+      return false;
+    }
+    try {
+      final result = await Supabase.instance.client
+          .from('user_devices')
+          .select('fcm_token')
+          .eq('user_id', userId)
+          .maybeSingle();
+      final token = result?['fcm_token'] as String?;
+      return token != null && token.isNotEmpty;
+    } catch (e, stack) {
+      log.warning('[❌] Erreur lors de la récupération du token FCM: $e');
+      log.warning(stack.toString());
+      return false;
+    }
   }
 
   Future<void> _requestPermission() async {

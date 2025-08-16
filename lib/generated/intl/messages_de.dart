@@ -723,6 +723,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsDistanceLabel":
             MessageLookupByLibrary.simpleMessage("Entfernung"),
         "settingsLabel": MessageLookupByLibrary.simpleMessage("Einstellungen"),
+        "notificationsLabel":
+            MessageLookupByLibrary.simpleMessage("Benachrichtigungen"),
+        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
+            "Problem beim Aktivieren der Benachrichtigungen. Bitte später erneut versuchen."),
         "settingsLicensesLabel":
             MessageLookupByLibrary.simpleMessage("Lizenzen"),
         "settingsMassLabel": MessageLookupByLibrary.simpleMessage("Masse"),
