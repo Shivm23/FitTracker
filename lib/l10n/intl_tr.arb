@@ -8,6 +8,8 @@
   "createCustomDialogTitle": "Özel yemek öğesi oluştur?",
   "createCustomDialogContent": "Özel bir yemek öğesi oluşturmak istiyor musunuz?",
   "settingsLabel": "Ayarlar",
+  "notificationsLabel": "Bildirimler",
+  "notificationActivationError": "Bildirim etkinleştirme sorunu. Lütfen daha sonra tekrar deneyin.",
   "homeLabel": "Ana Sayfa",
   "deltaWeightLabel": "Kilo Farkı",
   "deltaWeightBody": "Ağırlık farkı, ortalama ağırlık ile bu gün için girilen mevcut ağırlık arasındaki farktır.\nMevcut gün için herhangi bir ağırlık kaydedilmemişse, son geçerli ağırlık kullanılacaktır.",

@@ -13,6 +13,8 @@
   "createCustomDialogTitle": "Create custom meal item?",
   "createCustomDialogContent": "Do you want create a custom meal item?",
   "settingsLabel": "Settings",
+  "notificationsLabel": "Notifications",
+  "notificationActivationError": "Notification activation problem. Please try again later.",
   "homeLabel": "Home",
   "deltaWeightLabel": "Weight Delta",
   "deltaWeightBody": "The weight delta is the difference between the average weight and the current weight entered for this day.\nIf no weight is recorded for the current day, the last valid weight will be used.",

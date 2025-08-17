@@ -699,6 +699,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsImperialLabel":
             MessageLookupByLibrary.simpleMessage("İmperial (lbs, ft, oz)"),
         "settingsLabel": MessageLookupByLibrary.simpleMessage("Ayarlar"),
+        "notificationsLabel":
+            MessageLookupByLibrary.simpleMessage("Bildirimler"),
+        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
+            "Bildirim etkinleştirme sorunu. Lütfen daha sonra tekrar deneyin."),
         "settingsLicensesLabel":
             MessageLookupByLibrary.simpleMessage("Lisanslar"),
         "settingsMassLabel": MessageLookupByLibrary.simpleMessage("Kütle"),

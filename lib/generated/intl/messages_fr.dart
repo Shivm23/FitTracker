@@ -727,6 +727,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsImperialLabel":
             MessageLookupByLibrary.simpleMessage("Impérial (lbs, ft, oz)"),
         "settingsLabel": MessageLookupByLibrary.simpleMessage("Paramètres"),
+        "notificationsLabel":
+            MessageLookupByLibrary.simpleMessage("Notifications"),
+        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
+            "Problème d'activation des notifications. Veuillez réessayer plus tard."),
         "settingsLicensesLabel":
             MessageLookupByLibrary.simpleMessage("Licences"),
         "settingsMassLabel": MessageLookupByLibrary.simpleMessage("Masse"),

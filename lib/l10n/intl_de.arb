@@ -9,6 +9,8 @@
   "createCustomDialogTitle": "Benutzerdefinierte Mahlzeit erstellen?",
   "createCustomDialogContent": "Möchten Sie einen benutzerdefinierte Mahlzeit erstellen?",
   "settingsLabel": "Einstellungen",
+  "notificationsLabel": "Benachrichtigungen",
+  "notificationActivationError": "Problem beim Aktivieren der Benachrichtigungen. Bitte später erneut versuchen.",
   "homeLabel": "Startseite",
   "deltaWeightLabel": "Gewichtsdifferenz",
   "deltaWeightBody": "Die Gewichtsdifferenz ist die Differenz zwischen dem Durchschnittsgewicht und dem für diesen Tag eingegebenen aktuellen Gewicht.\nWenn für den aktuellen Tag kein Gewicht erfasst ist, wird das letzte gültige Gewicht verwendet.",
