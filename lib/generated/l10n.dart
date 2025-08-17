@@ -4631,6 +4631,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Log out`
+  String get logOutLabel {
+    return Intl.message(
+      'Log out',
+      name: 'logOutLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If the password reset doesn't work:\n- exit the app and try again, or\n- make the request from the website: `
+  String get forgotPasswordHelp {
+    return Intl.message(
+      'If the password reset doesn\'t work:\n- exit the app and try again, or\n- make the request from the website: ',
+      name: 'forgotPasswordHelp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `website`
+  String get websiteLabel {
+    return Intl.message(
+      'website',
+      name: 'websiteLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -100,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.logout),
-                  title: const Text('Log out'),
+                  title: Text(S.of(context).logOutLabel),
                   onTap: () => safeSignOut(context),
                 ),
                 const SizedBox(height: 32.0),
