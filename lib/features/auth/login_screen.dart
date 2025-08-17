@@ -54,8 +54,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   /// Display an error message and log it.
   void _showError(Object error) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('$error')));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$error')));
     Logger('LoginScreen').warning('Auth error', error);
   }
 
@@ -80,7 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
           final msg = e.message.toLowerCase();
 
           // ➜ Cas “bruyant mais OK” : 500 ‘Database error granting user’
-          final isGrantingUser500 = e.statusCode == "500" &&
+          final isGrantingUser500 =
+              e.statusCode == "500" &&
               msg.contains('database error granting user');
 
           // ➜ Cas « déjà consommé »
@@ -112,9 +114,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (event == AuthChangeEvent.passwordRecovery && !_navigatedToReset) {
         _navigatedToReset = true;
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const ResetPasswordScreen()),
-        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const ResetPasswordScreen()));
       }
     });
   }
@@ -176,6 +178,56 @@ class _LoginScreenState extends State<LoginScreen> {
     return DateTime(2000, 1, 1);
   }
 
+  Future<bool> _syncUserProfile(String userId) async {
+    final addUser = locator<AddUserUsecase>();
+    try {
+      final rows = await supabase
+          .from('users')
+          .select(
+            'display_name, role, height_cm, weight_kg, gender, goal, birthday, pal',
+          )
+          .eq('id', userId);
+
+      if (rows.isEmpty) {
+        Logger('LoginScreen').warning('No users found with ID $userId');
+        return false;
+      }
+
+      final row = rows.first;
+      final roleStr = (row['role'] as String?) ?? 'student';
+      final displayName = (row['display_name'] as String?)?.trim();
+      final heightCm = parseNumToDouble(row['height_cm'], fallback: 180);
+      final weightKg = parseNumToDouble(row['weight_kg'], fallback: 80);
+      final gender = parseGender(row['gender'] as String?);
+      final goal = parseGoal(row['goal'] as String?);
+      final pal = parsePal(row['pal'] as String?);
+      final birthday = parseBirthday(row['birthday']);
+      final role = roleStr == 'coach'
+          ? UserRoleEntity.coach
+          : UserRoleEntity.student;
+
+      final user = UserEntity(
+        name: displayName ?? '',
+        birthday: birthday,
+        heightCM: heightCm,
+        weightKG: weightKg,
+        gender: gender,
+        goal: goal,
+        pal: pal,
+        role: role,
+        profileImagePath: null,
+      );
+
+      await addUser.addUser(user);
+      return true;
+    } catch (e, stackTrace) {
+      Logger(
+        'LoginScreen',
+      ).warning('Error when getting profile from Supabase', e, stackTrace);
+      return false;
+    }
+  }
+
   /// Attempt to authenticate with e-mail / password.
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
@@ -198,67 +250,10 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (res.session != null) {
-        // ── 1. Prépare Hive pour le user (nécessaire à l’import) + add user profile if needed
+        // ── 1. Prépare Hive pour le user (nécessaire à l’import)
         final hive = locator<HiveDBProvider>();
         await hive.initForUser(res.user?.id);
         await registerUserScope(hive);
-
-        final getUser = locator<GetUserUsecase>();
-
-        final hasProfile = await getUser.hasUserData();
-        if (!hasProfile) {
-          final userId = res.user?.id;
-          final addUser = locator<AddUserUsecase>();
-
-          try {
-            final List<Map<String, dynamic>> rows = await supabase
-                .from('users')
-                .select(
-                    'display_name, role, height_cm, weight_kg, gender, goal, birthday, pal')
-                .eq('id', userId!);
-
-            if (rows.isEmpty) {
-              debugPrint('No users found with ID $userId');
-              // On continue quand même : le profil local sera créé par défaut
-            }
-
-            if (rows.isNotEmpty) {
-              final row = rows.first;
-              final roleStr = (row['role'] as String?) ?? 'student';
-              final displayName = (row['display_name'] as String?)?.trim();
-              final heightCm =
-                  parseNumToDouble(row['height_cm'], fallback: 180);
-              final weightKg = parseNumToDouble(row['weight_kg'], fallback: 80);
-              final gender = parseGender(row['gender'] as String?);
-              final goal = parseGoal(row['goal'] as String?);
-              final pal = parsePal(row['pal'] as String?);
-              final birthday = parseBirthday(row['birthday']);
-              final role = roleStr == 'coach'
-                  ? UserRoleEntity.coach
-                  : UserRoleEntity.student;
-
-              final user = UserEntity(
-                name: displayName!,
-                birthday: birthday,
-                heightCM: heightCm,
-                weightKG: weightKg,
-                gender: gender,
-                goal: goal,
-                pal: pal,
-                role: role,
-                profileImagePath: null,
-              );
-
-              await addUser.addUser(user);
-            }
-          } catch (e, stackTrace) {
-            debugPrint('Error when getting profile from Supabase: $e');
-            debugPrint('Stack trace: $stackTrace');
-            await supabase.auth.signOut();
-            return;
-          }
-        }
-
         // ── 2. Tente l’import
         final importData = locator<ImportDataSupabaseUsecase>();
         final importSuccessful = await importData.importData(
@@ -291,6 +286,20 @@ class _LoginScreenState extends State<LoginScreen> {
           return; // reste sur l’écran de login
         }
 
+        // ── 4. Rafraîchit le profil depuis Supabase pour annuler un import obsolète
+        final getUser = locator<GetUserUsecase>();
+        final hasProfile = await getUser.hasUserData();
+        final userId = res.user?.id;
+
+        final profileSynced = userId != null
+            ? await _syncUserProfile(userId)
+            : false;
+
+        if (!profileSynced && !hasProfile) {
+          await supabase.auth.signOut();
+          return;
+        }
+
         // Récupérer les objectifs si student
         final user = await getUser.getUserData();
         if (user.role == UserRoleEntity.student) {
@@ -298,12 +307,14 @@ class _LoginScreenState extends State<LoginScreen> {
             final user = await locator.get<GetUserUsecase>().getUserData();
             if (user.role == UserRoleEntity.student) {
               await locator.get<AddMacroGoalUsecase>().addMacroGoalFromCoach();
-              Logger('LoginScreen')
-                  .fine('[✅] Objectifs macro mis à jour depuis Supabase');
+              Logger(
+                'LoginScreen',
+              ).fine('[✅] Objectifs macro mis à jour depuis Supabase');
             }
           } catch (e, stack) {
-            Logger('LoginScreen')
-                .warning('[❌] Erreur lors de la mise à jour des macros : $e');
+            Logger(
+              'LoginScreen',
+            ).warning('[❌] Erreur lors de la mise à jour des macros : $e');
             Logger('LoginScreen').warning(stack.toString());
             return;
           }
@@ -318,7 +329,7 @@ class _LoginScreenState extends State<LoginScreen> {
           localNotificationsService: localNotificationsService,
         );
 
-        // ── 4. Tout est OK  →  on passe à l’app
+        // ── 5. Tout est OK  →  on passe à l’app
         _navigateHome();
       }
     } on AuthException catch (e) {
@@ -375,8 +386,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (v) => (v == null || v.trim().isEmpty)
                     ? S.of(context).loginEmailRequired
                     : (EmailValidator.validate(v.trim())
-                        ? null
-                        : S.of(context).loginEmailInvalid),
+                          ? null
+                          : S.of(context).loginEmailInvalid),
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -402,10 +413,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 48,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    foregroundColor:
-                        Theme.of(context).colorScheme.onPrimaryContainer,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primaryContainer,
+                    foregroundColor: Theme.of(
+                      context,
+                    ).colorScheme.onPrimaryContainer,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.primaryContainer,
                   ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                   onPressed: _loading ? null : _submit,
                   child: _loading
