@@ -41,6 +41,14 @@ class AddTrackedDayUsecase {
     await _trackedDayRepository.removeDayTrackedCalories(day, caloriesTracked);
   }
 
+  Future<void> addDayCaloriesBurned(DateTime day, double calories) async {
+    await _trackedDayRepository.addDayCaloriesBurned(day, calories);
+  }
+
+  Future<void> removeDayCaloriesBurned(DateTime day, double calories) async {
+    await _trackedDayRepository.removeDayCaloriesBurned(day, calories);
+  }
+
   Future<void> updateDayMacroGoals(DateTime day,
       {double? carbsGoal, double? fatGoal, double? proteinGoal}) async {
     await _trackedDayRepository.updateDayMacroGoal(day,

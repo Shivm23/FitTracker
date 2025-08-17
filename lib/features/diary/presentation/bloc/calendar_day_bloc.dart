@@ -106,6 +106,8 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
         carbsAmount: carbsAmount,
         fatAmount: fatAmount,
         proteinAmount: proteinAmount);
+    await _addTrackedDayUsecase.removeDayCaloriesBurned(
+        day, activityEntity.burnedKcal);
     _updateDiaryPage(day);
   }
 

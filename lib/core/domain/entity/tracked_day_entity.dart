@@ -9,6 +9,7 @@ class TrackedDayEntity extends Equatable {
   final DateTime day;
   final double calorieGoal;
   final double caloriesTracked;
+  final double caloriesBurned;
   final double? carbsGoal;
   final double? carbsTracked;
   final double? fatGoal;
@@ -21,6 +22,7 @@ class TrackedDayEntity extends Equatable {
     required this.day,
     required this.calorieGoal,
     required this.caloriesTracked,
+    this.caloriesBurned = 0,
     this.carbsGoal,
     this.carbsTracked,
     this.fatGoal,
@@ -35,6 +37,7 @@ class TrackedDayEntity extends Equatable {
       day: trackedDayDBO.day,
       calorieGoal: trackedDayDBO.calorieGoal,
       caloriesTracked: trackedDayDBO.caloriesTracked,
+      caloriesBurned: trackedDayDBO.caloriesBurned,
       carbsGoal: trackedDayDBO.carbsGoal,
       carbsTracked: trackedDayDBO.carbsTracked,
       fatGoal: trackedDayDBO.fatGoal,
@@ -85,6 +88,7 @@ class TrackedDayEntity extends Equatable {
     day,
     calorieGoal,
     caloriesTracked,
+    caloriesBurned,
     carbsGoal,
     carbsTracked,
     fatGoal,

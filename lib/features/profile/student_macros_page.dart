@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:opennutritracker/generated/l10n.dart';
+import 'package:opennutritracker/core/utils/calc/macro_calc.dart';
 import 'set_student_macros_page.dart';
 
 class StudentMacrosPage extends StatefulWidget {
@@ -52,7 +53,7 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
     final macroResponse = await supabase
         .from('tracked_days')
         .select(
-          'day, calorieGoal, caloriesTracked, carbsGoal, carbsTracked, fatGoal, fatTracked, proteinGoal, proteinTracked',
+          'day, calorieGoal, caloriesTracked, caloriesBurned, carbsGoal, carbsTracked, fatGoal, fatTracked, proteinGoal, proteinTracked',
         )
         .eq('user_id', widget.studentId)
         .gte('day', startDate)
@@ -114,14 +115,30 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
           final dayKey = DateFormat('yyyy-MM-dd').format(_selectedDate);
           final data = _allMacros[dayKey];
 
-          final double calorieGoal = (data?['calorieGoal'] ?? 0).toDouble();
           final double caloriesTracked =
               (data?['caloriesTracked'] ?? 0).toDouble();
-          final double carbsGoal = (data?['carbsGoal'] ?? 0).toDouble();
-          final double carbsTracked = (data?['carbsTracked'] ?? 0).toDouble();
-          final double fatGoal = (data?['fatGoal'] ?? 0).toDouble();
+          final double caloriesBurned =
+              (data?['caloriesBurned'] ?? 0).toDouble();
+          final double calorieGoal = ((data?['calorieGoal'] ?? 0).toDouble() -
+                  caloriesBurned)
+              .clamp(0.0, double.infinity)
+              .toDouble();
+          final double carbsGoal = ((data?['carbsGoal'] ?? 0).toDouble() -
+                  MacroCalc.getTotalCarbsGoal(caloriesBurned))
+              .clamp(0.0, double.infinity)
+              .toDouble();
+          final double carbsTracked =
+              (data?['carbsTracked'] ?? 0).toDouble();
+          final double fatGoal = ((data?['fatGoal'] ?? 0).toDouble() -
+                  MacroCalc.getTotalFatsGoal(caloriesBurned))
+              .clamp(0.0, double.infinity)
+              .toDouble();
           final double fatTracked = (data?['fatTracked'] ?? 0).toDouble();
-          final double proteinGoal = (data?['proteinGoal'] ?? 0).toDouble();
+          final double proteinGoal =
+              ((data?['proteinGoal'] ?? 0).toDouble() -
+                      MacroCalc.getTotalProteinsGoal(caloriesBurned))
+                  .clamp(0.0, double.infinity)
+                  .toDouble();
           final double proteinTracked =
               (data?['proteinTracked'] ?? 0).toDouble();
 
@@ -239,7 +256,7 @@ class _StudentMacrosPageState extends State<StudentMacrosPage> {
                               Icon(Icons.keyboard_arrow_down_outlined,
                                   color:
                                       Theme.of(context).colorScheme.onSurface),
-                              Text('0',
+                              Text('${caloriesBurned.toInt()}',
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleLarge
