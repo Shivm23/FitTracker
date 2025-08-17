@@ -449,6 +449,9 @@
   "manageAccountDelete": "Mein Konto l\u00f6schen",
   "manageAccountConfirmTitle": "Bist du sicher?",
   "manageAccountConfirmMessage": "Dieser Vorgang kann nicht r\u00fcckg\u00e4ngig gemacht werden.",
-  "manageAccountConfirmAction": "L\u00f6schung best\u00e4tigen"
+  "manageAccountConfirmAction": "L\u00f6schung best\u00e4tigen",
+  "logOutLabel": "Abmelden",
+  "forgotPasswordHelp": "Wenn das Zur\u00fccksetzen des Passworts nicht funktioniert:\n- Beenden Sie die App und versuchen Sie es erneut, oder\n- stellen Sie die Anfrage \u00fcber die Website: ",
+  "websiteLabel": "Website"
 }
 

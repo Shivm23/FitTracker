@@ -454,5 +454,8 @@
   "manageAccountDelete": "Hesabımı Sil",
   "manageAccountConfirmTitle": "Emin misiniz?",
   "manageAccountConfirmMessage": "Bu işlem geri alınamaz.",
-  "manageAccountConfirmAction": "Silmeyi Onayla"
+  "manageAccountConfirmAction": "Silmeyi Onayla",
+  "logOutLabel": "Çıkış yap",
+  "forgotPasswordHelp": "Şifre sıfırlama çalışmazsa:\n- uygulamadan çıkıp işlemi tekrar deneyin veya\n- isteği web sitesi üzerinden yapın: ",
+  "websiteLabel": "web sitesi"
 }

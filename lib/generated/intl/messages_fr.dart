@@ -762,6 +762,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("Ingérées"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Unité"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Poids"),
-        "yearsLabel": m3
+        "yearsLabel": m3,
+        "logOutLabel": MessageLookupByLibrary.simpleMessage("Se déconnecter"),
+        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage("Si le reset de mot de passe ne fonctionne pas :\n- quitter l'application et recommencer la manipulation, ou\n- faire la demande depuis le site : "),
+        "websiteLabel": MessageLookupByLibrary.simpleMessage("site")
       };
 }

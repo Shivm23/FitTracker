@@ -16,7 +16,6 @@ import 'package:opennutritracker/features/profile/presentation/widgets/set_pal_c
 import 'package:opennutritracker/features/profile/presentation/widgets/set_weight_dialog.dart';
 import 'package:opennutritracker/features/profile/presentation/widgets/profile_photo_picker.dart';
 import 'package:opennutritracker/generated/l10n.dart';
-import 'package:opennutritracker/features/auth/auth_safe_sign_out.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'coach_students_page.dart';
 import 'presentation/widgets/manage_account_dialog.dart';
@@ -236,14 +235,6 @@ class _ProfilePageState extends State<ProfilePage> {
             context: context,
             builder: (_) => const ManageAccountDialog(),
           ),
-        ),
-        ListTile(
-          leading: const SizedBox(
-            height: double.infinity,
-            child: Icon(Icons.logout),
-          ),
-          title: const Text('Log out'),
-          onTap: () => safeSignOut(context),
         ),
         const SizedBox(height: 12),
       ],

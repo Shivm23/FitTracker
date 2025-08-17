@@ -460,6 +460,9 @@
   "manageAccountDelete": "Supprimer mon compte",
   "manageAccountConfirmTitle": "Êtes-vous sûr ?",
   "manageAccountConfirmMessage": "Cette action est irréversible.",
-  "manageAccountConfirmAction": "Confirmer la suppression"
+  "manageAccountConfirmAction": "Confirmer la suppression",
+  "logOutLabel": "Se déconnecter",
+  "forgotPasswordHelp": "Si le reset de mot de passe ne fonctionne pas :\n- quitter l'application et recommencer la manipulation, ou\n- faire la demande depuis le site : ",
+  "websiteLabel": "site"
 }
 

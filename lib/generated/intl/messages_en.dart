@@ -746,6 +746,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("supplied"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Unit"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Weight"),
-        "yearsLabel": m3
+        "yearsLabel": m3,
+        "logOutLabel": MessageLookupByLibrary.simpleMessage("Log out"),
+        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage("If the password reset doesn't work:\n- exit the app and try again, or\n- make the request from the website: "),
+        "websiteLabel": MessageLookupByLibrary.simpleMessage("website")
       };
 }

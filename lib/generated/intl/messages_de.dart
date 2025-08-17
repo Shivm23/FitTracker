@@ -755,6 +755,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("zugeführt"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Einheit"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Gewicht"),
-        "yearsLabel": m3
+        "yearsLabel": m3,
+        "logOutLabel": MessageLookupByLibrary.simpleMessage("Abmelden"),
+        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage("Wenn das Zurücksetzen des Passworts nicht funktioniert:\n- Beenden Sie die App und versuchen Sie es erneut, oder\n- stellen Sie die Anfrage über die Website: "),
+        "websiteLabel": MessageLookupByLibrary.simpleMessage("Website")
       };
 }

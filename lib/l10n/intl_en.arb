@@ -462,5 +462,8 @@
   "manageAccountDelete": "Delete My Account",
   "manageAccountConfirmTitle": "Are you sure?",
   "manageAccountConfirmMessage": "This action cannot be undone.",
-  "manageAccountConfirmAction": "Confirm Deletion"
+  "manageAccountConfirmAction": "Confirm Deletion",
+  "logOutLabel": "Log out",
+  "forgotPasswordHelp": "If the password reset doesn't work:\n- exit the app and try again, or\n- make the request from the website: ",
+  "websiteLabel": "website"
 }

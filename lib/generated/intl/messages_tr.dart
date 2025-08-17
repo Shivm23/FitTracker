@@ -733,6 +733,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("tüketilen"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Birim"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Kilo"),
-        "yearsLabel": m3
+        "yearsLabel": m3,
+        "logOutLabel": MessageLookupByLibrary.simpleMessage("Çıkış yap"),
+        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage("Şifre sıfırlama çalışmazsa:\n- uygulamadan çıkıp işlemi tekrar deneyin veya\n- isteği web sitesi üzerinden yapın: "),
+        "websiteLabel": MessageLookupByLibrary.simpleMessage("web sitesi")
       };
 }

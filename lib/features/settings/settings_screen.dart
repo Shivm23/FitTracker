@@ -12,6 +12,7 @@ import 'package:opennutritracker/features/settings/presentation/bloc/settings_bl
 import 'package:opennutritracker/features/settings/presentation/widgets/export_import_dialog.dart';
 import 'package:opennutritracker/features/settings/presentation/widgets/export_import_supabase_dialog.dart';
 import 'package:opennutritracker/features/settings/presentation/widgets/calculations_dialog.dart';
+import 'package:opennutritracker/features/auth/auth_safe_sign_out.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -96,6 +97,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: const Icon(Icons.error_outline_outlined),
                   title: Text(S.of(context).settingAboutLabel),
                   onTap: () => _showAboutDialog(context),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: Text(S.of(context).logOutLabel),
+                  onTap: () => safeSignOut(context),
                 ),
                 const SizedBox(height: 32.0),
                 AppBannerVersion(versionNumber: state.versionNumber),
