@@ -26,16 +26,34 @@ class RecentMealBloc extends Bloc<RecentMealEvent, RecentMealState> {
         final searchString = (event.searchString).toLowerCase();
 
         if (searchString.isEmpty) {
-          emit(RecentMealLoadedState(
-              recentMeals: recentIntake.map((intake) => intake.meal).toList(),
-              usesImperialUnits: config.usesImperialUnits));
+          emit(
+            RecentMealLoadedState(
+              recentMeals: recentIntake
+                  .map(
+                    (intake) => intake.meal.copyWith(
+                      mealQuantity: intake.amount.toString(),
+                      mealUnit: intake.unit,
+                    ),
+                  )
+                  .toList(),
+              usesImperialUnits: config.usesImperialUnits,
+            ),
+          );
         } else {
-          emit(RecentMealLoadedState(
+          emit(
+            RecentMealLoadedState(
               recentMeals: recentIntake
                   .where(matchesSearchString(searchString))
-                  .map((intake) => intake.meal)
+                  .map(
+                    (intake) => intake.meal.copyWith(
+                      mealQuantity: intake.amount.toString(),
+                      mealUnit: intake.unit,
+                    ),
+                  )
                   .toList(),
-              usesImperialUnits: config.usesImperialUnits));
+              usesImperialUnits: config.usesImperialUnits,
+            ),
+          );
         }
       } catch (error) {
         log.severe(error);
