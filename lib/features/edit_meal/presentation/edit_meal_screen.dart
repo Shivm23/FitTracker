@@ -43,25 +43,16 @@ class _EditMealScreenState extends State<EditMealScreen> {
   final _proteinTextController = TextEditingController();
 
   final _units = ['g', 'ml', 'g/ml'];
-  late String? selectedUnit;
+  String? selectedUnit;
 
-  // late List<DropdownMenuItem> _mealUnitDropdownItems;
   late List<ButtonSegment<String>> _mealUnitButtonSegment;
-
-  // TODO: Add base quantity and unit
-  String baseQuantity = "100";
-  String baseQuantityUnit = " g/ml";
 
   @override
   void initState() {
-    _editMealBloc = locator<EditMealBloc>();
     super.initState();
-
-    _baseQuantityTextController.addListener(() {
-      setState(() {
-        baseQuantity = _baseQuantityTextController.text;
-      });
-    });
+    // Initialize once, not during build.
+    _editMealBloc = locator<EditMealBloc>();
+    _editMealBloc.add(InitializeEditMealEvent());
   }
 
   @override
@@ -117,6 +108,21 @@ class _EditMealScreenState extends State<EditMealScreen> {
   }
 
   @override
+  void dispose() {
+    _nameTextController.dispose();
+    _brandsTextController.dispose();
+    _mealQuantityTextController.dispose();
+    _servingQuantityTextController.dispose();
+    _baseQuantityTextController.dispose();
+    _kcalTextController.dispose();
+    _carbsTextController.dispose();
+    _fatTextController.dispose();
+    _proteinTextController.dispose();
+    // Do not close _editMealBloc here if provided as a singleton by locator.
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -132,7 +138,7 @@ class _EditMealScreenState extends State<EditMealScreen> {
           ],
         ),
         body: BlocBuilder<EditMealBloc, EditMealState>(
-          bloc: locator<EditMealBloc>()..add(InitializeEditMealEvent()),
+          bloc: _editMealBloc, 
           builder: (BuildContext context, EditMealState state) {
             if (state is EditMealLoadingState) {
               return _getLoadingContent();
@@ -223,49 +229,68 @@ class _EditMealScreenState extends State<EditMealScreen> {
           decoration: InputDecoration(
               labelText: S.of(context).baseQuantityLabel,
               border: const OutlineInputBorder()),
-          keyboardType: TextInputType.number,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
         ),
         const SizedBox(height: 48),
-        TextFormField(
-          controller: _kcalTextController,
-          inputFormatters: CustomTextInputFormatter.doubleOnly(),
-          decoration: InputDecoration(
-              labelText:
-                  S.of(context).mealKcalLabel + baseQuantity + baseQuantityUnit,
-              border: const OutlineInputBorder()),
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        
+        ValueListenableBuilder<TextEditingValue>(
+          valueListenable: _baseQuantityTextController,
+          builder: (context, value, _) {
+            final base = (value.text.isEmpty ? '100' : value.text) + _unitSuffixForSelected(context);
+            return TextFormField(
+              controller: _kcalTextController,
+              inputFormatters: CustomTextInputFormatter.doubleOnly(),
+              decoration: InputDecoration(
+                  labelText: S.of(context).mealKcalLabel + base,
+                  border: const OutlineInputBorder()),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            );
+          },
         ),
         const SizedBox(height: 16),
-        TextFormField(
-          controller: _carbsTextController,
-          inputFormatters: CustomTextInputFormatter.doubleOnly(),
-          decoration: InputDecoration(
-              labelText: S.of(context).mealCarbsLabel +
-                  baseQuantity +
-                  baseQuantityUnit,
-              border: const OutlineInputBorder()),
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        ValueListenableBuilder<TextEditingValue>(
+          valueListenable: _baseQuantityTextController,
+          builder: (context, value, _) {
+            final base = (value.text.isEmpty ? '100' : value.text) + _unitSuffixForSelected(context);
+            return TextFormField(
+              controller: _carbsTextController,
+              inputFormatters: CustomTextInputFormatter.doubleOnly(),
+              decoration: InputDecoration(
+                  labelText: S.of(context).mealCarbsLabel + base,
+                  border: const OutlineInputBorder()),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            );
+          },
         ),
         const SizedBox(height: 16),
-        TextFormField(
-          controller: _fatTextController,
-          inputFormatters: CustomTextInputFormatter.doubleOnly(),
-          decoration: InputDecoration(
-              labelText:
-                  S.of(context).mealFatLabel + baseQuantity + baseQuantityUnit,
-              border: const OutlineInputBorder()),
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        ValueListenableBuilder<TextEditingValue>(
+          valueListenable: _baseQuantityTextController,
+          builder: (context, value, _) {
+            final base = (value.text.isEmpty ? '100' : value.text) + _unitSuffixForSelected(context);
+            return TextFormField(
+              controller: _fatTextController,
+              inputFormatters: CustomTextInputFormatter.doubleOnly(),
+              decoration: InputDecoration(
+                  labelText: S.of(context).mealFatLabel + base,
+                  border: const OutlineInputBorder()),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            );
+          },
         ),
         const SizedBox(height: 16),
-        TextFormField(
-          controller: _proteinTextController,
-          inputFormatters: CustomTextInputFormatter.doubleOnly(),
-          decoration: InputDecoration(
-              labelText: S.of(context).mealProteinLabel +
-                  baseQuantity +
-                  baseQuantityUnit,
-              border: const OutlineInputBorder()),
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        ValueListenableBuilder<TextEditingValue>(
+          valueListenable: _baseQuantityTextController,
+          builder: (context, value, _) {
+            final base = (value.text.isEmpty ? '100' : value.text) + _unitSuffixForSelected(context);
+            return TextFormField(
+              controller: _proteinTextController,
+              inputFormatters: CustomTextInputFormatter.doubleOnly(),
+              decoration: InputDecoration(
+                  labelText: S.of(context).mealProteinLabel + base,
+                  border: const OutlineInputBorder()),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            );
+          },
         ),
       ],
     );
@@ -274,9 +299,9 @@ class _EditMealScreenState extends State<EditMealScreen> {
   void _onSavePressed(bool usesImperialUnits) {
     try {
       // Convert meal size back to metric units if necessary
+      final mealUnitForConversion = selectedUnit ?? _mealEntity.mealUnit ?? '0';
       final mealQuantity = usesImperialUnits
-          ? _convertToMetric(
-              _mealQuantityTextController.text, _mealEntity.mealUnit ?? "0")
+          ? _convertToMetric(_mealQuantityTextController.text, mealUnitForConversion)
           : _mealQuantityTextController.text;
 
       final newMealEntity = _editMealBloc.createNewMealEntity(
@@ -307,13 +332,20 @@ class _EditMealScreenState extends State<EditMealScreen> {
   }
 
   String? _switchButtonUnit(String? unit) {
-    String? selectedUnit;
     if (!_units.contains(unit)) {
-      selectedUnit = _units[2]; // Default to g/ml
-    } else {
-      selectedUnit = unit;
+      return _units[2]; // Default to g/ml
     }
-    return selectedUnit;
+    return unit;
+  }
+
+  String _unitSuffixForSelected(BuildContext context) {
+    final u = selectedUnit ?? _units[2];
+    if (u == 'g') {
+      return _usesImperialUnits ? ' ' + S.of(context).ozUnit : ' ' + S.of(context).gramUnit;
+    } else if (u == 'ml') {
+      return _usesImperialUnits ? ' ' + S.of(context).flOzUnit : ' ' + S.of(context).milliliterUnit;
+    }
+    return ' ' + S.of(context).gramMilliliterUnit;
   }
 
   String _convertToImperial(String value, String unit) {
