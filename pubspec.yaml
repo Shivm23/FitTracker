@@ -1,31 +1,13 @@
 name: opennutritracker
 description: Open-Source Calories & Activity Tracker
 
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 0.0.1+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
@@ -39,7 +21,7 @@ dependencies:
   intl: ^0.20.2
   get_it: ^8.0.3
   provider: ^6.1.2
-  http: ^1.2.2
+  http: any
   uuid: ^4.5.1
   json_annotation: ^4.9.0
   logging: ^1.3.0
@@ -77,9 +59,8 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
-
   supabase_flutter: ^2.9.1
-  syncfusion_flutter_charts: ^29.1.38
+  syncfusion_flutter_charts: ^30.2.7
 
   supabase_auth_ui: ^0.5.5
   firebase_core: ^3.15.2
@@ -92,14 +73,14 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^2.4.14
+  # version qui évite le conflit d’analyzer
+  build_runner: ^2.4.13
   json_serializable: ^6.7.1
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.14.2
   hive_generator: ^2.0.1
   envied_generator: ^1.0.0
-  mockito: ^5.4.5
-  analyzer: ^6.11.0
+  mockito: 5.4.4   # 👈 downgrade pour rester compatible
 
 flutter:
   uses-material-design: true
@@ -131,6 +112,7 @@ flutter:
         - asset: fonts/Poppins-Italic.ttf
           style: italic
         - asset: fonts/Poppins-Light.ttf
+          style: italic
         - asset: fonts/Poppins-LightItalic.ttf
           style: italic
         - asset: fonts/Poppins-Medium.ttf

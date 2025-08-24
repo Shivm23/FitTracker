@@ -24,12 +24,15 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         _searchString = event.searchString;
         emit(ProductsLoadingState());
         try {
-          final result = await _searchProductUseCase
+          final offResults = await _searchProductUseCase
               .searchOFFProductsByString(_searchString);
+          final fdcResults = await _searchProductUseCase
+              .searchFDCFoodByString(_searchString);
+          final combined = _sortResults([...offResults, ...fdcResults]);
           final config = await _getConfigUsecase.getConfig();
 
           emit(ProductsLoadedState(
-              products: result, usesImperialUnits: config.usesImperialUnits));
+              products: combined, usesImperialUnits: config.usesImperialUnits));
         } catch (error) {
           log.severe(error);
           emit(ProductsFailedState());
@@ -39,13 +42,36 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     on<RefreshProductsEvent>((event, emit) async {
       emit(ProductsLoadingState());
       try {
-        final result = await _searchProductUseCase
+        final offResults = await _searchProductUseCase
             .searchOFFProductsByString(_searchString);
-        emit(ProductsLoadedState(products: result));
+        final fdcResults = await _searchProductUseCase
+            .searchFDCFoodByString(_searchString);
+        final combined = _sortResults([...offResults, ...fdcResults]);
+        emit(ProductsLoadedState(products: combined));
       } catch (error) {
         log.severe(error);
         emit(ProductsFailedState());
       }
     });
+  }
+
+  List<MealEntity> _sortResults(List<MealEntity> results) {
+    int score(MealEntity meal) {
+      final name = (meal.name ?? '').toLowerCase();
+      final query = _searchString.toLowerCase();
+      if (name == query) return 0;
+      if (name.startsWith(query)) return 1;
+      if (name.contains(query)) return 2;
+      return 3;
+    }
+
+    results.sort((a, b) {
+      final sa = score(a);
+      final sb = score(b);
+      if (sa != sb) return sa - sb;
+      return (a.name ?? '').compareTo(b.name ?? '');
+    });
+
+    return results;
   }
 }

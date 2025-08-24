@@ -186,6 +186,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Entrez votre e-mail"),
         "forgotPasswordEmailSent": MessageLookupByLibrary.simpleMessage(
             "E-mail envoyé ! Clique sur le lien dans ton e-mail pour choisir un nouveau mot de passe."),
+        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage(
+            "Si le reset de mot de passe ne fonctionne pas :\n- quitter l\'application et recommencer la manipulation, ou\n- faire la demande depuis le site : "),
         "forgotPasswordSendError": MessageLookupByLibrary.simpleMessage(
             "Erreur lors de l\'envoi de l\'e-mail :"),
         "forgotPasswordTitle":
@@ -222,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "kcalLeftLabel": MessageLookupByLibrary.simpleMessage("kcal restantes"),
         "kgLabel": MessageLookupByLibrary.simpleMessage("kg"),
         "lbsLabel": MessageLookupByLibrary.simpleMessage("lbs"),
+        "logOutLabel": MessageLookupByLibrary.simpleMessage("Se déconnecter"),
         "loginAlreadySignedIn": MessageLookupByLibrary.simpleMessage(
             "Déjà connecté sur un autre appareil. Veuillez d\'abord vous déconnecter."),
         "loginButton": MessageLookupByLibrary.simpleMessage("Se connecter"),
@@ -292,6 +295,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "notAvailableLabel": MessageLookupByLibrary.simpleMessage("N/A"),
         "nothingAddedLabel":
             MessageLookupByLibrary.simpleMessage("Rien ajouté"),
+        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
+            "Problème d\'activation des notifications. Veuillez réessayer plus tard."),
+        "notificationsLabel":
+            MessageLookupByLibrary.simpleMessage("Notifications"),
         "nutritionInfoLabel": MessageLookupByLibrary.simpleMessage(
             "Informations nutritionnelles"),
         "nutritionalStatusNormalWeight":
@@ -727,10 +734,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsImperialLabel":
             MessageLookupByLibrary.simpleMessage("Impérial (lbs, ft, oz)"),
         "settingsLabel": MessageLookupByLibrary.simpleMessage("Paramètres"),
-        "notificationsLabel":
-            MessageLookupByLibrary.simpleMessage("Notifications"),
-        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
-            "Problème d'activation des notifications. Veuillez réessayer plus tard."),
         "settingsLicensesLabel":
             MessageLookupByLibrary.simpleMessage("Licences"),
         "settingsMassLabel": MessageLookupByLibrary.simpleMessage("Masse"),
@@ -761,10 +764,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sugarLabel": MessageLookupByLibrary.simpleMessage("sucre"),
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("Ingérées"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Unité"),
+        "websiteLabel": MessageLookupByLibrary.simpleMessage("site"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Poids"),
-        "yearsLabel": m3,
-        "logOutLabel": MessageLookupByLibrary.simpleMessage("Se déconnecter"),
-        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage("Si le reset de mot de passe ne fonctionne pas :\n- quitter l'application et recommencer la manipulation, ou\n- faire la demande depuis le site : "),
-        "websiteLabel": MessageLookupByLibrary.simpleMessage("site")
+        "yearsLabel": m3
       };
 }

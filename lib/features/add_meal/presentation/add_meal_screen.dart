@@ -7,7 +7,6 @@ import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
 import 'package:opennutritracker/features/add_meal/presentation/recipe_results_list.dart';
 import 'package:opennutritracker/features/add_meal/presentation/bloc/add_meal_bloc.dart';
-import 'package:opennutritracker/features/add_meal/presentation/bloc/food_bloc.dart';
 import 'package:opennutritracker/features/add_meal/presentation/bloc/recent_meal_bloc.dart';
 import 'package:opennutritracker/features/add_meal/presentation/bloc/recipe_search_bloc.dart';
 import 'package:opennutritracker/features/add_meal/presentation/widgets/default_results_widget.dart';
@@ -37,19 +36,18 @@ class _AddMealScreenState extends State<AddMealScreen>
   late MealOrRecipeEntity _mealOrRecipe;
 
   late ProductsBloc _productsBloc;
-  late FoodBloc _foodBloc;
   late RecentMealBloc _recentMealBloc;
   late RecipeSearchBloc _recipeSearchBloc;
+  int _resultsLimit = 10;
 
   late TabController _tabController;
 
   @override
   void initState() {
     _productsBloc = locator<ProductsBloc>();
-    _foodBloc = locator<FoodBloc>();
     _recentMealBloc = locator<RecentMealBloc>();
     _recipeSearchBloc = locator<RecipeSearchBloc>();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       // Update search results when tab changes
       _onSearchSubmit(_searchStringListener.value);
@@ -107,7 +105,6 @@ class _AddMealScreenState extends State<AddMealScreen>
               const SizedBox(height: 16.0),
               TabBar(
                   tabs: [
-                    Tab(text: S.of(context).searchProductsPage),
                     Tab(text: S.of(context).searchFoodPage),
                     Tab(text: S.of(context).recipeLabel),
                     Tab(text: S.of(context).recentlyAddedLabel)
@@ -136,69 +133,43 @@ class _AddMealScreenState extends State<AddMealScreen>
                               child: CircularProgressIndicator(),
                             );
                           } else if (state is ProductsLoadedState) {
+                            final visibleCount = state.products.length < _resultsLimit
+                                ? state.products.length
+                                : _resultsLimit;
                             return state.products.isNotEmpty
                                 ? Flexible(
-                                    child: ListView.builder(
-                                        itemCount: state.products.length,
-                                        itemBuilder: (context, index) {
-                                          return MealItemCard(
-                                            day: _day,
-                                            mealEntity: state.products[index],
-                                            addMealType: _mealType,
-                                            usesImperialUnits:
-                                                state.usesImperialUnits,
-                                          );
-                                        }))
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: ListView.builder(
+                                              itemCount: visibleCount,
+                                              itemBuilder: (context, index) {
+                                                return MealItemCard(
+                                                  day: _day,
+                                                  mealEntity: state.products[index],
+                                                  addMealType: _mealType,
+                                                  usesImperialUnits:
+                                                      state.usesImperialUnits,
+                                                );
+                                              }),
+                                        ),
+                                        if (state.products.length > visibleCount)
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _resultsLimit += 10;
+                                              });
+                                            },
+                                            child: const Text('Load more'),
+                                          )
+                                      ],
+                                    ),
+                                  )
                                 : const NoResultsWidget();
                           } else if (state is ProductsFailedState) {
                             return ErrorDialog(
                               errorText: S.of(context).errorFetchingProductData,
                               onRefreshPressed: _onProductsRefreshButtonPressed,
-                            );
-                          } else {
-                            return const SizedBox();
-                          }
-                        },
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          alignment: Alignment.centerLeft,
-                          child: Text(S.of(context).searchResultsLabel,
-                              style:
-                                  Theme.of(context).textTheme.headlineSmall)),
-                      BlocBuilder<FoodBloc, FoodState>(
-                        bloc: _foodBloc,
-                        builder: (context, state) {
-                          if (state is FoodInitial) {
-                            return const DefaultsResultsWidget();
-                          } else if (state is FoodLoadingState) {
-                            return const Padding(
-                              padding: EdgeInsets.only(top: 32),
-                              child: CircularProgressIndicator(),
-                            );
-                          } else if (state is FoodLoadedState) {
-                            return state.food.isNotEmpty
-                                ? Flexible(
-                                    child: ListView.builder(
-                                        itemCount: state.food.length,
-                                        itemBuilder: (context, index) {
-                                          return MealItemCard(
-                                            day: _day,
-                                            mealEntity: state.food[index],
-                                            addMealType: _mealType,
-                                            usesImperialUnits:
-                                                state.usesImperialUnits,
-                                          );
-                                        }))
-                                : const NoResultsWidget();
-                          } else if (state is FoodFailedState) {
-                            return ErrorDialog(
-                              errorText: S.of(context).errorFetchingProductData,
-                              onRefreshPressed: _onFoodRefreshButtonPressed,
                             );
                           } else {
                             return const SizedBox();
@@ -278,10 +249,6 @@ class _AddMealScreenState extends State<AddMealScreen>
     _productsBloc.add(const RefreshProductsEvent());
   }
 
-  void _onFoodRefreshButtonPressed() {
-    _foodBloc.add(const RefreshFoodEvent());
-  }
-
   void _onRecentMealsRefreshButtonPressed() {
     _recentMealBloc.add(const LoadRecentMealEvent(searchString: ""));
   }
@@ -289,15 +256,13 @@ class _AddMealScreenState extends State<AddMealScreen>
   void _onSearchSubmit(String inputText) {
     switch (_tabController.index) {
       case 0:
+        _resultsLimit = 10;
         _productsBloc.add(LoadProductsEvent(searchString: inputText));
         break;
       case 1:
-        _foodBloc.add(LoadFoodEvent(searchString: inputText));
-        break;
-      case 2:
         _recipeSearchBloc.add(LoadRecipeSearchEvent(searchString: inputText));
         break;
-      case 3:
+      case 2:
         _recentMealBloc.add(LoadRecentMealEvent(searchString: inputText));
         break;
     }

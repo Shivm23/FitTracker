@@ -115,7 +115,7 @@ class ConfigDataSource {
 
   Future<bool> getHasAcceptedAnonymousData() async {
     final config = _hive.configBox.get(_configKey);
-    return config?.hasAcceptedSendAnonymousData ?? false;
+    return config?.hasAcceptedSendAnonymousData ?? true;
   }
 
   Future<void> setLastDataUpdate(DateTime date) async {
