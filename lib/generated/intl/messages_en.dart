@@ -182,6 +182,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter your email"),
         "forgotPasswordEmailSent": MessageLookupByLibrary.simpleMessage(
             "Email sent! Click the link in your email to choose a new password."),
+        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage(
+            "If the password reset doesn\'t work:\n- exit the app and try again, or\n- make the request from the website: "),
         "forgotPasswordSendError":
             MessageLookupByLibrary.simpleMessage("Error sending email:"),
         "forgotPasswordTitle":
@@ -216,6 +218,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "kcalLeftLabel": MessageLookupByLibrary.simpleMessage("kcal left"),
         "kgLabel": MessageLookupByLibrary.simpleMessage("kg"),
         "lbsLabel": MessageLookupByLibrary.simpleMessage("lbs"),
+        "logOutLabel": MessageLookupByLibrary.simpleMessage("Log out"),
         "loginAlreadySignedIn": MessageLookupByLibrary.simpleMessage(
             "Already signed in on another device. Please sign out first."),
         "loginButton": MessageLookupByLibrary.simpleMessage("Sign In"),
@@ -284,6 +287,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "notAvailableLabel": MessageLookupByLibrary.simpleMessage("N/A"),
         "nothingAddedLabel":
             MessageLookupByLibrary.simpleMessage("Nothing added"),
+        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
+            "Notification activation problem. Please try again later."),
+        "notificationsLabel":
+            MessageLookupByLibrary.simpleMessage("Notifications"),
         "nutritionInfoLabel":
             MessageLookupByLibrary.simpleMessage("Nutrition Information"),
         "nutritionalStatusNormalWeight":
@@ -711,10 +718,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsImperialLabel":
             MessageLookupByLibrary.simpleMessage("Imperial (lbs, ft, oz)"),
         "settingsLabel": MessageLookupByLibrary.simpleMessage("Settings"),
-        "notificationsLabel":
-            MessageLookupByLibrary.simpleMessage("Notifications"),
-        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
-            "Notification activation problem. Please try again later."),
         "settingsLicensesLabel":
             MessageLookupByLibrary.simpleMessage("Licenses"),
         "settingsMassLabel": MessageLookupByLibrary.simpleMessage("Mass"),
@@ -745,10 +748,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sugarLabel": MessageLookupByLibrary.simpleMessage("sugar"),
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("supplied"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Unit"),
+        "websiteLabel": MessageLookupByLibrary.simpleMessage("website"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Weight"),
-        "yearsLabel": m3,
-        "logOutLabel": MessageLookupByLibrary.simpleMessage("Log out"),
-        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage("If the password reset doesn't work:\n- exit the app and try again, or\n- make the request from the website: "),
-        "websiteLabel": MessageLookupByLibrary.simpleMessage("website")
+        "yearsLabel": m3
       };
 }

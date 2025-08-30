@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
     privateKey: serviceAccount.private_key,
   })
 
-  const notifBody = `Nouvel objectif : ${payload.record.calorie_goal} kcal, ${payload.record.protein_goal}g protéines.`
+  const notifBody = `Nouvel objectif : (${payload.record.carb_goal}, ${payload.record.fat_goal}, ${payload.record.protein_goal}) dès le ${payload.record.start_date}.`
 
   const responses = await Promise.all(
     tokens.map(({ fcm_token }) =>

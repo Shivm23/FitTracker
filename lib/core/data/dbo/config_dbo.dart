@@ -36,7 +36,7 @@ class ConfigDBO extends HiveObject {
       this.lastDataUpdate,
       this.supabaseSyncEnabled = true});
 
-  factory ConfigDBO.empty() => ConfigDBO(true, false, false)
+  factory ConfigDBO.empty() => ConfigDBO(true, false, true)
     ..userCarbGoal = 250
     ..userProteinGoal = 120
     ..userFatGoal = 60

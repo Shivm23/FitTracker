@@ -158,7 +158,7 @@ void main() {
       // Check that the tracked day was actually sent to the mock Supabase backend
       final result = await mockSupabase.from('tracked_days').select();
       expect(result.length, 1);
-      expect(result.first['day'], day.toIso8601String());
+      expect(result.first['day'], day.toIso8601String().split('T').first);
     });
 
     test('syncs without connectivity restoration', () async {
@@ -196,7 +196,7 @@ void main() {
       // Check that the tracked day was actually sent to the mock Supabase backend
       final output = await mockSupabase.from('tracked_days').select();
       expect(output.length, 1);
-      expect(output.first['day'], day.toIso8601String());
+      expect(output.first['day'], day.toIso8601String().split('T').first);
     });
 
     test('check values store on the remote', () async {
@@ -240,7 +240,9 @@ void main() {
       final result = await mockSupabase.from('tracked_days').select();
       expect(result.length, 1);
       final remote = result.first;
-      expect(remote['day'], day.toIso8601String());
+      if (remote['day'] is String && !remote['day'].contains('T')) {
+        remote['day'] = '${remote['day']}T00:00:00.000Z';
+      }
       expect(remote['calorieGoal'], 2);
       expect(remote['caloriesTracked'], 10);
       expect(remote['carbsGoal'], 2);

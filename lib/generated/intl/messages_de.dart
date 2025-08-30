@@ -180,6 +180,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("E-Mail eingeben"),
         "forgotPasswordEmailSent": MessageLookupByLibrary.simpleMessage(
             "E-Mail gesendet! Klicke auf den Link in deiner E-Mail, um ein neues Passwort zu wählen."),
+        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage(
+            "Wenn das Zurücksetzen des Passworts nicht funktioniert:\n- Beenden Sie die App und versuchen Sie es erneut, oder\n- stellen Sie die Anfrage über die Website: "),
         "forgotPasswordSendError": MessageLookupByLibrary.simpleMessage(
             "Fehler beim Senden der E-Mail:"),
         "forgotPasswordTitle":
@@ -214,6 +216,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "kcalLabel": MessageLookupByLibrary.simpleMessage("kcal"),
         "kcalLeftLabel": MessageLookupByLibrary.simpleMessage("kcal übrig"),
         "kgLabel": MessageLookupByLibrary.simpleMessage("kg"),
+        "logOutLabel": MessageLookupByLibrary.simpleMessage("Abmelden"),
         "loginAlreadySignedIn": MessageLookupByLibrary.simpleMessage(
             "Bereits auf einem anderen Gerät angemeldet. Bitte zuerst abmelden."),
         "loginButton": MessageLookupByLibrary.simpleMessage("Anmelden"),
@@ -287,6 +290,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "notAvailableLabel": MessageLookupByLibrary.simpleMessage("N/A"),
         "nothingAddedLabel":
             MessageLookupByLibrary.simpleMessage("Nichts hinzugefügt"),
+        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
+            "Problem beim Aktivieren der Benachrichtigungen. Bitte später erneut versuchen."),
+        "notificationsLabel":
+            MessageLookupByLibrary.simpleMessage("Benachrichtigungen"),
         "nutritionInfoLabel":
             MessageLookupByLibrary.simpleMessage("Nährwertangaben"),
         "nutritionalStatusNormalWeight":
@@ -723,10 +730,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsDistanceLabel":
             MessageLookupByLibrary.simpleMessage("Entfernung"),
         "settingsLabel": MessageLookupByLibrary.simpleMessage("Einstellungen"),
-        "notificationsLabel":
-            MessageLookupByLibrary.simpleMessage("Benachrichtigungen"),
-        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
-            "Problem beim Aktivieren der Benachrichtigungen. Bitte später erneut versuchen."),
         "settingsLicensesLabel":
             MessageLookupByLibrary.simpleMessage("Lizenzen"),
         "settingsMassLabel": MessageLookupByLibrary.simpleMessage("Masse"),
@@ -754,10 +757,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sugarLabel": MessageLookupByLibrary.simpleMessage("Zucker"),
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("zugeführt"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Einheit"),
+        "websiteLabel": MessageLookupByLibrary.simpleMessage("Website"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Gewicht"),
-        "yearsLabel": m3,
-        "logOutLabel": MessageLookupByLibrary.simpleMessage("Abmelden"),
-        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage("Wenn das Zurücksetzen des Passworts nicht funktioniert:\n- Beenden Sie die App und versuchen Sie es erneut, oder\n- stellen Sie die Anfrage über die Website: "),
-        "websiteLabel": MessageLookupByLibrary.simpleMessage("Website")
+        "yearsLabel": m3
       };
 }

@@ -176,6 +176,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("E-postanı gir"),
         "forgotPasswordEmailSent": MessageLookupByLibrary.simpleMessage(
             "E-posta gönderildi! Yeni şifre seçmek için e-postandaki bağlantıya tıkla."),
+        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage(
+            "Şifre sıfırlama çalışmazsa:\n- uygulamadan çıkıp işlemi tekrar deneyin veya\n- isteği web sitesi üzerinden yapın: "),
         "forgotPasswordSendError": MessageLookupByLibrary.simpleMessage(
             "E-posta gönderilirken hata oluştu:"),
         "forgotPasswordTitle":
@@ -209,6 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "kcalLeftLabel": MessageLookupByLibrary.simpleMessage("kalan kcal"),
         "kgLabel": MessageLookupByLibrary.simpleMessage("kg"),
         "lbsLabel": MessageLookupByLibrary.simpleMessage("lbs"),
+        "logOutLabel": MessageLookupByLibrary.simpleMessage("Çıkış yap"),
         "loginAlreadySignedIn": MessageLookupByLibrary.simpleMessage(
             "Başka bir cihazda zaten giriş yapılmış. Lütfen önce çıkış yapın."),
         "loginButton": MessageLookupByLibrary.simpleMessage("Giriş Yap"),
@@ -279,6 +282,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mevcut Değil"),
         "nothingAddedLabel":
             MessageLookupByLibrary.simpleMessage("Hiçbir şey eklenmedi"),
+        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
+            "Bildirim etkinleştirme sorunu. Lütfen daha sonra tekrar deneyin."),
+        "notificationsLabel":
+            MessageLookupByLibrary.simpleMessage("Bildirimler"),
         "nutritionInfoLabel":
             MessageLookupByLibrary.simpleMessage("Beslenme Bilgileri"),
         "nutritionalStatusNormalWeight":
@@ -699,10 +706,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsImperialLabel":
             MessageLookupByLibrary.simpleMessage("İmperial (lbs, ft, oz)"),
         "settingsLabel": MessageLookupByLibrary.simpleMessage("Ayarlar"),
-        "notificationsLabel":
-            MessageLookupByLibrary.simpleMessage("Bildirimler"),
-        "notificationActivationError": MessageLookupByLibrary.simpleMessage(
-            "Bildirim etkinleştirme sorunu. Lütfen daha sonra tekrar deneyin."),
         "settingsLicensesLabel":
             MessageLookupByLibrary.simpleMessage("Lisanslar"),
         "settingsMassLabel": MessageLookupByLibrary.simpleMessage("Kütle"),
@@ -732,10 +735,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sugarLabel": MessageLookupByLibrary.simpleMessage("şeker"),
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("tüketilen"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Birim"),
+        "websiteLabel": MessageLookupByLibrary.simpleMessage("web sitesi"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Kilo"),
-        "yearsLabel": m3,
-        "logOutLabel": MessageLookupByLibrary.simpleMessage("Çıkış yap"),
-        "forgotPasswordHelp": MessageLookupByLibrary.simpleMessage("Şifre sıfırlama çalışmazsa:\n- uygulamadan çıkıp işlemi tekrar deneyin veya\n- isteği web sitesi üzerinden yapın: "),
-        "websiteLabel": MessageLookupByLibrary.simpleMessage("web sitesi")
+        "yearsLabel": m3
       };
 }
