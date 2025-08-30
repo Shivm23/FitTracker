@@ -125,6 +125,7 @@
 
   "suppliedLabel": "zugeführt",
   "burnedLabel": "verbrannt",
+  "stepsLabel": "Schritte",
   "kcalLeftLabel": "kcal übrig",
   "nutritionInfoLabel": "Nährwertangaben",
   "kcalLabel": "kcal",
@@ -132,6 +133,26 @@
   "fatLabel": "Fett",
   "proteinLabel": "Protein",
   "caloriesLabel": "Kalorien",
+  "previousGoalAppliedOn": "Zuletzt angewendetes Ziel am {date}",
+  "@previousGoalAppliedOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "learnMoreLabel": "Mehr erfahren: atlas-tracker.fr",
+  "savePreferenceFailed": "Einstellung konnte nicht gespeichert werden.",
+  "userNotConnected": "Benutzer nicht verbunden.",
+  "accountDeletedSuccess": "Konto erfolgreich gelöscht.",
+  "failedToDeleteWithReason": "Löschen fehlgeschlagen: {reason}",
+  "@failedToDeleteWithReason": {
+    "placeholders": {"reason": {}}
+  },
+  "genericErrorOccurred": "Ein Fehler ist aufgetreten.",
+  "supabaseError": "Supabase-Fehler: {message}",
+  "@supabaseError": {"placeholders": {"message": {}}},
+  "subscriptionInactiveMessage": "Ihr Abonnement ist nicht mehr aktiv. Bitte kontaktieren Sie Ihren Coach.",
+  "cloudSyncProblem": "Problem bei der Cloud-Synchronisierung.",
+  "minutesAbbrevLabel": "min",
   "carbohydratesLabel": "Kohlenhydrate",
   "fatsLabel": "Fette",
   "proteinsLabel": "Proteine",
@@ -155,6 +176,7 @@
   "ozUnit": "oz",
   "flOzUnit": "fl.oz",
   "notAvailableLabel": "N/A",
+  "saveMacroGoalsError": "Problem beim Speichern der Makroziele.",
   "missingProductInfo": "Produkt fehlen die erforderlichen Angaben zu Kalorien oder Makronährstoffen",
   "infoAddedIntakeLabel": "Neue Aufnahme hinzugefügt",
   "infoAddedActivityLabel": "Neue Aktivität hinzugefügt",
@@ -454,4 +476,3 @@
   "forgotPasswordHelp": "Wenn das Zur\u00fccksetzen des Passworts nicht funktioniert:\n- Beenden Sie die App und versuchen Sie es erneut, oder\n- stellen Sie die Anfrage \u00fcber die Website: ",
   "websiteLabel": "Website"
 }
-

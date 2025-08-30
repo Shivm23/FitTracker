@@ -20,10 +20,20 @@ class _EditDialogState extends State<EditDialog> {
   @override
   void initState() {
     super.initState();
-    double initialAmount = _convertValue(
-        widget.intakeEntity.amount, widget.intakeEntity.meal.mealUnit);
-    amountEditingController =
-        TextEditingController(text: initialAmount.toStringAsFixed(2));
+    final intakeUnit = widget.intakeEntity.unit;
+    // If intake is per serving, keep the raw serving count without conversion
+    if (intakeUnit.toLowerCase() == 'serving') {
+      amountEditingController = TextEditingController(
+        text: widget.intakeEntity.amount.toStringAsFixed(2),
+      );
+    } else {
+      double initialAmount = _convertValue(
+        widget.intakeEntity.amount,
+        widget.intakeEntity.meal.mealUnit,
+      );
+      amountEditingController =
+          TextEditingController(text: initialAmount.toStringAsFixed(2));
+    }
   }
 
   @override
@@ -36,16 +46,24 @@ class _EditDialogState extends State<EditDialog> {
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
               labelText: S.of(context).quantityLabel,
-              suffixText:
-                  _convertUnit(widget.intakeEntity.meal.mealUnit ?? '')),
+              // If serving, display serving label; otherwise convert g/ml to imperial if needed
+              suffixText: widget.intakeEntity.unit.toLowerCase() == 'serving'
+                  ? S.of(context).servingLabel
+                  : _convertUnit(widget.intakeEntity.meal.mealUnit ?? '')),
         )
       ]),
       actions: [
         TextButton(
             onPressed: () {
-              double newAmount = double.parse(amountEditingController.text);
-              Navigator.of(context).pop(_convertBackToMetricValue(
-                  newAmount, widget.intakeEntity.meal.mealUnit));
+              double newAmount =
+                  double.parse(amountEditingController.text.replaceAll(',', '.'));
+              if (widget.intakeEntity.unit.toLowerCase() == 'serving') {
+                // Persist servings as-is
+                Navigator.of(context).pop(newAmount);
+              } else {
+                Navigator.of(context).pop(_convertBackToMetricValue(
+                    newAmount, widget.intakeEntity.meal.mealUnit));
+              }
             },
             child: Text(S.of(context).dialogOKLabel)),
         TextButton(

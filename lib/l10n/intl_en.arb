@@ -133,6 +133,7 @@
 
   "suppliedLabel": "supplied",
   "burnedLabel": "burned",
+  "stepsLabel": "steps",
   "kcalLeftLabel": "kcal left",
   "nutritionInfoLabel": "Nutrition Information",
   "kcalLabel": "kcal",
@@ -140,6 +141,26 @@
   "fatLabel": "fat",
   "proteinLabel": "protein",
   "caloriesLabel": "Calories",
+  "previousGoalAppliedOn": "Last goal applied on {date}",
+  "@previousGoalAppliedOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "learnMoreLabel": "Learn more: atlas-tracker.fr",
+  "savePreferenceFailed": "Could not save preference.",
+  "userNotConnected": "User not connected.",
+  "accountDeletedSuccess": "Account successfully deleted.",
+  "failedToDeleteWithReason": "Failed to delete: {reason}",
+  "@failedToDeleteWithReason": {
+    "placeholders": {"reason": {}}
+  },
+  "genericErrorOccurred": "An error occurred.",
+  "supabaseError": "Supabase error: {message}",
+  "@supabaseError": {"placeholders": {"message": {}}},
+  "subscriptionInactiveMessage": "Your subscription is no longer active. Please contact your coach.",
+  "cloudSyncProblem": "Cloud synchronization problem.",
+  "minutesAbbrevLabel": "min",
   "carbohydratesLabel": "Carbohydrates",
   "fatsLabel": "Fats",
   "proteinsLabel": "Proteins",
@@ -165,6 +186,7 @@
   "flOzUnit": "fl.oz",
   "notAvailableLabel": "N/A",
   "missingProductInfo": "Product missing required kcal or macronutrients information",
+  "saveMacroGoalsError": "Problem while saving macro goals.",
   "infoAddedIntakeLabel": "Added new intake",
   "infoAddedActivityLabel": "Added new activity",
   "editMealLabel": "Edit meal",

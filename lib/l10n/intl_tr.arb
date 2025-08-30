@@ -125,6 +125,7 @@
   "dialogDeleteLabel": "SİL",
   "suppliedLabel": "tüketilen",
   "burnedLabel": "yakılan",
+  "stepsLabel": "adım",
   "kcalLeftLabel": "kalan kcal",
   "nutritionInfoLabel": "Beslenme Bilgileri",
   "kcalLabel": "kcal",
@@ -132,6 +133,26 @@
   "fatLabel": "yağ",
   "proteinLabel": "protein",
   "caloriesLabel": "Kalori",
+  "previousGoalAppliedOn": "Son hedef {date} tarihinde uygulandı",
+  "@previousGoalAppliedOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "learnMoreLabel": "Daha fazla bilgi: atlas-tracker.fr",
+  "savePreferenceFailed": "Tercih kaydedilemedi.",
+  "userNotConnected": "Kullanıcı bağlı değil.",
+  "accountDeletedSuccess": "Hesap başarıyla silindi.",
+  "failedToDeleteWithReason": "Silme başarısız: {reason}",
+  "@failedToDeleteWithReason": {
+    "placeholders": {"reason": {}}
+  },
+  "genericErrorOccurred": "Bir hata oluştu.",
+  "supabaseError": "Supabase hatası: {message}",
+  "@supabaseError": {"placeholders": {"message": {}}},
+  "subscriptionInactiveMessage": "Aboneliğiniz artık aktif değil. Lütfen antrenörünüzle iletişime geçin.",
+  "cloudSyncProblem": "Bulut senkronizasyonu sorunu.",
+  "minutesAbbrevLabel": "dk",
   "carbohydratesLabel": "Karbonhidratlar",
   "fatsLabel": "Yağlar",
   "proteinsLabel": "Proteinler",
@@ -156,6 +177,7 @@
   "ozUnit": "oz",
   "flOzUnit": "fl.oz",
   "notAvailableLabel": "Mevcut Değil",
+  "saveMacroGoalsError": "Makro hedefleri kaydedilirken sorun oluştu.",
   "missingProductInfo": "Üründe gerekli kcal veya makro besin bilgileri eksik",
   "infoAddedIntakeLabel": "Yeni alım eklendi",
   "infoAddedActivityLabel": "Yeni aktivite eklendi",

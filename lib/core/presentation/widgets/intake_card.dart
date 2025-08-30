@@ -136,6 +136,8 @@ class IntakeCard extends StatelessWidget {
                           MealValueUnitText(
                             value: intake.amount,
                             meal: intake.meal,
+                            // Force display to use the intake's unit (e.g., serving)
+                            displayUnit: intake.unit,
                             usesImperialUnits: usesImperialUnits,
                             textStyle: Theme.of(context)
                                 .textTheme

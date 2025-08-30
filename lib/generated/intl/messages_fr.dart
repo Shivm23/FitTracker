@@ -25,12 +25,20 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(pctCarbs, pctFats, pctProteins) =>
       "${pctCarbs}% glucides, ${pctFats}% lipides, ${pctProteins}% protéines";
 
-  static String m2(riskValue) => "Risque de comorbidités : ${riskValue}";
+  static String m2(reason) => "Échec de la suppression : ${reason}";
 
-  static String m3(age) => "${age} ans";
+  static String m3(riskValue) => "Risque de comorbidités : ${riskValue}";
+
+  static String m4(date) => "Dernier objectif appliqué le ${date}";
+
+  static String m5(message) => "Erreur Supabase : ${message}";
+
+  static String m6(age) => "${age} ans";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accountDeletedSuccess": MessageLookupByLibrary.simpleMessage(
+            "Compte supprimé avec succès."),
         "activityExample":
             MessageLookupByLibrary.simpleMessage("ex : course, vélo, yoga..."),
         "activityLabel": MessageLookupByLibrary.simpleMessage("Activité"),
@@ -93,6 +101,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "carbsLabel": MessageLookupByLibrary.simpleMessage("glucides"),
         "chooseWeightGoalLabel": MessageLookupByLibrary.simpleMessage(
             "Choisir l\'objectif de poids"),
+        "cloudSyncProblem": MessageLookupByLibrary.simpleMessage(
+            "Problème de synchronisation avec le cloud."),
         "cmLabel": MessageLookupByLibrary.simpleMessage("cm"),
         "coachStudentsLabel":
             MessageLookupByLibrary.simpleMessage("Voir mes élèves"),
@@ -174,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Sauvegardez vos données dans le stockage Supabase sous forme de fichier zip."),
         "exportSupabaseLabel":
             MessageLookupByLibrary.simpleMessage("Exporter vers Supabase"),
+        "failedToDeleteWithReason": m2,
         "fatLabel": MessageLookupByLibrary.simpleMessage("lipides"),
         "fatsLabel": MessageLookupByLibrary.simpleMessage("Lipides"),
         "fiberLabel": MessageLookupByLibrary.simpleMessage("fibres"),
@@ -196,6 +207,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "genderFemaleLabel": MessageLookupByLibrary.simpleMessage("♀ femme"),
         "genderLabel": MessageLookupByLibrary.simpleMessage("Sexe"),
         "genderMaleLabel": MessageLookupByLibrary.simpleMessage("♂ homme"),
+        "genericErrorOccurred":
+            MessageLookupByLibrary.simpleMessage("Une erreur est survenue."),
         "goalGainWeight":
             MessageLookupByLibrary.simpleMessage("Prendre du poids"),
         "goalLabel": MessageLookupByLibrary.simpleMessage("Objectif"),
@@ -224,6 +237,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "kcalLeftLabel": MessageLookupByLibrary.simpleMessage("kcal restantes"),
         "kgLabel": MessageLookupByLibrary.simpleMessage("kg"),
         "lbsLabel": MessageLookupByLibrary.simpleMessage("lbs"),
+        "learnMoreLabel": MessageLookupByLibrary.simpleMessage(
+            "En savoir plus : atlas-tracker.fr"),
         "logOutLabel": MessageLookupByLibrary.simpleMessage("Se déconnecter"),
         "loginAlreadySignedIn": MessageLookupByLibrary.simpleMessage(
             "Déjà connecté sur un autre appareil. Veuillez d\'abord vous déconnecter."),
@@ -276,6 +291,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Taille du repas (oz/fl oz)"),
         "mealUnitLabel": MessageLookupByLibrary.simpleMessage("Unité de repas"),
         "milliliterUnit": MessageLookupByLibrary.simpleMessage("ml"),
+        "minutesAbbrevLabel": MessageLookupByLibrary.simpleMessage("min"),
         "missingProductInfo": MessageLookupByLibrary.simpleMessage(
             "Le produit ne contient pas les informations requises sur les kcal ou les macronutriments"),
         "myStudentsTitle": MessageLookupByLibrary.simpleMessage("Mes élèves"),
@@ -315,7 +331,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Moyen"),
         "nutritionalStatusRiskIncreased":
             MessageLookupByLibrary.simpleMessage("Accru"),
-        "nutritionalStatusRiskLabel": m2,
+        "nutritionalStatusRiskLabel": m3,
         "nutritionalStatusRiskLow": MessageLookupByLibrary.simpleMessage(
             "Faible \n(mais risque d\'autres \nproblèmes cliniques augmenté)"),
         "nutritionalStatusRiskModerate":
@@ -664,6 +680,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "perServingLabel": MessageLookupByLibrary.simpleMessage("Par portion"),
         "portionEatLabel":
             MessageLookupByLibrary.simpleMessage("Portion mangée"),
+        "previousGoalAppliedOn": m4,
         "privacyPolicyLabel": MessageLookupByLibrary.simpleMessage(
             "Politique de confidentialité"),
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profil"),
@@ -696,6 +713,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "roleStudentLabel": MessageLookupByLibrary.simpleMessage("Élève"),
         "saturatedFatLabel":
             MessageLookupByLibrary.simpleMessage("graisses saturées"),
+        "saveMacroGoalsError": MessageLookupByLibrary.simpleMessage(
+            "Problème lors de l\'enregistrement des objectifs macro."),
+        "savePreferenceFailed": MessageLookupByLibrary.simpleMessage(
+            "Impossible d’enregistrer la préférence."),
         "scanProductLabel":
             MessageLookupByLibrary.simpleMessage("Scanner un produit"),
         "searchDefaultLabel": MessageLookupByLibrary.simpleMessage(
@@ -761,11 +782,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "snackExample": MessageLookupByLibrary.simpleMessage(
             "ex : pomme, glace, chocolat..."),
         "snackLabel": MessageLookupByLibrary.simpleMessage("Collation"),
+        "stepsLabel": MessageLookupByLibrary.simpleMessage("pas"),
+        "subscriptionInactiveMessage": MessageLookupByLibrary.simpleMessage(
+            "Votre abonnement n\'est plus actif. Veuillez contacter votre coach."),
         "sugarLabel": MessageLookupByLibrary.simpleMessage("sucre"),
+        "supabaseError": m5,
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("Ingérées"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Unité"),
+        "userNotConnected":
+            MessageLookupByLibrary.simpleMessage("Utilisateur non connecté."),
         "websiteLabel": MessageLookupByLibrary.simpleMessage("site"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Poids"),
-        "yearsLabel": m3
+        "yearsLabel": m6
       };
 }

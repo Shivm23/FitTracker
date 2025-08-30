@@ -25,12 +25,20 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(pctCarbs, pctFats, pctProteins) =>
       "%${pctCarbs} karbonhidrat, %${pctFats} yağ, %${pctProteins} protein";
 
-  static String m2(riskValue) => "Eşlik eden hastalık riski: ${riskValue}";
+  static String m2(reason) => "Silme başarısız: ${reason}";
 
-  static String m3(age) => "${age} yıl";
+  static String m3(riskValue) => "Eşlik eden hastalık riski: ${riskValue}";
+
+  static String m4(date) => "Son hedef ${date} tarihinde uygulandı";
+
+  static String m5(message) => "Supabase hatası: ${message}";
+
+  static String m6(age) => "${age} yıl";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accountDeletedSuccess":
+            MessageLookupByLibrary.simpleMessage("Hesap başarıyla silindi."),
         "activityExample": MessageLookupByLibrary.simpleMessage(
             "ör. koşu, bisiklet, yoga ..."),
         "activityLabel": MessageLookupByLibrary.simpleMessage("Aktivite"),
@@ -87,6 +95,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "carbsLabel": MessageLookupByLibrary.simpleMessage("karbonhidrat"),
         "chooseWeightGoalLabel":
             MessageLookupByLibrary.simpleMessage("Kilo Hedefini Seçin"),
+        "cloudSyncProblem": MessageLookupByLibrary.simpleMessage(
+            "Bulut senkronizasyonu sorunu."),
         "cmLabel": MessageLookupByLibrary.simpleMessage("cm"),
         "coachStudentsLabel":
             MessageLookupByLibrary.simpleMessage("Öğrencilerim"),
@@ -164,6 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Verilerinizi zip dosyası olarak Supabase depolamasına yedekleyin."),
         "exportSupabaseLabel":
             MessageLookupByLibrary.simpleMessage("Supabase\'e Aktar"),
+        "failedToDeleteWithReason": m2,
         "fatLabel": MessageLookupByLibrary.simpleMessage("yağ"),
         "fatsLabel": MessageLookupByLibrary.simpleMessage("Yağlar"),
         "fiberLabel": MessageLookupByLibrary.simpleMessage("lif"),
@@ -186,6 +197,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "genderFemaleLabel": MessageLookupByLibrary.simpleMessage("♀ kadın"),
         "genderLabel": MessageLookupByLibrary.simpleMessage("Cinsiyet"),
         "genderMaleLabel": MessageLookupByLibrary.simpleMessage("♂ erkek"),
+        "genericErrorOccurred":
+            MessageLookupByLibrary.simpleMessage("Bir hata oluştu."),
         "goalGainWeight": MessageLookupByLibrary.simpleMessage("Kilo Al"),
         "goalLabel": MessageLookupByLibrary.simpleMessage("Hedef"),
         "goalLoseWeight": MessageLookupByLibrary.simpleMessage("Kilo Ver"),
@@ -211,6 +224,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "kcalLeftLabel": MessageLookupByLibrary.simpleMessage("kalan kcal"),
         "kgLabel": MessageLookupByLibrary.simpleMessage("kg"),
         "lbsLabel": MessageLookupByLibrary.simpleMessage("lbs"),
+        "learnMoreLabel": MessageLookupByLibrary.simpleMessage(
+            "Daha fazla bilgi: atlas-tracker.fr"),
         "logOutLabel": MessageLookupByLibrary.simpleMessage("Çıkış yap"),
         "loginAlreadySignedIn": MessageLookupByLibrary.simpleMessage(
             "Başka bir cihazda zaten giriş yapılmış. Lütfen önce çıkış yapın."),
@@ -262,6 +277,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Yemek boyutu (oz/fl oz)"),
         "mealUnitLabel": MessageLookupByLibrary.simpleMessage("Yemek birimi"),
         "milliliterUnit": MessageLookupByLibrary.simpleMessage("ml"),
+        "minutesAbbrevLabel": MessageLookupByLibrary.simpleMessage("dk"),
         "missingProductInfo": MessageLookupByLibrary.simpleMessage(
             "Üründe gerekli kcal veya makro besin bilgileri eksik"),
         "myStudentsTitle": MessageLookupByLibrary.simpleMessage("Öğrencilerim"),
@@ -302,7 +318,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ortalama"),
         "nutritionalStatusRiskIncreased":
             MessageLookupByLibrary.simpleMessage("Artmış"),
-        "nutritionalStatusRiskLabel": m2,
+        "nutritionalStatusRiskLabel": m3,
         "nutritionalStatusRiskLow": MessageLookupByLibrary.simpleMessage(
             "Düşük \n(ancak diğer \nklinik sorunların riski artmış)"),
         "nutritionalStatusRiskModerate":
@@ -638,6 +654,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Porsiyon Başına"),
         "portionEatLabel":
             MessageLookupByLibrary.simpleMessage("Yenilen porsiyon"),
+        "previousGoalAppliedOn": m4,
         "privacyPolicyLabel":
             MessageLookupByLibrary.simpleMessage("Gizlilik politikası"),
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profil"),
@@ -670,6 +687,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "roleLabel": MessageLookupByLibrary.simpleMessage("Rol"),
         "roleStudentLabel": MessageLookupByLibrary.simpleMessage("Öğrenci"),
         "saturatedFatLabel": MessageLookupByLibrary.simpleMessage("doymuş yağ"),
+        "saveMacroGoalsError": MessageLookupByLibrary.simpleMessage(
+            "Makro hedefleri kaydedilirken sorun oluştu."),
+        "savePreferenceFailed":
+            MessageLookupByLibrary.simpleMessage("Tercih kaydedilemedi."),
         "scanProductLabel": MessageLookupByLibrary.simpleMessage("Ürünü Tara"),
         "searchDefaultLabel": MessageLookupByLibrary.simpleMessage(
             "Lütfen bir arama kelimesi girin"),
@@ -732,11 +753,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "snackExample": MessageLookupByLibrary.simpleMessage(
             "ör. elma, dondurma, çikolata ..."),
         "snackLabel": MessageLookupByLibrary.simpleMessage("Atıştırmalık"),
+        "stepsLabel": MessageLookupByLibrary.simpleMessage("adım"),
+        "subscriptionInactiveMessage": MessageLookupByLibrary.simpleMessage(
+            "Aboneliğiniz artık aktif değil. Lütfen antrenörünüzle iletişime geçin."),
         "sugarLabel": MessageLookupByLibrary.simpleMessage("şeker"),
+        "supabaseError": m5,
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("tüketilen"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Birim"),
+        "userNotConnected":
+            MessageLookupByLibrary.simpleMessage("Kullanıcı bağlı değil."),
         "websiteLabel": MessageLookupByLibrary.simpleMessage("web sitesi"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Kilo"),
-        "yearsLabel": m3
+        "yearsLabel": m6
       };
 }

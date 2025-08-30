@@ -25,12 +25,20 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(pctCarbs, pctFats, pctProteins) =>
       "${pctCarbs}% carbs, ${pctFats}% fats, ${pctProteins}% proteins";
 
-  static String m2(riskValue) => "Risk of comorbidities: ${riskValue}";
+  static String m2(reason) => "Failed to delete: ${reason}";
 
-  static String m3(age) => "${age} years";
+  static String m3(riskValue) => "Risk of comorbidities: ${riskValue}";
+
+  static String m4(date) => "Last goal applied on ${date}";
+
+  static String m5(message) => "Supabase error: ${message}";
+
+  static String m6(age) => "${age} years";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accountDeletedSuccess": MessageLookupByLibrary.simpleMessage(
+            "Account successfully deleted."),
         "activityExample": MessageLookupByLibrary.simpleMessage(
             "e.g. running, biking, yoga ..."),
         "activityLabel": MessageLookupByLibrary.simpleMessage("Activity"),
@@ -91,6 +99,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "carbsLabel": MessageLookupByLibrary.simpleMessage("carbs"),
         "chooseWeightGoalLabel":
             MessageLookupByLibrary.simpleMessage("Choose Weight Goal"),
+        "cloudSyncProblem": MessageLookupByLibrary.simpleMessage(
+            "Cloud synchronization problem."),
         "cmLabel": MessageLookupByLibrary.simpleMessage("cm"),
         "coachStudentsLabel":
             MessageLookupByLibrary.simpleMessage("My students"),
@@ -170,6 +180,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Backup your data to Supabase storage as a zip file."),
         "exportSupabaseLabel":
             MessageLookupByLibrary.simpleMessage("Export to Supabase"),
+        "failedToDeleteWithReason": m2,
         "fatLabel": MessageLookupByLibrary.simpleMessage("fat"),
         "fatsLabel": MessageLookupByLibrary.simpleMessage("Fats"),
         "fiberLabel": MessageLookupByLibrary.simpleMessage("fiber"),
@@ -192,6 +203,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "genderFemaleLabel": MessageLookupByLibrary.simpleMessage("♀ female"),
         "genderLabel": MessageLookupByLibrary.simpleMessage("Gender"),
         "genderMaleLabel": MessageLookupByLibrary.simpleMessage("♂ male"),
+        "genericErrorOccurred":
+            MessageLookupByLibrary.simpleMessage("An error occurred."),
         "goalGainWeight": MessageLookupByLibrary.simpleMessage("Gain Weight"),
         "goalLabel": MessageLookupByLibrary.simpleMessage("Goal"),
         "goalLoseWeight": MessageLookupByLibrary.simpleMessage("Lose Weight"),
@@ -218,6 +231,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "kcalLeftLabel": MessageLookupByLibrary.simpleMessage("kcal left"),
         "kgLabel": MessageLookupByLibrary.simpleMessage("kg"),
         "lbsLabel": MessageLookupByLibrary.simpleMessage("lbs"),
+        "learnMoreLabel": MessageLookupByLibrary.simpleMessage(
+            "Learn more: atlas-tracker.fr"),
         "logOutLabel": MessageLookupByLibrary.simpleMessage("Log out"),
         "loginAlreadySignedIn": MessageLookupByLibrary.simpleMessage(
             "Already signed in on another device. Please sign out first."),
@@ -268,6 +283,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Meal size (oz/fl oz)"),
         "mealUnitLabel": MessageLookupByLibrary.simpleMessage("Meal unit"),
         "milliliterUnit": MessageLookupByLibrary.simpleMessage("ml"),
+        "minutesAbbrevLabel": MessageLookupByLibrary.simpleMessage("min"),
         "missingProductInfo": MessageLookupByLibrary.simpleMessage(
             "Product missing required kcal or macronutrients information"),
         "myStudentsTitle": MessageLookupByLibrary.simpleMessage("My students"),
@@ -307,7 +323,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Average"),
         "nutritionalStatusRiskIncreased":
             MessageLookupByLibrary.simpleMessage("Increased"),
-        "nutritionalStatusRiskLabel": m2,
+        "nutritionalStatusRiskLabel": m3,
         "nutritionalStatusRiskLow": MessageLookupByLibrary.simpleMessage(
             "Low \n(but risk of other \nclinical problems increased)"),
         "nutritionalStatusRiskModerate":
@@ -649,6 +665,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "perServingLabel": MessageLookupByLibrary.simpleMessage("Per Serving"),
         "portionEatLabel":
             MessageLookupByLibrary.simpleMessage("Portion eaten"),
+        "previousGoalAppliedOn": m4,
         "privacyPolicyLabel":
             MessageLookupByLibrary.simpleMessage("Privacy policy"),
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profile"),
@@ -681,6 +698,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "roleStudentLabel": MessageLookupByLibrary.simpleMessage("Student"),
         "saturatedFatLabel":
             MessageLookupByLibrary.simpleMessage("saturated fat"),
+        "saveMacroGoalsError": MessageLookupByLibrary.simpleMessage(
+            "Problem while saving macro goals."),
+        "savePreferenceFailed":
+            MessageLookupByLibrary.simpleMessage("Could not save preference."),
         "scanProductLabel":
             MessageLookupByLibrary.simpleMessage("Scan Product"),
         "searchDefaultLabel":
@@ -745,11 +766,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "snackExample": MessageLookupByLibrary.simpleMessage(
             "e.g. apple, ice cream, chocolate ..."),
         "snackLabel": MessageLookupByLibrary.simpleMessage("Snack"),
+        "stepsLabel": MessageLookupByLibrary.simpleMessage("steps"),
+        "subscriptionInactiveMessage": MessageLookupByLibrary.simpleMessage(
+            "Your subscription is no longer active. Please contact your coach."),
         "sugarLabel": MessageLookupByLibrary.simpleMessage("sugar"),
+        "supabaseError": m5,
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("supplied"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Unit"),
+        "userNotConnected":
+            MessageLookupByLibrary.simpleMessage("User not connected."),
         "websiteLabel": MessageLookupByLibrary.simpleMessage("website"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Weight"),
-        "yearsLabel": m3
+        "yearsLabel": m6
       };
 }

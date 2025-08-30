@@ -230,7 +230,7 @@ class _ProfilePageState extends State<ProfilePage> {
             height: double.infinity,
             child: Icon(Icons.manage_accounts_outlined),
           ),
-          title: const Text('Manage account'),
+          title: Text(S.of(context).manageAccountTitle),
           onTap: () => showDialog(
             context: context,
             builder: (_) => const ManageAccountDialog(),

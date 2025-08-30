@@ -131,6 +131,7 @@
   "deleteAllLabel": "Tout supprimer",
   "suppliedLabel": "Ingérées",
   "burnedLabel": "Brûlées",
+  "stepsLabel": "pas",
   "kcalLeftLabel": "kcal restantes",
   "nutritionInfoLabel": "Informations nutritionnelles",
   "kcalLabel": "kcal",
@@ -138,6 +139,26 @@
   "fatLabel": "lipides",
   "proteinLabel": "protéines",
   "caloriesLabel": "Calories",
+  "previousGoalAppliedOn": "Dernier objectif appliqué le {date}",
+  "@previousGoalAppliedOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "learnMoreLabel": "En savoir plus : atlas-tracker.fr",
+  "savePreferenceFailed": "Impossible d’enregistrer la préférence.",
+  "userNotConnected": "Utilisateur non connecté.",
+  "accountDeletedSuccess": "Compte supprimé avec succès.",
+  "failedToDeleteWithReason": "Échec de la suppression : {reason}",
+  "@failedToDeleteWithReason": {
+    "placeholders": {"reason": {}}
+  },
+  "genericErrorOccurred": "Une erreur est survenue.",
+  "supabaseError": "Erreur Supabase : {message}",
+  "@supabaseError": {"placeholders": {"message": {}}},
+  "subscriptionInactiveMessage": "Votre abonnement n'est plus actif. Veuillez contacter votre coach.",
+  "cloudSyncProblem": "Problème de synchronisation avec le cloud.",
+  "minutesAbbrevLabel": "min",
   "carbohydratesLabel": "Glucides",
   "fatsLabel": "Lipides",
   "proteinsLabel": "Protéines",
@@ -163,6 +184,7 @@
   "flOzUnit": "fl.oz",
   "notAvailableLabel": "N/A",
   "missingProductInfo": "Le produit ne contient pas les informations requises sur les kcal ou les macronutriments",
+  "saveMacroGoalsError": "Problème lors de l'enregistrement des objectifs macro.",
   "infoAddedIntakeLabel": "Nouvelle prise ajoutée",
   "infoAddedActivityLabel": "Nouvelle activité ajoutée",
   "editMealLabel": "Modifier le repas",
@@ -465,4 +487,3 @@
   "forgotPasswordHelp": "Si le reset de mot de passe ne fonctionne pas :\n- quitter l'application et recommencer la manipulation, ou\n- faire la demande depuis le site : ",
   "websiteLabel": "site"
 }
-

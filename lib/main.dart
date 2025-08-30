@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,10 +13,11 @@ import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/logger_config.dart';
 import 'package:opennutritracker/core/utils/navigation_options.dart';
 import 'package:opennutritracker/core/utils/theme_mode_provider.dart';
-import 'package:opennutritracker/features/activity_detail/activity_detail_screen.dart';
+// TEMP: activities screens disabled
+// import 'package:opennutritracker/features/activity_detail/activity_detail_screen.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_screen.dart';
 import 'package:opennutritracker/features/add_weight/presentation/add_weight_screen.dart';
-import 'package:opennutritracker/features/add_activity/presentation/add_activity_screen.dart';
+// import 'package:opennutritracker/features/add_activity/presentation/add_activity_screen.dart';
 import 'package:opennutritracker/features/edit_meal/presentation/edit_meal_screen.dart';
 import 'package:opennutritracker/features/scanner/scanner_screen.dart';
 import 'package:opennutritracker/features/meal_detail/meal_detail_screen.dart';
@@ -82,7 +84,7 @@ void runAppWithChangeNotifiers(
       ),
     );
 
-class AtlasTrackerApp extends StatelessWidget {
+class AtlasTrackerApp extends StatefulWidget {
   final bool userInitialized;
   final bool hasAuthSession;
 
@@ -91,6 +93,21 @@ class AtlasTrackerApp extends StatelessWidget {
     required this.userInitialized,
     required this.hasAuthSession,
   });
+
+  @override
+  State<AtlasTrackerApp> createState() => _AtlasTrackerAppState();
+}
+
+class _AtlasTrackerAppState extends State<AtlasTrackerApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +132,7 @@ class AtlasTrackerApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      initialRoute: hasAuthSession
+      initialRoute: widget.hasAuthSession
           ? NavigationOptions.mainRoute
           : NavigationOptions.loginRoute,
       routes: {
@@ -126,11 +143,13 @@ class AtlasTrackerApp extends StatelessWidget {
         NavigationOptions.mealDetailRoute: (context) =>
             const MealDetailScreen(),
         NavigationOptions.editMealRoute: (context) => const EditMealScreen(),
-        NavigationOptions.addActivityRoute: (context) =>
-            const AddActivityScreen(),
+        // TEMP: disabled route for adding activities
+        // NavigationOptions.addActivityRoute: (context) =>
+        //     const AddActivityScreen(),
         NavigationOptions.addWeightRoute: (context) => const AddWeightScreen(),
-        NavigationOptions.activityDetailRoute: (context) =>
-            const ActivityDetailScreen(),
+        // TEMP: disabled route for activity details
+        // NavigationOptions.activityDetailRoute: (context) =>
+        //     const ActivityDetailScreen(),
         NavigationOptions.imageFullScreenRoute: (context) =>
             const ImageFullScreen(),
         NavigationOptions.createMealRoute: (context) =>

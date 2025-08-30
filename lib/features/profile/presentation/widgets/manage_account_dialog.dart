@@ -50,15 +50,15 @@ class _ManageAccountDialogState extends State<ManageAccountDialog> {
       if (saved != value) {
         setState(() => _syncEnabled = saved);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Impossible d’enregistrer la préférence.')),
+          SnackBar(
+              content: Text(S.of(context).savePreferenceFailed)),
         );
       }
     } catch (e) {
       if (!mounted) return;
       setState(() => _syncEnabled = !value); // rollback visuel
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur: $e')),
+        SnackBar(content: Text('${S.of(context).errorPrefix} $e')),
       );
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -129,7 +129,7 @@ class _ManageAccountDialogState extends State<ManageAccountDialog> {
     if (userId == null) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("User not connected.")),
+        SnackBar(content: Text(S.of(context).userNotConnected)),
       );
       return;
     }
@@ -144,7 +144,7 @@ class _ManageAccountDialogState extends State<ManageAccountDialog> {
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Account successfully deleted.")),
+          SnackBar(content: Text(S.of(context).accountDeletedSuccess)),
         );
 
         try {
@@ -167,17 +167,17 @@ class _ManageAccountDialogState extends State<ManageAccountDialog> {
             .pushReplacementNamed(NavigationOptions.loginRoute);
         debugPrint('safeSignOut terminé → retour login.');
       } else {
-        final errorMessage = response.data?['error'] ?? 'Unknown error';
+        final errorMessage = response.data?['error'] ?? S.of(context).loginUnknownError;
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to delete: $errorMessage")),
+          SnackBar(content: Text(S.of(context).failedToDeleteWithReason(errorMessage))),
         );
       }
     } catch (e, stackTrace) {
       debugPrint("Error deleting account: $e\n$stackTrace");
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("An error occurred.")),
+        SnackBar(content: Text(S.of(context).genericErrorOccurred)),
       );
     }
   }

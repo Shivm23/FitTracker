@@ -75,8 +75,10 @@ class _ActivityDetailBottomSheetState extends State<ActivityDetailBottomSheet> {
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
                               labelText: S.of(context).unitLabel),
-                          items: const <DropdownMenuItem<String>>[
-                            DropdownMenuItem(child: Text('min'))
+                          items: <DropdownMenuItem<String>>[
+                            DropdownMenuItem(
+                                value: 'min',
+                                child: Text(S.of(context).minutesAbbrevLabel))
                           ],
                           onChanged: (Object? value) {},
                         ))

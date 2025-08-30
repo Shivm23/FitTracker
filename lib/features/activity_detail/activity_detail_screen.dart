@@ -152,7 +152,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
                     // set Focus
                     Text('~${totalKcal.toInt()} ${S.of(context).kcalLabel}',
                         style: Theme.of(context).textTheme.headlineSmall),
-                    Text(' / ${totalQuantity.toInt()} min')
+                    Text(' / ${totalQuantity.toInt()} ${S.of(context).minutesAbbrevLabel}')
                   ],
                 ),
                 const SizedBox(height: 8.0),
