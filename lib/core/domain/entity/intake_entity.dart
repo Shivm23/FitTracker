@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:opennutritracker/core/data/dbo/intake_dbo.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
+import 'package:opennutritracker/core/data/dbo/data_util.dart';
 
 class IntakeEntity extends Equatable {
   final String id;
@@ -21,7 +22,7 @@ class IntakeEntity extends Equatable {
     required this.meal,
     required this.dateTime,
     DateTime? updatedAt,
-  }) : updatedAt = updatedAt ?? DateTime.now().toUtc();
+  }) : updatedAt = DateUtilsHelper.roundToSeconds(updatedAt ?? DateTime.now().toUtc());
 
   factory IntakeEntity.fromIntakeDBO(IntakeDBO intakeDBO) {
     return IntakeEntity(
@@ -35,15 +36,24 @@ class IntakeEntity extends Equatable {
     );
   }
 
-  double get totalKcal => amount * (meal.nutriments.energyPerUnit ?? 0);
+  double get _effectiveAmountInBaseUnits {
+    if (unit.toLowerCase() == 'serving' && meal.servingQuantity != null) {
+      return amount * meal.servingQuantity!;
+    }
+    return amount;
+  }
 
-  double get totalCarbsGram =>
-      amount * (meal.nutriments.carbohydratesPerUnit ?? 0);
+  double get totalKcal =>
+      _effectiveAmountInBaseUnits * (meal.nutriments.energyPerUnit ?? 0);
 
-  double get totalFatsGram => amount * (meal.nutriments.fatPerUnit ?? 0);
+  double get totalCarbsGram => _effectiveAmountInBaseUnits *
+      (meal.nutriments.carbohydratesPerUnit ?? 0);
 
-  double get totalProteinsGram =>
-      amount * (meal.nutriments.proteinsPerUnit ?? 0);
+  double get totalFatsGram =>
+      _effectiveAmountInBaseUnits * (meal.nutriments.fatPerUnit ?? 0);
+
+  double get totalProteinsGram => _effectiveAmountInBaseUnits *
+      (meal.nutriments.proteinsPerUnit ?? 0);
 
   @override
   List<Object?> get props => [id, unit, amount, type, dateTime, updatedAt];

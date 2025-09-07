@@ -72,8 +72,7 @@ class _StudentMacrosView extends StatelessWidget {
               (data?['calorieGoal'] as num?)?.toDouble() ?? 0;
           final double caloriesTracked =
               (data?['caloriesTracked'] as num?)?.toDouble() ?? 0;
-          final double caloriesBurned =
-              (data?['caloriesBurned'] as num?)?.toDouble() ?? 0;
+          final double steps = (data?['steps'] as num?)?.toDouble() ?? 0;
           final double carbsGoal =
               (data?['carbsGoal'] as num?)?.toDouble() ?? 0;
           final double carbsTracked =
@@ -119,11 +118,24 @@ class _StudentMacrosView extends StatelessWidget {
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.chevron_right),
-                            onPressed: () =>
-                                _goToNextDay(context, state.selectedDate),
-                          ),
+                          Builder(builder: (context) {
+                            final now = DateTime.now();
+                            final todayOnly =
+                                DateTime(now.year, now.month, now.day);
+                            final d = state.selectedDate;
+                            final selectedOnly =
+                                DateTime(d.year, d.month, d.day);
+                            final canGoNext = selectedOnly.isBefore(todayOnly);
+                            return IconButton(
+                              icon: const Icon(Icons.chevron_right),
+                              onPressed: canGoNext
+                                  ? () => _goToNextDay(
+                                        context,
+                                        state.selectedDate,
+                                      )
+                                  : null,
+                            );
+                          }),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -214,13 +226,13 @@ class _StudentMacrosView extends StatelessWidget {
                             Column(
                               children: [
                                 Icon(
-                                  Icons.keyboard_arrow_down_outlined,
+                                  Icons.directions_walk,
                                   color: Theme.of(
                                     context,
                                   ).colorScheme.onSurface,
                                 ),
                                 Text(
-                                  '${caloriesBurned.toInt()}',
+                                  '${steps.toInt()}',
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleLarge
@@ -231,7 +243,7 @@ class _StudentMacrosView extends StatelessWidget {
                                       ),
                                 ),
                                 Text(
-                                  S.of(context).burnedLabel,
+                                  S.of(context).stepsLabel,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleSmall
@@ -287,6 +299,10 @@ class _StudentMacrosView extends StatelessWidget {
                               DropdownMenuItem(
                                 value: MacroType.weight,
                                 child: Text(S.of(context).weightLabel),
+                              ),
+                              DropdownMenuItem(
+                                value: MacroType.steps,
+                                child: Text(S.of(context).stepsLabel),
                               ),
                             ],
                           ),
@@ -347,9 +363,15 @@ class _StudentMacrosView extends StatelessWidget {
   }
 
   void _goToNextDay(BuildContext context, DateTime current) {
-    context.read<StudentMacrosBloc>().add(
-          ChangeDateEvent(current.add(const Duration(days: 1))),
-        );
+    final now = DateTime.now();
+    final todayOnly = DateTime(now.year, now.month, now.day);
+    final c = current;
+    final currentOnly = DateTime(c.year, c.month, c.day);
+    if (currentOnly.isBefore(todayOnly)) {
+      context.read<StudentMacrosBloc>().add(
+            ChangeDateEvent(current.add(const Duration(days: 1))),
+          );
+    }
   }
 
   Future<void> _selectDate(BuildContext context, DateTime initial) async {
@@ -520,6 +542,9 @@ class _StudentMacrosView extends StatelessWidget {
             break;
           case MacroType.weight:
             value = (data['weight'] as num?)?.toDouble();
+            break;
+          case MacroType.steps:
+            value = (data['steps'] as num?)?.toDouble();
             break;
         }
       }

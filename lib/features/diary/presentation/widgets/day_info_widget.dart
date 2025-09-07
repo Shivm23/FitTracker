@@ -4,7 +4,8 @@ import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/domain/entity/tracked_day_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_weight_entity.dart';
-import 'package:opennutritracker/core/presentation/widgets/activity_vertial_list.dart';
+// TEMP: hide activities in Diary UI
+// import 'package:opennutritracker/core/presentation/widgets/activity_vertial_list.dart';
 import 'package:opennutritracker/core/presentation/widgets/copy_or_delete_dialog.dart';
 import 'package:opennutritracker/core/presentation/widgets/copy_dialog.dart';
 import 'package:opennutritracker/core/presentation/widgets/delete_dialog.dart';
@@ -179,11 +180,12 @@ class DayInfoWidget extends StatelessWidget {
                       : onCopyIntake,
               trackedDayEntity: trackedDay,
             ),
-            ActivityVerticalList(
-                day: selectedDay,
-                title: S.of(context).activityLabel,
-                userActivityList: userActivities,
-                onItemLongPressedCallback: onActivityItemLongPressed),
+            // TEMP: activities section hidden in diary by request
+            // ActivityVerticalList(
+            //     day: selectedDay,
+            //     title: S.of(context).activityLabel,
+            //     userActivityList: userActivities,
+            //     onItemLongPressedCallback: onActivityItemLongPressed),
             WeightVerticalList(
               day: selectedDay,
               title: S.of(context).weightLabel,

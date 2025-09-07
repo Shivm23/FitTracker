@@ -8,14 +8,16 @@ import 'package:app_links/app_links.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:opennutritracker/features/auth/validate_password.dart';
 import 'package:opennutritracker/generated/l10n.dart';
-import 'forgot_password_screen.dart';
 import 'reset_password_screen.dart';
+import 'otp_password_reset_email_screen.dart';
+import 'check_subscription.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/hive_db_provider.dart';
 import 'package:opennutritracker/features/settings/presentation/bloc/export_import_bloc.dart';
 import 'package:opennutritracker/features/settings/domain/usecase/import_data_supabase_usecase.dart';
 import 'package:opennutritracker/services/firebase_messaging_service.dart';
 import 'package:opennutritracker/services/local_notifications_service.dart';
+import 'package:opennutritracker/features/sync/supabase_client.dart';
 import 'package:opennutritracker/core/domain/usecase/get_user_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/add_user_usecase.dart';
 import 'package:opennutritracker/core/domain/entity/user_role_entity.dart';
@@ -25,6 +27,7 @@ import 'package:opennutritracker/core/domain/entity/user_weight_goal_entity.dart
 import 'package:opennutritracker/core/domain/entity/user_pal_entity.dart';
 import 'package:opennutritracker/core/domain/usecase/add_macro_goal_usecase.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'auth_safe_sign_out.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -81,8 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
           final msg = e.message.toLowerCase();
 
           // ➜ Cas “bruyant mais OK” : 500 ‘Database error granting user’
-          final isGrantingUser500 =
-              e.statusCode == "500" &&
+          final isGrantingUser500 = e.statusCode == "500" &&
               msg.contains('database error granting user');
 
           // ➜ Cas « déjà consommé »
@@ -202,9 +204,8 @@ class _LoginScreenState extends State<LoginScreen> {
       final goal = parseGoal(row['goal'] as String?);
       final pal = parsePal(row['pal'] as String?);
       final birthday = parseBirthday(row['birthday']);
-      final role = roleStr == 'coach'
-          ? UserRoleEntity.coach
-          : UserRoleEntity.student;
+      final role =
+          roleStr == 'coach' ? UserRoleEntity.coach : UserRoleEntity.student;
 
       final user = UserEntity(
         name: displayName ?? '',
@@ -254,6 +255,17 @@ class _LoginScreenState extends State<LoginScreen> {
         final hive = locator<HiveDBProvider>();
         await hive.initForUser(res.user?.id);
         await registerUserScope(hive);
+
+        // Check subscription status
+        // If the user is not subscribed anymore push is data to save them for later
+        if (mounted) {
+          bool isSubscribed = await SubscriptionService(supabase)
+              .checkAndEnforceSubscription(context);
+          if (!isSubscribed) {
+            return;
+          }
+        }
+
         // ── 2. Tente l’import
         final importData = locator<ImportDataSupabaseUsecase>();
         final importSuccessful = await importData.importData(
@@ -291,13 +303,12 @@ class _LoginScreenState extends State<LoginScreen> {
         final hasProfile = await getUser.hasUserData();
         final userId = res.user?.id;
 
-        final profileSynced = userId != null
-            ? await _syncUserProfile(userId)
-            : false;
-
-        if (!profileSynced && !hasProfile) {
-          await supabase.auth.signOut();
-          return;
+        if (!hasProfile) {
+          bool isUserProfileSync = await _syncUserProfile(userId!);
+          if (!isUserProfileSync && mounted) {
+            await safeSignOut(context);
+            return;
+          }
         }
 
         // Récupérer les objectifs si student
@@ -316,8 +327,23 @@ class _LoginScreenState extends State<LoginScreen> {
               'LoginScreen',
             ).warning('[❌] Erreur lors de la mise à jour des macros : $e');
             Logger('LoginScreen').warning(stack.toString());
+            if (!mounted) return;
+            await safeSignOut(context);
             return;
           }
+        }
+
+        // Récupère les pas du jour depuis Supabase
+        try {
+          final stepsService = SupabaseDailyStepsService();
+          final today = DateUtils.dateOnly(DateTime.now());
+          final steps = await stepsService.fetchDailySteps(userId!, today);
+          await hive.dailyStepsBox.put(today.toIso8601String(), steps);
+        } catch (e, stack) {
+          Logger('LoginScreen')
+              .warning('Failed to fetch daily steps', e, stack);
+          if (!mounted) return;
+          await safeSignOut(context);
         }
 
         // ✅ Init Firebase Messaging & Local Notifications après login
@@ -386,8 +412,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (v) => (v == null || v.trim().isEmpty)
                     ? S.of(context).loginEmailRequired
                     : (EmailValidator.validate(v.trim())
-                          ? null
-                          : S.of(context).loginEmailInvalid),
+                        ? null
+                        : S.of(context).loginEmailInvalid),
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -431,7 +457,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const ForgotPasswordScreen(),
+                    builder: (_) => const OtpPasswordResetEmailScreen(),
                   ),
                 ),
                 child: Text(S.of(context).loginForgotPassword),
@@ -440,7 +466,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextButton(
                 onPressed: () =>
                     launchUrl(Uri.parse('https://atlas-tracker.fr/')),
-                child: const Text('En savoir plus : atlas-tracker.fr'),
+                child: Text(S.of(context).learnMoreLabel),
               ),
             ],
           ),

@@ -1342,6 +1342,16 @@ class S {
     );
   }
 
+  /// `steps`
+  String get stepsLabel {
+    return Intl.message(
+      'steps',
+      name: 'stepsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `kcal left`
   String get kcalLeftLabel {
     return Intl.message(
@@ -1407,6 +1417,116 @@ class S {
     return Intl.message(
       'Calories',
       name: 'caloriesLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last goal applied on {date}`
+  String previousGoalAppliedOn(Object date) {
+    return Intl.message(
+      'Last goal applied on $date',
+      name: 'previousGoalAppliedOn',
+      desc: '',
+      args: [date],
+    );
+  }
+
+  /// `Learn more: atlas-tracker.fr`
+  String get learnMoreLabel {
+    return Intl.message(
+      'Learn more: atlas-tracker.fr',
+      name: 'learnMoreLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not save preference.`
+  String get savePreferenceFailed {
+    return Intl.message(
+      'Could not save preference.',
+      name: 'savePreferenceFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User not connected.`
+  String get userNotConnected {
+    return Intl.message(
+      'User not connected.',
+      name: 'userNotConnected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account successfully deleted.`
+  String get accountDeletedSuccess {
+    return Intl.message(
+      'Account successfully deleted.',
+      name: 'accountDeletedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to delete: {reason}`
+  String failedToDeleteWithReason(Object reason) {
+    return Intl.message(
+      'Failed to delete: $reason',
+      name: 'failedToDeleteWithReason',
+      desc: '',
+      args: [reason],
+    );
+  }
+
+  /// `An error occurred.`
+  String get genericErrorOccurred {
+    return Intl.message(
+      'An error occurred.',
+      name: 'genericErrorOccurred',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supabase error: {message}`
+  String supabaseError(Object message) {
+    return Intl.message(
+      'Supabase error: $message',
+      name: 'supabaseError',
+      desc: '',
+      args: [message],
+    );
+  }
+
+  /// `Your subscription is no longer active. Please contact your coach.`
+  String get subscriptionInactiveMessage {
+    return Intl.message(
+      'Your subscription is no longer active. Please contact your coach.',
+      name: 'subscriptionInactiveMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cloud synchronization problem.`
+  String get cloudSyncProblem {
+    return Intl.message(
+      'Cloud synchronization problem.',
+      name: 'cloudSyncProblem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `min`
+  String get minutesAbbrevLabel {
+    return Intl.message(
+      'min',
+      name: 'minutesAbbrevLabel',
       desc: '',
       args: [],
     );
@@ -1657,6 +1777,16 @@ class S {
     return Intl.message(
       'Product missing required kcal or macronutrients information',
       name: 'missingProductInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Problem while saving macro goals.`
+  String get saveMacroGoalsError {
+    return Intl.message(
+      'Problem while saving macro goals.',
+      name: 'saveMacroGoalsError',
       desc: '',
       args: [],
     );

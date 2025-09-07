@@ -4,13 +4,11 @@ import 'package:archive/archive.dart';
 import 'package:logging/logging.dart';
 import 'package:collection/collection.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:opennutritracker/core/data/data_source/user_activity_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/intake_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/tracked_day_dbo.dart';
 import 'package:opennutritracker/core/data/data_source/user_weight_dbo.dart';
 import 'package:opennutritracker/core/data/repository/intake_repository.dart';
 import 'package:opennutritracker/core/data/repository/tracked_day_repository.dart';
-import 'package:opennutritracker/core/data/repository/user_activity_repository.dart';
 import 'package:opennutritracker/core/data/repository/user_weight_repository.dart';
 import 'package:opennutritracker/core/data/repository/recipe_repository.dart';
 import 'package:opennutritracker/core/data/repository/user_repository.dart';
@@ -25,17 +23,14 @@ import 'package:opennutritracker/core/data/dbo/user_role_dbo.dart';
 import 'package:opennutritracker/core/domain/entity/user_entity.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
-import 'package:opennutritracker/core/utils/hive_db_provider.dart';
-import 'package:opennutritracker/core/utils/locator.dart';
+// Removed unused imports flagged by analyzer
 import 'dart:typed_data';
 
 /// Imports user data from a zip stored on Supabase storage.
 /// Existing entries are replaced if the incoming entry has a more recent
 /// `updatedAt` field.
 class ImportDataSupabaseUsecase {
-  final UserActivityRepository _userActivityRepository;
   final IntakeRepository _intakeRepository;
   final TrackedDayRepository _trackedDayRepository;
   final UserWeightRepository _userWeightRepository;
@@ -45,7 +40,6 @@ class ImportDataSupabaseUsecase {
   final _log = Logger('ImportDataSupabaseUsecase');
 
   ImportDataSupabaseUsecase(
-    this._userActivityRepository,
     this._intakeRepository,
     this._trackedDayRepository,
     this._userWeightRepository,
@@ -101,10 +95,6 @@ class ImportDataSupabaseUsecase {
       ].any((f) => f == null)) {
         throw Exception('Archive is missing required files');
       }
-
-      // The zip has been downloaded and validated, we can clear the local database
-      final hive = locator<HiveDBProvider>();
-      await hive.clearAllData();
 
       Future<String?> restoreImage(String? path) async {
         if (path == null || path.startsWith('http')) return path;
@@ -184,35 +174,6 @@ class ImportDataSupabaseUsecase {
         await _recipeRepository.addAllRecipeDBOs(updatedRecipes);
       }
 
-      // ----- USER ACTIVITY -----
-      final userActivityJsonString =
-          utf8.decode(userActivityFile!.content as List<int>);
-      final userActivityList = (jsonDecode(userActivityJsonString) as List)
-          .cast<Map<String, dynamic>>();
-      final userActivityDBOs =
-          userActivityList.map((e) => UserActivityDBO.fromJson(e)).toList();
-
-      final existingActivities =
-          await _userActivityRepository.getAllUserActivityDBO();
-      final activityMap = {for (final a in existingActivities) a.id: a};
-      final activityIds = userActivityDBOs.map((e) => e.id).toSet();
-      for (final existing in existingActivities) {
-        if (!activityIds.contains(existing.id)) {
-          await _userActivityRepository.deleteUserActivity(
-              UserActivityEntity.fromUserActivityDBO(existing));
-        }
-      }
-      for (final dbo in userActivityDBOs) {
-        final current = activityMap[dbo.id];
-        if (current == null) {
-          await _userActivityRepository.addAllUserActivityDBOs([dbo]);
-        } else if (dbo.updatedAt.isAfter(current.updatedAt)) {
-          await _userActivityRepository.deleteUserActivity(
-              UserActivityEntity.fromUserActivityDBO(current));
-          await _userActivityRepository.addAllUserActivityDBOs([dbo]);
-        }
-      }
-
       // ----- INTAKES -----
       final intakeJsonString = utf8.decode(intakeFile!.content as List<int>);
       final intakeList =
@@ -249,14 +210,6 @@ class ImportDataSupabaseUsecase {
 
       final existingDays = await _trackedDayRepository.getAllTrackedDaysDBO();
       final dayMap = {for (final d in existingDays) d.day.toIso8601String(): d};
-      final dayKeys =
-          trackedDayDBOs.map((e) => e.day.toIso8601String()).toSet();
-      for (final existing in existingDays) {
-        final key = existing.day.toIso8601String();
-        if (!dayKeys.contains(key)) {
-          await _trackedDayRepository.deleteTrackedDay(existing.day);
-        }
-      }
       final List<TrackedDayDBO> daysToSave = [];
       for (final dbo in trackedDayDBOs) {
         final key = dbo.day.toIso8601String();

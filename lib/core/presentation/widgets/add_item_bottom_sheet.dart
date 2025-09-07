@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
-import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
+// TEMP: hide activities UI and navigation
+// import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
 import 'package:opennutritracker/core/utils/navigation_options.dart';
-import 'package:opennutritracker/features/add_activity/presentation/add_activity_screen.dart';
+// import 'package:opennutritracker/features/add_activity/presentation/add_activity_screen.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_screen.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_or_recipe_entity.dart';
@@ -19,6 +20,7 @@ class AddItemBottomSheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // TEMP: activities section hidden; keep only recipe quick action
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
@@ -28,39 +30,12 @@ class AddItemBottomSheet extends StatelessWidget {
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(0),
                   title: Text(
-                    S.of(context).activityLabel,
+                    S.of(context).recipeLabel,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onSurface),
                   ),
                   subtitle: Text(
-                    S.of(context).exampleOfActivityLabel,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withAlpha(180)),
-                  ),
-                  leading: Icon(
-                    UserActivityEntity.getIconData(),
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  onTap: () => _showAddActivityScreen(context),
-                ),
-              ),
-              Expanded(
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  title: Text(
-                    S
-                        .of(context)
-                        .recipeLabel, // à remplacer par S.of(context).mealLabel
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface),
-                  ),
-                  subtitle: Text(
-                    S
-                        .of(context)
-                        .recipeLabel, // à remplacer par S.of(context).mealExample
+                    S.of(context).recipeLabel,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context)
                             .colorScheme
@@ -188,11 +163,12 @@ class AddItemBottomSheet extends StatelessWidget {
         ));
   }
 
-  void _showAddActivityScreen(BuildContext context) {
-    Navigator.of(context).pop();
-    Navigator.of(context).pushNamed(NavigationOptions.addActivityRoute,
-        arguments: AddActivityScreenArguments(day: day));
-  }
+  // TEMP: disabled while activities are hidden
+  // void _showAddActivityScreen(BuildContext context) {
+  //   Navigator.of(context).pop();
+  //   Navigator.of(context).pushNamed(NavigationOptions.addActivityRoute,
+  //       arguments: AddActivityScreenArguments(day: day));
+  // }
 
   void _showAddMealCreationScreen(BuildContext context) {
     Navigator.of(context).pop();
