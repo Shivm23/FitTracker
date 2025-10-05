@@ -1,0 +1,12 @@
+{
+    "name": "Instagram Color Demo",
+    "short_name": "Color Demo",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#FFFFFF",
+    "theme_color": "#E1306C",
+    "description": "Instagram color palette demo",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": []
+}
